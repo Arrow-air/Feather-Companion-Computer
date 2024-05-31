@@ -37,15 +37,15 @@ import Joystick
 gound_or_flight = 'FUI' #Flight UI
 
 #Serial Comport Settings for Lora Telemetry & Flight Controller Interfaces
-''' TEST
-LoraComport = 'COM10'   #Lora Serial Port
+# TEST
+#LoraComport = 'COM10'   #Lora Serial Port
 VeronteComport = 'COM9' #Veronte Serial Port
 Serialbitrate = 115200
-'''
+
 
 #LoraComport = '/dev/tty6'   #Lora Serial Port
-VeronteComport = '/dev/ttyS0' #Veronte Serial Port
-Serialbitrate = 115200
+#VeronteComport = '/dev/ttyS0' #Veronte Serial Port
+#Serialbitrate = 115200
 
 #IP seting for TCP/IP Telemetry
 TCP_IP = socket.gethostname() #'192.168.1.84'# #"127.0.0.1"

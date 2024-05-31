@@ -35,27 +35,46 @@ void loop()
   delay(100); // Send heartbeat
 }
 
+unsigned long calculateCanId(unsigned char subject_id, unsigned char source_id) 
+{
+  /* ID Elements
+  Priority high (011) 3-bits
+  Non-service message: 0 1-bit
+  Broadcast frame: 0 1-bit
+  Reserved 8-bits as specified
+  Subject ID 6152 for the first message and 6153 for the second one 8-bits
+  Source Node ID 1 8-bits
+  */
+  uint32_t CAN_ID = (1 << 27) | (1 << 26) | (controller_id << 15) | source_id;
+  return CAN_ID;
+}
+
 void sendCommandControl() 
 {
   byte data[3];
   data[0] = 0x01; // Example command
   data[1] = 0x10; // Node ID
   data[2] = 0x00; // Reserved
-  CAN0.sendMsgBuf(6144, 1, 3, data);
+  
+  CAN0.sendMsgBuf(calculateCanId(6144,1), 1, 3, data);
   Serial.println("Command Control sent");
 }
 
 void sendThrottleData() 
 {
   byte data[7];
+  
   data[0] = random(0, 256); // Throttle data 1 (low byte)
   data[1] = random(0, 256); // Throttle data 1 (high byte)
   data[2] = random(0, 256); // Throttle data 2 (low byte)
   data[3] = random(0, 256); // Throttle data 2 (high byte)
   data[4] = random(0, 256); // Throttle data 3 (low byte)
-  data[5] = random(0, 256); // Throttle data 3 (high byte)
-  data[6] = random(0, 256); // Throttle data 4 (14 bits in total)
-  CAN0.sendMsgBuf(6152, 1, 7, data);
+  data[5] = 0; // Throttle data 3 (high byte)
+  data[6] = 0; // Throttle data 4 (14 bits in total)
+  
+  CAN0.sendMsgBuf(calculateCanId(6152,1), 1, 7, data);
+  delay(100)
+  CAN0.sendMsgBuf(calculateCanId(6153,1), 1, 7, data);
   Serial.println("Throttle Data sent");
 }
 
@@ -68,7 +87,8 @@ void sendInfoUpload6160()
   data[3] = random(0, 256); // Bus current (high byte)
   data[4] = random(0, 256); // Running status (low byte)
   data[5] = random(0, 256); // Running status (high byte)
-  CAN0.sendMsgBuf(6160, 1, 6, data);
+  
+  CAN0.sendMsgBuf(calculateCanId(6160,1), 1, 6, data);
   Serial.println("Info Upload 6160 sent");
 }
 
@@ -82,7 +102,8 @@ void sendInfoUpload6161()
   data[4] = random(0, 256); // MOS temperature
   data[5] = random(0, 256); // Capacitance temperature
   data[6] = random(0, 256); // Motor temperature
-  CAN0.sendMsgBuf(6161, 1, 7, data);
+
+  CAN0.sendMsgBuf(calculateCanId(6161,1), 1, 7, data);
   Serial.println("Info Upload 6161 sent");
 }
 
@@ -96,6 +117,13 @@ void sendHeartbeat()
   data[3] = (powerOnTime >> 24) & 0xFF;
   data[4] = random(0, 4); // Node health status
   data[5] = random(0, 4); // Node current mode
-  CAN0.sendMsgBuf(7509, 1, 6, data);
-  Serial.println("Heartbeat sent");
+
+  if (CAN0.sendMsgBuf(calculateCanId(7509,1), 1, 6, data) == CAN_OK)
+  {
+    Serial.println("Heartbeat sent");
+  }
+  else
+  {
+     Serial.println("Heartbeat Fucked");
+  }
 }

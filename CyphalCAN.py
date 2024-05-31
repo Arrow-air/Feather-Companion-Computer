@@ -1,6 +1,8 @@
 import pycyphal
 from pycyphal.transport.can import CANTransport
-from pycyphal.application import Node, NodeInfo, NodeHeartbeatPublisher
+import pycyphal.application
+#import uavcan.node 
+from pycyphal.application import make_node,  NodeInfo, NodeHeartbeatPublisher, Node
 from pycyphal.transport import MessageDataSpecifier, ServiceDataSpecifier
 from pycyphal.transport import PayloadMetadata, TransferFrom, TransferID
 import asyncio
@@ -11,6 +13,8 @@ class CyphalCAN:
         self.transport = CANTransport(interface='can0', baudrate=500000)
 
         self.node = Node(self.transport, NodeInfo(), node_id)
+        #self.node = pycyphal.application.make_node(info=NodeInfo(),transport=self.transport)    # Some of the fields in node_info are set automatically.
+        #self.node.start()
         self.esc_data = {}
 
     async def send_command(self, node_id: int, command: int):
