@@ -7,8 +7,8 @@
 // Define dummy data for different commands
 unsigned long txId;
 unsigned char len = 8;
-constexpr uint16_t commands[8] = {0x2B1A, 0x260A, 0x271A, 0x280A, 0x291A, 0x2A7A, 0x2D1A, 0x2C1A};
-//constexpr byte commands[8] = {11034, 9738, 10010, 10250, 10522, 10874, 11546, 11290};
+constexpr unsigned long commands[8] = {0x2B1A, 0x260A, 0x271A, 0x280A, 0x291A, 0x2A7A, 0x2D1A, 0x2C1A};
+//constexpr unsigned long commands[8] = {11034, 9738, 10010, 10250, 10522, 10874, 11546, 11290};
 
 // Instantiate the CAN object
 MCP_CAN CAN0(CAN0_CS);
@@ -71,22 +71,25 @@ void loop()
 }
 
 // Function to calculate CAN ID
-unsigned long calculateCanId(unsigned char controller_id, byte command) 
+unsigned long calculateCanId(unsigned char controller_id, unsigned long command) 
 {
-  uint32_t CAN_ID = (0 << 26) | (((command >> 8) & 0xFF) << 8) | controller_id;
+  uint32_t CAN_ID = (0 << 26) | (((command >> 8) & 0xFF) << 8) | controller_id; //(((command >> 8) & 0xFF) << 8)
   return CAN_ID;
 }
 
 // Function to send CAN frame
 void sendDummyData(unsigned long id, unsigned char len, unsigned char *data) 
 {
-  if (CAN0.sendMsgBuf(id, 1, sizeof(data), data) == CAN_OK) 
+  if (CAN0.sendMsgBuf(id, 1, len, data) == CAN_OK) 
   {
-    //Serial.print(id);
+    Serial.print(id);
     Serial.print("\t");
     Serial.print(len);
     Serial.print("\t");
-    for(int i = 0; i < sizeof(data); i++)
+    Serial.print(sizeof(data));
+    Serial.print("\t");
+
+    for(int i = 0; i < len; i++)
     {
       Serial.print(data[i]);
       Serial.print("\t");
@@ -96,11 +99,14 @@ void sendDummyData(unsigned long id, unsigned char len, unsigned char *data)
   } 
   else 
   {
-    //Serial.print(id);
+    Serial.print(id);
     Serial.print("\t");
     Serial.print(len);
     Serial.print("\t");
-    for(int i = 0; i < sizeof(data); i++)
+    Serial.print(sizeof(data));
+    Serial.print("\t");
+
+    for(int i = 0; i < len; i++)
     {
       Serial.print(data[i]);
       Serial.print("\t");
@@ -110,16 +116,17 @@ void sendDummyData(unsigned long id, unsigned char len, unsigned char *data)
 }
 
 // Function to set data for different commands for a specific unit
-void setCommandData(unsigned char command, unsigned char unit_id) 
+void setCommandData(unsigned long command, unsigned char unit_id) 
 {
   txId = calculateCanId(unit_id, command);
-  Serial.print(command);
+  //Serial.print(command);
 
   unsigned char data[8];
 
   switch (command) 
   {
     case commands[0]: // CAN_PACKET_BMS_TEMPS
+      Serial.print("CMD:0 ");
       len = 8;
       data[0] = 0; data[1] = 24;  // NoOfCells
       data[2] = 0x12; data[3] = 0x34;  // auxVoltagesIndividual1
@@ -128,6 +135,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[1]: // CAN_PACKET_BMS_V_TOT
+      Serial.print("CMD:1 ");
       len = 8;
       int32_t packVoltage = 42000;  // 42.0V
       int32_t chargerVoltage = 50000;  // 50.0V
@@ -136,6 +144,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[2]: // CAN_PACKET_BMS_I
+      Serial.print("CMD:2 ");
       len = 8;
       int32_t packCurrent1 = 1000;  // 10.0A
       int32_t packCurrent2 = 2000;  // 20.0A
@@ -144,6 +153,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[3]: // CAN_PACKET_BMS_AH_WH
+      Serial.print("CMD:3 ");
       len = 8;
       int32_t Ah_Counter = 500;  // 0.5 Ah
       int32_t Wh_Counter = 1000;  // 1.0 Wh
@@ -152,6 +162,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[4]: // CAN_PACKET_BMS_V_CELL
+      Serial.print("CMD:4 ");
       len = 8;
       data[0] = 24;  // cellPoint
       data[1] = 24;  // NoOfCells
@@ -161,6 +172,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[5]: // CAN_PACKET_BMS_BAL
+      Serial.print("CMD:5 ");
       len = 8;
       data[0] = NULL;  // NoOfCells
       uint64_t bal_state = 0x123456789ABCDEF0;
@@ -168,6 +180,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[6]: // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
+      Serial.print("CMD:6 ");
       len = 8;
       int16_t cellVoltageLow = 3000;  // 3.0V
       int16_t cellVoltageHigh = 4200;  // 4.2V
@@ -180,6 +193,7 @@ void setCommandData(unsigned char command, unsigned char unit_id)
       break;
 
     case commands[7]: // CAN_PACKET_BMS_HUM
+      Serial.print("CMD:7 ");
       len = 6;
       int16_t CAN_PACKET_BMS_TEMP0 = 2500;  // 25.0°C
       int16_t CAN_PACKET_BMS_HUM_HUM = 5000;  // 50.0%
