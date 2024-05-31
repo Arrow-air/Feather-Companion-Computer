@@ -19,7 +19,10 @@ class Joystick:
         self.clock = self.time.Clock()  
         
         self.USBJoystick = self.joystick.get_init()
-        self.CANJoystick = JoystickCAN.isPresent(self)
+        
+        #joystckcan = JoystickCAN(self)
+        
+        self.CANJoystick = False#joystckcan.isPresent()
 
         self.packet = {}
 

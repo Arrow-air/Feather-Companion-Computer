@@ -50,17 +50,17 @@ sudo apt install RPi.GPIO python3-spidev python3-can
 
 # Install Pygame and PyQT
 sudo apt-get install -y python3-pygame python3-pyqt5
-pip install pygame==2.5.2
+pip install pygame==2.5.2 --break-system-packages
 
 # Install CAN & Serial library
 sudo apt-get install python3-can
 sudo apt-get install python3-serial
 
 # Install J1939 CAN Library
-pip install can-j1939
+pip install can-j1939 --break-system-packages
 
 # Install Cyphal CAN Library
-pip install 'pycyphal[transport-can-pythoncan,transport-serial,transport-udp]'
+pip install 'pycyphal[transport-can-pythoncan,transport-serial,transport-udp]' --break-system-packages
 
 # Install Library for analysis of DBC files
-pip install cantools
+pip install cantools --break-system-packages

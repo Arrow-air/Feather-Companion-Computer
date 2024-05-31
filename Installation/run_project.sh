@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Pls Navigate to your project directory
-cd /home/alexdada/Documents/Avionic-Systems/Feather\ PT3\ Companion\ PC/
+cd //home/alexdada/Feather-Companion-Computer/
 
 # Run Backend Data handler
 sudo python3 FCPC.py

@@ -1,6 +1,7 @@
 import time
 import serial
 import random
+import ast
 
 class Veronte:
 
@@ -23,25 +24,27 @@ class Veronte:
         
     def packetStruct(self):
         
-        #self.data = self.readData()
-        #self.dataDictionary = ast.literal_eval(self.data)
-        #self.packet = self.dataDictionary
-        
-        self.packet = {'altitude_AGL':random.uniform(0,100),'altitude_AGL_set':random.uniform(0,100),'altitude_ABS':random.uniform(0,100),'altitude_AGL':random.uniform(0,100),'heading':random.uniform(0,360),'compass':random.uniform(0,360),'attitude_pitch':random.uniform(-30,30),'attitude_roll':random.uniform(-30,30),'vertical_speed_KTS':random.uniform(0,60),
+        try:
+                self.data = self.readData()
+                self.dataDictionary = self.data
+                self.packet = self.dataDictionary
+        except:
+                self.packet = {'altitude_AGL':random.uniform(0,100),'altitude_AGL_set':random.uniform(0,100),'altitude_ABS':random.uniform(0,100),'altitude_AGL':random.uniform(0,100),'heading':random.uniform(0,360),'compass':random.uniform(0,360),'attitude_pitch':random.uniform(-30,30),'attitude_roll':random.uniform(-30,30),'vertical_speed_KTS':random.uniform(0,60),
                        'airspeed_KTS':random.uniform(0,60),'OAT':random.uniform(0,100),"latitude":'40d26a46q','longitude':'79d58a56q',"flight_time":(str(random.randint(0,59))+':'+str(random.randint(0,59)))}
         
         #print(self.packet)
         return self.packet
 
     def readData(self):
-        
-        self.Dataleft = self.VeronteSerial.inWaiting()
-        
-        while self.Dataleft > 0:
             
-            self.Data = self.VeronteSerial.read()
-            time.sleep(0.01)
-            self.Dataleft = self.VeronteSerial.inWaiting()
-            self.Data += self.VeronteSerial.read(self.Dataleft)
-            
-        return self.Data
+        data = self.VeronteSerial.readline()
+        
+        data = data.decode("utf-8").replace('\r','')
+        data = data.replace('\n','')
+        
+        if len(data) > 2:
+                
+                data = ast.literal_eval(data)
+                self.data = data
+        
+                return self.data

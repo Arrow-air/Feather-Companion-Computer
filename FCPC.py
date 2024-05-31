@@ -24,7 +24,7 @@ from datetime import datetime
 #Created Packages 
 import IO
 #import UI
-import ESC
+#import ESC
 import BMS
 #import LoRa
 import TCP
@@ -63,8 +63,8 @@ pyclock = pygame.time.Clock()
 if gound_or_flight == 'FUI':
 
     io = IO.IO(gound_or_flight)
-    esc = ESC.ESC(gound_or_flight)
-    bms = BMS.BMS(gound_or_flight)
+    #esc = ESC.ESC(gound_or_flight)
+    #bms = BMS.BMS(gound_or_flight)
     tcp = TCP.TCP(TCP_IP,TCP_PORT,TCP_Buffer,gound_or_flight)
 
     #lora = LoRa.LoRa(LoraComport,Serialbitrate,gound_or_flight)
@@ -97,14 +97,14 @@ if __name__ == '__main__':
             data.JoystickPacket = joystickUSB.packetStruct()
             #data.JoystickPacket = joystickCAN.packetStruct()
             #data.IOPacket = io.packetStruct()
-            data.ESCPacket = esc.packetStruct()
+            #data.ESCPacket = esc.packetStruct()
             data.VerontePacket = veronte.packetStruct()
-            data.BMSPacket = bms.packetStruct()
+            #data.BMSPacket = bms.packetStruct()
             data.now['TimeStamp'] = str(datetime.now())
             data.packetStruct()
             
             #Wrtie Data log file
-            data.logUpdate()
+            #data.logUpdate()
             
             #Send Data to GCS Telemetry
             data.telemetryUpdate()
