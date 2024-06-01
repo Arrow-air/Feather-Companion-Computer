@@ -45,7 +45,7 @@ unsigned long calculateCanId(unsigned char subject_id, unsigned char source_id)
   Subject ID 6152 for the first message and 6153 for the second one 8-bits
   Source Node ID 1 8-bits
   */
-  uint32_t CAN_ID = (1 << 27) | (1 << 26) | (controller_id << 15) | source_id;
+  uint32_t CAN_ID = (1 << 27) | (1 << 26) | (subject_id << 15) | source_id;
   return CAN_ID;
 }
 
@@ -73,7 +73,7 @@ void sendThrottleData()
   data[6] = 0; // Throttle data 4 (14 bits in total)
   
   CAN0.sendMsgBuf(calculateCanId(6152,1), 1, 7, data);
-  delay(100)
+  delay(100);
   CAN0.sendMsgBuf(calculateCanId(6153,1), 1, 7, data);
   Serial.println("Throttle Data sent");
 }
