@@ -29,24 +29,28 @@ void loop()
   Tailbyte = SET | (tid & 0x1F);
 
   sendCommandControl(Tailbyte);
+  tid++;
   delay(10);
 
   setDeviceID(Tailbyte);
+  tid++;
   delay(10);
 
   sendThrottleData(Tailbyte);
+  tid++;
   delay(10);
 
   sendInfoUpload6160(Tailbyte);
+  tid++;
   delay(10);
 
   sendInfoUpload6161(Tailbyte);
+  tid++;
   delay(10);
 
   sendHeartbeat(Tailbyte);
-  delay(10);
-
   tid++;
+  delay(10);
 
   if(tid > 31)
   {
@@ -109,18 +113,18 @@ void x_MakeThrot(uint16_t *throt, uint8_t *throtOut)
 
 void sendCommandControl(uint8_t Tail) 
 {
-  byte data[8] = {0};
+  byte data[4];
 
   data[0] = 0x01; // Example command
   data[1] = 0x10; // Node ID
   data[2] = 0x00; // Reserved
-  data[7] = Tail; // Tail Byte
+  data[3] = Tail; // Tail Byte
 
   unsigned long id = calculateCanId(4,6144,1);
 
   Serial.print("0x");
   Serial.print(id,HEX);
-  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  if (CAN0.sendMsgBuf(id, 1, 4, data) == CAN_OK)
   {
     Serial.print("\t");
     Serial.println("send Command Control sent");
@@ -134,17 +138,17 @@ void sendCommandControl(uint8_t Tail)
 
 void setDeviceID(uint8_t Tail) 
 {
-  byte data[8] = {0};
+  byte data[3];
 
   data[0] = 0x00; // 0
   data[1] = 0x10; // Node ID
-  data[7] = Tail; // Tail Byte
+  data[2] = Tail; // Tail Byte
 
   unsigned long id = calculateCanId(4,6145,1);
 
   Serial.print("0x");
   Serial.print(id,HEX);
-  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  if (CAN0.sendMsgBuf(id, 1, 3, data) == CAN_OK)
   {
     Serial.print("\t");
     Serial.println("set Device ID sent");
@@ -194,7 +198,7 @@ void sendThrottleData(uint8_t Tail)
     Serial.print("\t");
     Serial.println("Throttle Data 6152 Fuxked");
   }
-
+  tid++;
   delay(10);
 
   id = calculateCanId(3,6153,1);
@@ -215,7 +219,7 @@ void sendThrottleData(uint8_t Tail)
 
 void sendInfoUpload6160(uint8_t Tail) 
 {
-  byte data[8] = {0};
+  byte data[8];
 
   data[0] = random(0, 256); // Electrical speed (low byte)
   data[1] = random(0, 256); // Electrical speed (high byte)
@@ -244,7 +248,7 @@ void sendInfoUpload6160(uint8_t Tail)
 
 void sendInfoUpload6161(uint8_t Tail) 
 {
-  byte data[8] = {0};
+  byte data[8];
 
   data[0] = random(0, 256); // Output throttle (low byte)
   data[1] = random(0, 256); // Output throttle (high byte)
@@ -273,7 +277,7 @@ void sendInfoUpload6161(uint8_t Tail)
 
 void sendHeartbeat(uint8_t Tail) 
 {
-  byte data[8] = {0};
+  byte data[8];
 
   unsigned long powerOnTime = millis() / 1000;
 
