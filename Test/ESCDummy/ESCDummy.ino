@@ -162,14 +162,13 @@ void setDeviceID(uint8_t Tail)
 
 void sendThrottleData(uint8_t Tail) 
 { 
-  uint16_t throt[4] = {200,200,200,0};
-  uint16_t throt2[4] = {200,200,200,0};
+  uint16_t throt[4] = {100,200,300,0};
 
   uint8_t data[8] = {0};
   uint8_t data2[8] = {0};
 
   x_MakeThrot(throt,data);
-  x_MakeThrot(throt2,data2);
+  x_MakeThrot(throt,data2);
 
   for(int x; x < 7; x++)
   {
