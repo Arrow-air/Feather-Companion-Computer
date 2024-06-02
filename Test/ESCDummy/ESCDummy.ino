@@ -120,7 +120,7 @@ void sendCommandControl(uint8_t Tail)
   data[2] = 0x00; // Reserved
   data[3] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(2,6144,1);
+  unsigned long id = calculateCanId(2,6144,1) | 0x80000000;
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -144,7 +144,7 @@ void setDeviceID(uint8_t Tail)
   data[1] = 0x10; // Node ID
   data[2] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(4,6145,1);
+  unsigned long id = calculateCanId(4,6145,1) | 0x80000000;
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -181,7 +181,7 @@ void sendThrottleData(uint8_t Tail)
     Serial.println(data2[x],HEX);
   }
 
-  unsigned long id = calculateCanId(3,6152,1);
+  unsigned long id = calculateCanId(3,6152,1) | 0x80000000;
   data[7] = Tail; // Tail Byte
   data2[7] = Tail; // Tail Byte
 
@@ -200,7 +200,7 @@ void sendThrottleData(uint8_t Tail)
   tid++;
   delay(10);
 
-  id = calculateCanId(3,6153,1);
+  id = calculateCanId(3,6153,1) | 0x80000000;
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -228,7 +228,7 @@ void sendInfoUpload6160(uint8_t Tail)
   data[5] = random(0, 256); // Running status (high byte)
   data[7] = Tail; // Tail Byte 
 
-  unsigned long id = calculateCanId(5,6160,1);
+  unsigned long id = calculateCanId(5,6160,1) | 0x80000000;
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -258,7 +258,7 @@ void sendInfoUpload6161(uint8_t Tail)
   data[6] = random(0, 256); // Motor temperature
   data[7] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(5,6161,1);
+  unsigned long id = calculateCanId(5,6161,1) | 0x80000000;
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -288,7 +288,7 @@ void sendHeartbeat(uint8_t Tail)
   data[5] = random(0, 4); // Node current mode
   data[7] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(4,7509,1);
+  unsigned long id = calculateCanId(4,7509,1) | 0x80000000;
 
   Serial.print("0x");
   Serial.print(id,HEX);
