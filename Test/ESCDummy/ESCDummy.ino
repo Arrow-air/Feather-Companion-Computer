@@ -120,7 +120,7 @@ void sendCommandControl(uint8_t Tail)
   data[2] = 0x00; // Reserved
   data[3] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(4,6144,1);
+  unsigned long id = calculateCanId(2,6144,1);
 
   Serial.print("0x");
   Serial.print(id,HEX);
