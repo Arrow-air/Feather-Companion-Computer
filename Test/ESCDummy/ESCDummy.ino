@@ -8,7 +8,9 @@ MCP_CAN CAN0(CAN0_CS);
 void setup() 
 {
   Serial.begin(115200);
-  while (CAN_OK != CAN0.begin(MCP_STDEXT, CAN_500KBPS, MCP_8MHZ)) 
+  while(!Serial)
+
+  while (CAN_OK != CAN0.begin(CAN_500KBPS)) 
   {
     Serial.println("CAN BUS Shield init fail");
     Serial.println(" Init CAN BUS Shield again");
@@ -17,84 +19,233 @@ void setup()
   Serial.println("CAN BUS Shield init ok!");
 }
 
+uint8_t tid = 0;
+
 void loop() 
 {
-  sendCommandControl();
+  byte Tailbyte;
+  byte SET = 0b11100000;
+
+  Tailbyte = SET | (tid & 0x1F);
+
+  sendCommandControl(Tailbyte);
   delay(10);
 
-  sendThrottleData();
+  setDeviceID(Tailbyte);
   delay(10);
 
-  sendInfoUpload6160();
+  sendThrottleData(Tailbyte);
   delay(10);
 
-  sendInfoUpload6161();
+  sendInfoUpload6160(Tailbyte);
   delay(10);
 
-  sendHeartbeat();
-  delay(100); // Send heartbeat
+  sendInfoUpload6161(Tailbyte);
+  delay(10);
+
+  sendHeartbeat(Tailbyte);
+  delay(10);
+
+  tid++;
+
+  if(tid > 31)
+  {
+    tid = 0;
+  }
 }
 
-unsigned long calculateCanId(unsigned char subject_id, unsigned char source_id) 
+unsigned long calculateCanId(uint8_t priority, uint16_t subjectID, uint8_t sourceNodeID) 
 {
-  /* ID Elements
-  Priority high (011) 3-bits
-  Non-service message: 0 1-bit
-  Broadcast frame: 0 1-bit
-  Reserved 8-bits as specified
-  Subject ID 6152 for the first message and 6153 for the second one 8-bits
-  Source Node ID 1 8-bits
+  unsigned long canID = 0;
+
+  // Priority (3-bits)
+  canID |= ((priority & 0x07) << 26);
+
+  // Non-service message (0) 1-bit
+  canID |= (0b0 << 25);
+
+  // Broadcast frame (0) 1-bit
+  canID |= (0b0 << 24);
+
+  // Reserved bits (3-bits)
+  canID |= (0b000 << 21);
+
+  // Subject ID (13-bits)
+  canID |= ((unsigned long)(subjectID & 0x1FFF) << 8);
+
+  // Reserved bit (1-bit)
+  canID |= (0b0 << 7);
+
+  // Source Node ID (6-bits)
+  canID |= (sourceNodeID & 0x3F);
+
+  return canID;
+}
+
+void x_MakeThrot(uint16_t *throt, uint8_t *throtOut)
+{
+  /*
+  Note: the length of the pointer throt must be more than 4
+  the length of the pointer throtOut must be more than 8
   */
-  uint32_t CAN_ID = (1 << 27) | (1 << 26) | (subject_id << 15) | source_id;
-  return CAN_ID;
+
+  /* Remove the upper two digits */
+  throt[0] &= 0x3fffu;
+  throt[1] &= 0x3fffu;
+  throt[2] &= 0x3fffu;
+  throt[3] &= 0x3fffu;
+
+  /* Split the upper 6 bits of the last throttle */
+  throt[0] |= ((throt[3]<<2)&0xc000u);
+  throt[1] |= ((throt[3]<<4)&0xc000u);
+  throt[2] |= ((throt[3]<<6)&0xc000u);
+
+  /* Copy data */
+  *(uint16_t *)(&throtOut[0]) = throt[0];
+  *(uint16_t *)(&throtOut[2]) = throt[1];
+  *(uint16_t *)(&throtOut[4]) = throt[2];
+  *(uint16_t *)(&throtOut[6]) = throt[3];
 }
 
-void sendCommandControl() 
+void sendCommandControl(uint8_t Tail) 
 {
-  byte data[3];
+  byte data[8] = {0};
+
   data[0] = 0x01; // Example command
   data[1] = 0x10; // Node ID
   data[2] = 0x00; // Reserved
-  
-  CAN0.sendMsgBuf(calculateCanId(6144,1), 1, 3, data);
-  Serial.println("Command Control sent");
+  data[7] = Tail; // Tail Byte
+
+  unsigned long id = calculateCanId(4,6144,1);
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  {
+    Serial.print("\t");
+    Serial.println("send Command Control sent");
+  }
+  else
+  {
+    Serial.print("\t");
+    Serial.println("send Command Control Fuxked");
+  }
 }
 
-void sendThrottleData() 
+void setDeviceID(uint8_t Tail) 
 {
-  byte data[7];
-  
-  data[0] = random(0, 256); // Throttle data 1 (low byte)
-  data[1] = random(0, 256); // Throttle data 1 (high byte)
-  data[2] = random(0, 256); // Throttle data 2 (low byte)
-  data[3] = random(0, 256); // Throttle data 2 (high byte)
-  data[4] = random(0, 256); // Throttle data 3 (low byte)
-  data[5] = 0; // Throttle data 3 (high byte)
-  data[6] = 0; // Throttle data 4 (14 bits in total)
-  
-  CAN0.sendMsgBuf(calculateCanId(6152,1), 1, 7, data);
-  delay(100);
-  CAN0.sendMsgBuf(calculateCanId(6153,1), 1, 7, data);
-  Serial.println("Throttle Data sent");
+  byte data[8] = {0};
+
+  data[0] = 0x00; // 0
+  data[1] = 0x10; // Node ID
+  data[7] = Tail; // Tail Byte
+
+  unsigned long id = calculateCanId(4,6145,1);
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  {
+    Serial.print("\t");
+    Serial.println("set Device ID sent");
+  }
+  else
+  {
+    Serial.print("\t");
+    Serial.println("set Device ID Fuxked");
+  }
 }
 
-void sendInfoUpload6160() 
+void sendThrottleData(uint8_t Tail) 
+{ 
+  uint16_t throt[4] = {200,200,200,0};
+  uint16_t throt2[4] = {200,200,200,0};
+
+  uint8_t data[8] = {0};
+  uint8_t data2[8] = {0};
+
+  x_MakeThrot(throt,data);
+  x_MakeThrot(throt2,data2);
+
+  for(int x; x < 7; x++)
+  {
+    Serial.print("1-3 Motors to 7 bytes: ");
+    Serial.print("0x");
+    Serial.print(data[x],HEX);
+    Serial.print("\t");
+    Serial.print("4-6 Motors to 7 bytes: ");
+    Serial.print("0x");
+    Serial.println(data2[x],HEX);
+  }
+
+  unsigned long id = calculateCanId(3,6152,1);
+  data[7] = Tail; // Tail Byte
+  data2[7] = Tail; // Tail Byte
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  {
+    Serial.print("\t");
+    Serial.println("Throttle Data 6152 sent");
+  }
+  else
+  {
+    Serial.print("\t");
+    Serial.println("Throttle Data 6152 Fuxked");
+  }
+
+  delay(10);
+
+  id = calculateCanId(3,6153,1);
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+  if (CAN0.sendMsgBuf(id, 1, 8, data2) == CAN_OK)
+  {
+    Serial.print("\t");
+    Serial.println("Throttle Data 6153 sent");
+  }
+  else
+  {
+    Serial.print("\t");
+    Serial.println("Throttle Data 6153 Fuxked");
+  }
+}
+
+void sendInfoUpload6160(uint8_t Tail) 
 {
-  byte data[6];
+  byte data[8] = {0};
+
   data[0] = random(0, 256); // Electrical speed (low byte)
   data[1] = random(0, 256); // Electrical speed (high byte)
   data[2] = random(0, 256); // Bus current (low byte)
   data[3] = random(0, 256); // Bus current (high byte)
   data[4] = random(0, 256); // Running status (low byte)
   data[5] = random(0, 256); // Running status (high byte)
+  data[7] = Tail; // Tail Byte 
+
+  unsigned long id = calculateCanId(5,6160,1);
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  {
+    Serial.print("\t");
+    Serial.println("Info Upload 6160 sent");
+  }
+  else
+  {
+    Serial.print("\t");
+    Serial.println("Info Upload 6160 Fuxked");
+  }
   
-  CAN0.sendMsgBuf(calculateCanId(6160,1), 1, 6, data);
-  Serial.println("Info Upload 6160 sent");
 }
 
-void sendInfoUpload6161() 
+void sendInfoUpload6161(uint8_t Tail) 
 {
-  byte data[7];
+  byte data[8] = {0};
+
   data[0] = random(0, 256); // Output throttle (low byte)
   data[1] = random(0, 256); // Output throttle (high byte)
   data[2] = random(0, 256); // Bus voltage (low byte)
@@ -102,28 +253,52 @@ void sendInfoUpload6161()
   data[4] = random(0, 256); // MOS temperature
   data[5] = random(0, 256); // Capacitance temperature
   data[6] = random(0, 256); // Motor temperature
+  data[7] = Tail; // Tail Byte
 
-  CAN0.sendMsgBuf(calculateCanId(6161,1), 1, 7, data);
-  Serial.println("Info Upload 6161 sent");
+  unsigned long id = calculateCanId(5,6161,1);
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  {
+    Serial.print("\t");
+    Serial.println("Info Upload 6161 sent");
+  }
+  else
+  {
+    Serial.print("\t");
+    Serial.println("Info Upload 6161 Fuxked");
+  }
 }
 
-void sendHeartbeat() 
+void sendHeartbeat(uint8_t Tail) 
 {
-  byte data[6];
+  byte data[8] = {0};
+
   unsigned long powerOnTime = millis() / 1000;
+
   data[0] = powerOnTime & 0xFF;
   data[1] = (powerOnTime >> 8) & 0xFF;
   data[2] = (powerOnTime >> 16) & 0xFF;
   data[3] = (powerOnTime >> 24) & 0xFF;
   data[4] = random(0, 4); // Node health status
   data[5] = random(0, 4); // Node current mode
+  data[7] = Tail; // Tail Byte
 
-  if (CAN0.sendMsgBuf(calculateCanId(7509,1), 1, 6, data) == CAN_OK)
+  unsigned long id = calculateCanId(4,7509,1);
+
+  Serial.print("0x");
+  Serial.print(id,HEX);
+
+  Serial.print("\t");
+
+  if (CAN0.sendMsgBuf(id, 1, sizeof(data), data) == CAN_OK)
   {
     Serial.println("Heartbeat sent");
   }
   else
   {
-     Serial.println("Heartbeat Fucked");
+     Serial.println("Heartbeat Fuxked");
   }
+  Serial.println("\n");
 }
