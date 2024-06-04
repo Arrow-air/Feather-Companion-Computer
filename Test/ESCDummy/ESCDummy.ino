@@ -28,29 +28,29 @@ void loop()
 
   Tailbyte = SET | (tid & 0x1F);
 
-  sendCommandControl(Tailbyte);
-  tid++;
-  delay(10);
+  //sendCommandControl(Tailbyte);
+  //tid++;
+  //delay(10);
 
   setDeviceID(Tailbyte);
   tid++;
   delay(10);
 
-  sendThrottleData(Tailbyte);
-  tid++;
-  delay(10);
+  //sendThrottleData(Tailbyte);
+  //tid++;
+  //delay(10);
 
-  sendInfoUpload6160(Tailbyte);
-  tid++;
-  delay(10);
+  //sendInfoUpload6160(Tailbyte);
+  //tid++;
+  //delay(10);
 
-  sendInfoUpload6161(Tailbyte);
-  tid++;
-  delay(10);
+  //sendInfoUpload6161(Tailbyte);
+  //tid++;
+  //delay(10);
 
-  sendHeartbeat(Tailbyte);
-  tid++;
-  delay(10);
+  //sendHeartbeat(Tailbyte);
+  //tid++;
+  //delay(10);
 
   if(tid > 31)
   {
@@ -83,7 +83,7 @@ unsigned long calculateCanId(uint8_t priority, uint16_t subjectID, uint8_t sourc
   // Source Node ID (6-bits)
   canID |= (sourceNodeID & 0x3F);
 
-  return canID | 0x80000000;
+  return canID;// | 0x80000000;
 }
 
 void x_MakeThrot(uint16_t *throt, uint8_t *throtOut)
