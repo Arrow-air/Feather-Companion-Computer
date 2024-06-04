@@ -8,6 +8,7 @@ MCP_CAN CAN0(17);     // Set CS to pin 17
 void sendThrottleCommand(uint8_t node_id, uint16_t throttle_values[4]) 
 {
     uint32_t can_id = 0x18000000 | (node_id << 8) | 0x152;
+    Serial.println(can_id,HEX);
     uint8_t data[8];
     
     // Pack throttle data
@@ -34,6 +35,7 @@ void sendThrottleCommand(uint8_t node_id, uint16_t throttle_values[4])
 void setNodeId(uint8_t old_node_id, uint8_t new_node_id) 
 {
     uint32_t can_id = 0x18000000 | (old_node_id << 8) | 0x145;
+    Serial.println(can_id,HEX);
     uint8_t data[3] = {0, new_node_id,0xE0};
     CAN0.sendMsgBuf(can_id, 1, 3, data);
 }
@@ -100,11 +102,11 @@ void loop() {
     // Example usage of the functions
 
     // Send throttle command
-    uint16_t throttle_values[4] = {0x123, 0x234, 0x345, 0x456};
-    sendThrottleCommand(0x10, throttle_values);
+    //uint16_t throttle_values[4] = {0x123, 0x234, 0x345, 0x456};
+    //sendThrottleCommand(0x10, throttle_values);
 
     // Set node ID
-    //setNodeId(0x10, 0x11);
+    setNodeId(0x10, 0x11);
 
     // Read register
     //readRegister(0x10, 0x04);

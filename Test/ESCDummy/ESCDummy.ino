@@ -144,7 +144,7 @@ void setDeviceID(uint8_t Tail)
   data[1] = 0x10; // Node ID
   data[2] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(4,6145,1);
+  unsigned long id = calculateCanId(4,6145,0x10);
 
   Serial.print("0x");
   Serial.print(id,HEX);
