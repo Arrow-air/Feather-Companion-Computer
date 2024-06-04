@@ -18,4 +18,4 @@ dtoverlay=spi-bcm2835-overlay
 EOF
 
 # Reboot
-#sudo reboot
+sudo reboot

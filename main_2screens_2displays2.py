@@ -231,7 +231,7 @@ def D2_func(gound_or_flight,parameters_dict,display_num):
         # intialise pygame refresh rate and call it clock
         clock = pygame.time.Clock()
         clock.tick(10)
-
+        
     # Quit Pygame
     pygame.quit()
 
