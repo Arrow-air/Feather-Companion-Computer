@@ -7,15 +7,15 @@ class CyphalCAN2:
         self.channel = channel
         self.bustype = bustype
         self.bitrate = bitrate
-        self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype, bitrate=self.bitrate)
+        self.can0 = can.interface.Bus(channel=self.channel, bustype=self.bustype, bitrate=self.bitrate)
         self.data_dict = {}
 
     def send_command(self, can_id, data):
         message = can.Message(arbitration_id=can_id, data=data, is_extended_id=True)
-        self.bus.send(message)
+        self.can0.send(message)
 
     def read_message(self):
-        message = self.bus.recv()
+        message = self.can0.recv()
         if message:
             self.process_message(message)
 
@@ -28,7 +28,7 @@ class CyphalCAN2:
         return self.data_dict
 
     def close(self):
-        self.bus.shutdown()
+        self.can0.shutdown()
 
     def start_communication(self, duration=10):
         start_time = time.time()
@@ -92,19 +92,19 @@ if __name__ == "__main__":
     esc = CyphalCAN2(channel='can0')
     try:
         # Example: set throttle
-        esc.set_throttle(node_id=0x10, throttle_values=[0x123, 0x234, 0x345, 0x456])
+        #esc.set_throttle(node_id=0x10, throttle_values=[0x123, 0x234, 0x345, 0x456])
 
         # Example: set node ID
-        esc.set_node_id(old_node_id=0x10, new_node_id=0x11)
+        #esc.set_node_id(old_node_id=0x10, new_node_id=0x11)
 
         # Example: read register
-        esc.read_register(node_id=0x10, register_index=0x04)
+        #esc.read_register(node_id=0x10, register_index=0x04)
 
         # Example: write register
-        esc.write_register(node_id=0x10, register_index=0x04, value=0x05)
+        #esc.write_register(node_id=0x10, register_index=0x04, value=0x05)
 
         # Example: execute command
-        esc.execute_command(node_id=0x10, command=65535)  # Restart command
+        #esc.execute_command(node_id=0x10, command=65535)  # Restart command
 
         # Start communication for 10 seconds
         data = esc.start_communication(duration=10)

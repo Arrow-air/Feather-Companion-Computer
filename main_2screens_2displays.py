@@ -373,23 +373,6 @@ class D1:
                     self.parameters = self.dicy
                     self.new_msg = True
                     self.full_msg = ''
-                    
-            self.draw()
-
-            i += 1
-
-            # Update the display
-            pygame.display.update()
-
-            # intialise pygame refresh rate and call it clock
-            clock = pygame.time.Clock()
-            clock.tick(100)
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    
-            #time.sleep(0.01)
             
                     #print(self.parameters)
                     #return self.parameters
@@ -402,30 +385,43 @@ def D1_func(gound_or_flight,parameters_dict, display_num):
     # update the class parameters
     D1_ui.parameters = parameters_dict
     
-    D1_ui.Fileclient(D1_ui.parameters)
+    #D1_ui.Fileclient(D1_ui.parameters)
     
-    #running = True
-
+    running = True
+    i = 0
+    _stop_event = threading.Event()
+    
     #with ThreadPoolExecutor(max_workers=100) as executor:  # Adjust max_workers as needed
-    #while running:
+    while running:
         
-    '''
-    #future = executor.submit(D1_ui.Fileclient, parameters)
-    max_threads = 1000
-    threads = []
-
-    for _ in range(1000):
-        while threading.active_count() >= max_threads:
-            time.sleep(1)
-        dataThread = threading.Thread(target=D1_ui.Fileclient,args=(D1_ui.parameters,),daemon=False)
-        threads.append(dataThread)
-        dataThread.start()
-        
-    for thread in threads:
-        thread.join()
+        #future = executor.submit(D1_ui.Fileclient, parameters)
+        #max_threads = 1000
+        #threads = []
+        _stop_event.clear()
+        while not _stop_event.is_set():
+            dataThread = threading.Thread(target=D1_ui.Fileclient,args=(D1_ui.parameters,),daemon=True)
+            dataThread.start()
             
-        print(threading.active_count())#dataThread._stop.set()
-    '''
+            
+            D1_ui.draw()
+
+            i += 1
+
+            # Update the display
+            pygame.display.update()
+
+            # intialise pygame refresh rate and call it clock
+            clock = pygame.time.Clock()
+            clock.tick(6)
+                    
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                            
+            time.sleep(0.1)
+            print(threading.active_count())
+            _stop_event.set()
+        
 
     # Quit Pygame
     pygame.quit()
