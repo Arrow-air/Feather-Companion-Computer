@@ -7,8 +7,8 @@
 // Define dummy data for different commands
 unsigned long txId;
 unsigned char len = 8;
-constexpr unsigned long commands[8] = {0x2B1A, 0x260A, 0x271A, 0x280A, 0x291A, 0x2A7A, 0x2D1A, 0x2C1A};
-//constexpr unsigned long commands[8] = {11034, 9738, 10010, 10250, 10522, 10874, 11546, 11290};
+//constexpr unsigned long commands[8] = {0x2B1A, 0x260A, 0x271A, 0x280A, 0x291A, 0x2A7A, 0x2D1A, 0x2C1A};
+constexpr unsigned long commands[8] = {11018, 9738, 9994, 10250, 10506, 10762, 11530, 11274};
 
 // Instantiate the CAN object
 MCP_CAN CAN0(CAN0_CS);
@@ -26,7 +26,7 @@ void setup()
   }
 
   // Initialize CAN bus at 500 kbps
-  if (CAN0.begin(MCP_STDEXT, CAN_500KBPS, MCP_8MHZ) == CAN_OK) 
+  if (CAN0.begin(CAN_500KBPS) == CAN_OK) 
   {
     Serial.println("CAN BUS Shield initialized successfully!");
   } 
@@ -45,9 +45,6 @@ void setup()
   CAN0.init_Filt(3, 0, 0x00000000);  // Initialize filter 3
   CAN0.init_Filt(4, 0, 0x00000000);  // Initialize filter 4
   CAN0.init_Filt(5, 0, 0x00000000);  // Initialize filter 5
-
-  // Set operation mode to normal mode
-  CAN0.setMode(MCP_NORMAL);
 }
 
 void loop() 
@@ -58,12 +55,12 @@ void loop()
   
   if (now - lastSent >= 1000) 
   { // Send data every second
-    for (unsigned char unit_id = 10; unit_id < 16; ++unit_id) 
+    for (unsigned char unit_id = 0; unit_id < 6; ++unit_id) 
     {  // Loop through each unit
-      for (unsigned char i = 0; i < sizeof(commands); ++i) 
+      for (unsigned char i = 0; i < 8; ++i) 
       {
         setCommandData(commands[i], unit_id);
-        delay(1000); // Small delay between commands
+        delay(1); // Small delay between commands
       }
     }
     lastSent = now;
@@ -122,90 +119,101 @@ void setCommandData(unsigned long command, unsigned char unit_id)
   //Serial.print(command);
 
   unsigned char data[8];
-
-  switch (command) 
+  if (command == commands[0]) // CAN_PACKET_BMS_TEMPS
   {
-    case commands[0]: // CAN_PACKET_BMS_TEMPS
-      Serial.print("CMD:0 ");
-      len = 8;
-      data[0] = 0; data[1] = 24;  // NoOfCells
-      data[2] = 0x12; data[3] = 0x34;  // auxVoltagesIndividual1
-      data[4] = 0x56; data[5] = 0x78;  // auxVoltagesIndividual2
-      data[6] = 0x9A; data[7] = 0xBC;  // auxVoltagesIndividual3
-      break;
+    Serial.print("CMD:0 ");
+    len = 8;
+    data[0] = 0; data[1] = 24;  // NoOfCells
+    data[2] = 0x12; data[3] = 0x34;  // auxVoltagesIndividual1
+    data[4] = 0x56; data[5] = 0x78;  // auxVoltagesIndividual2
+    data[6] = 0x9A; data[7] = 0xBC;  // auxVoltagesIndividual3
+  }
+  else if (command == commands[1]) // CAN_PACKET_BMS_V_TOT
+  {
+    Serial.print("CMD:1 ");
+    len = 8;
+    int32_t packVoltage = 42000;  // 42.0V
+    int32_t chargerVoltage = 50000;  // 50.0V
+    memcpy(data, &packVoltage, 4);
+    memcpy(data + 4, &chargerVoltage, 4);
+  }
+  else if (command == commands[2]) // CAN_PACKET_BMS_I
+  {
+    Serial.print("CMD:2 ");
+    len = 8;
+    int32_t packCurrent1 = 1000;  // 10.0A
+    int32_t packCurrent2 = 2000;  // 20.0A
+    memcpy(data, &packCurrent1, 4);
+    memcpy(data + 4, &packCurrent2, 4);
+  }
+  else if (command == commands[3]) // CAN_PACKET_BMS_AH_WH
+  {
+    Serial.print("CMD:3 ");
+    len = 8;
+    int32_t Ah_Counter = 500;  // 0.5 Ah
+    int32_t Wh_Counter = 1000;  // 1.0 Wh
+    memcpy(data, &Ah_Counter, 4);
+    memcpy(data + 4, &Wh_Counter, 4);
+  }
+  else if (command == commands[4]) // CAN_PACKET_BMS_V_CELL
+  {
+    Serial.print("CMD:4 ");
+    len = 8;
+    data[0] = 24;  // cellPoint
+    data[1] = 24;  // NoOfCells
+    data[2] = 0x12; data[3] = 0x34;  // cellVoltage10
+    data[4] = 0x56; data[5] = 0x78;  // cellVoltage11
+    data[6] = 0x9A; data[7] = 0xBC;  // cellVoltage12
+  }
+  else if (command == commands[5]) // CAN_PACKET_BMS_BAL
+  {
+    Serial.print("CMD:5 ");
+    len = 8;
+    data[0] = NULL;  // NoOfCells
+    // Value between 0 and 100
+    uint8_t value = 42;
 
-    case commands[1]: // CAN_PACKET_BMS_V_TOT
-      Serial.print("CMD:1 ");
-      len = 8;
-      int32_t packVoltage = 42000;  // 42.0V
-      int32_t chargerVoltage = 50000;  // 50.0V
-      memcpy(data, &packVoltage, 4);
-      memcpy(data + 4, &chargerVoltage, 4);
-      break;
+    // Map the value to a 56-bit number
+    uint64_t bal_state = mapTo56Bit(value);
 
-    case commands[2]: // CAN_PACKET_BMS_I
-      Serial.print("CMD:2 ");
-      len = 8;
-      int32_t packCurrent1 = 1000;  // 10.0A
-      int32_t packCurrent2 = 2000;  // 20.0A
-      memcpy(data, &packCurrent1, 4);
-      memcpy(data + 4, &packCurrent2, 4);
-      break;
-
-    case commands[3]: // CAN_PACKET_BMS_AH_WH
-      Serial.print("CMD:3 ");
-      len = 8;
-      int32_t Ah_Counter = 500;  // 0.5 Ah
-      int32_t Wh_Counter = 1000;  // 1.0 Wh
-      memcpy(data, &Ah_Counter, 4);
-      memcpy(data + 4, &Wh_Counter, 4);
-      break;
-
-    case commands[4]: // CAN_PACKET_BMS_V_CELL
-      Serial.print("CMD:4 ");
-      len = 8;
-      data[0] = 24;  // cellPoint
-      data[1] = 24;  // NoOfCells
-      data[2] = 0x12; data[3] = 0x34;  // cellVoltage10
-      data[4] = 0x56; data[5] = 0x78;  // cellVoltage11
-      data[6] = 0x9A; data[7] = 0xBC;  // cellVoltage12
-      break;
-
-    case commands[5]: // CAN_PACKET_BMS_BAL
-      Serial.print("CMD:5 ");
-      len = 8;
-      data[0] = NULL;  // NoOfCells
-      uint64_t bal_state = 0x123456789ABCDEF0;
-      memcpy(data + 1, &bal_state, 7);
-      break;
-
-    case commands[6]: // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
-      Serial.print("CMD:6 ");
-      len = 8;
-      int16_t cellVoltageLow = 3000;  // 3.0V
-      int16_t cellVoltageHigh = 4200;  // 4.2V
-      data[0] = (cellVoltageLow >> 8) & 0xFF; data[1] = cellVoltageLow & 0xFF;
-      data[2] = (cellVoltageHigh >> 8) & 0xFF; data[3] = cellVoltageHigh & 0xFF;
-      data[4] = 80;  // SOC 80%
-      data[5] = 90;  // SOH 90%
-      data[6] = 30;  // tBattHi 30°C
-      data[7] = 0;  // BitF
-      break;
-
-    case commands[7]: // CAN_PACKET_BMS_HUM
-      Serial.print("CMD:7 ");
-      len = 6;
-      int16_t CAN_PACKET_BMS_TEMP0 = 2500;  // 25.0°C
-      int16_t CAN_PACKET_BMS_HUM_HUM = 5000;  // 50.0%
-      int16_t CAN_PACKET_BMS_HUM_TEMP1 = 2600;  // 26.0°C
-      memcpy(data, &CAN_PACKET_BMS_TEMP0, 2);
-      memcpy(data + 2, &CAN_PACKET_BMS_HUM_HUM, 2);
-      memcpy(data + 4, &CAN_PACKET_BMS_HUM_TEMP1, 2);
-      break;
-
-    default:
-      Serial.println("Unknown Command");
-      return;
+    // Split the number into 7 slots
+    for (int i = 1; i < 8; ++i) 
+    {
+        data[i] = (bal_state >> (8 * i)) & 0xFF;
+    }
+    //memcpy(data + 1, &bal_state, 7);
+  }
+  else if (command == commands[6]) // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
+  {
+    Serial.print("CMD:6 ");
+    len = 8;
+    int16_t cellVoltageLow = 3000;  // 3.0V
+    int16_t cellVoltageHigh = 4200;  // 4.2V
+    data[0] = (cellVoltageLow >> 8) & 0xFF; data[1] = cellVoltageLow & 0xFF;
+    data[2] = (cellVoltageHigh >> 8) & 0xFF; data[3] = cellVoltageHigh & 0xFF;
+    data[4] = 80 / 0.392156862745098;  // SOC 80%
+    data[5] = 90 / 0.3922;  // SOH 90%
+    data[6] = 30;  // tBattHi 30°C
+    data[7] = 0;  // BitF
+  }
+  else if (command == commands[7]) // CAN_PACKET_BMS_HUM
+  {
+    Serial.print("CMD:7 ");
+    len = 6;
+    int16_t CAN_PACKET_BMS_TEMP0 = 2500;  // 25.0°C
+    int16_t CAN_PACKET_BMS_HUM_HUM = 5000;  // 50.0%
+    int16_t CAN_PACKET_BMS_HUM_TEMP1 = 2600;  // 26.0°C
+    memcpy(data, &CAN_PACKET_BMS_TEMP0, 2);
+    memcpy(data + 2, &CAN_PACKET_BMS_HUM_HUM, 2);
+    memcpy(data + 4, &CAN_PACKET_BMS_HUM_TEMP1, 2);
   }
   sendDummyData(txId, len, data);
+}
+
+uint64_t mapTo56Bit(uint8_t value) 
+{
+    // Scale the value to fit in the range of a 56-bit number
+    // Maximum value for 56-bit number: 2^56 - 1
+    uint64_t max_56_bit = (1ULL << 56) - 1;
+    return (value * max_56_bit) / 100;
 }

@@ -36,21 +36,21 @@ void loop()
   tid++;
   delay(10);
 
-  //sendThrottleData(Tailbyte);
-  //tid++;
-  //delay(10);
+  sendThrottleData(Tailbyte);
+  tid++;
+  delay(10);
 
-  //sendInfoUpload6160(Tailbyte);
-  //tid++;
-  //delay(10);
+  sendInfoUpload6160(Tailbyte);
+  tid++;
+  delay(10);
 
-  //sendInfoUpload6161(Tailbyte);
-  //tid++;
-  //delay(10);
+  sendInfoUpload6161(Tailbyte);
+  tid++;
+  delay(10);
 
-  //sendHeartbeat(Tailbyte);
-  //tid++;
-  //delay(10);
+  sendHeartbeat(Tailbyte);
+  tid++;
+  delay(160);
 
   if(tid > 31)
   {
