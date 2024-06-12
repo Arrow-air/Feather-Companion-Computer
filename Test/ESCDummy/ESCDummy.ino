@@ -20,6 +20,8 @@ void setup()
 }
 
 uint8_t tid = 0;
+uint8_t nodeID = 0x10;
+uint8_t idinc = 0;
 
 void loop() 
 {
@@ -32,59 +34,67 @@ void loop()
   //tid++;
   //delay(10);
 
-  setDeviceID(Tailbyte);
+  //setDeviceID(Tailbyte);
+  //tid++;
+  //delay(1);
+
+  sendThrottleData(Tailbyte,nodeID + idinc);
   tid++;
   delay(1);
 
-  sendThrottleData(Tailbyte);
+  sendInfoUpload6160(Tailbyte,nodeID + idinc);
   tid++;
   delay(1);
 
-  sendInfoUpload6160(Tailbyte);
+  sendInfoUpload6161(Tailbyte,nodeID + idinc);
   tid++;
   delay(1);
 
-  sendInfoUpload6161(Tailbyte);
+  sendHeartbeat(Tailbyte,nodeID + idinc);
   tid++;
   delay(1);
 
-  sendHeartbeat(Tailbyte);
-  tid++;
-  delay(1);
+  idinc++;
 
   if(tid > 31)
   {
     tid = 0;
   }
+  if(idinc > 5)
+  {
+    idinc = 0;
+  }
+
 }
 
 unsigned long calculateCanId(uint8_t priority, uint16_t subjectID, uint8_t sourceNodeID) 
 {
-  unsigned long canID = 0;
+    unsigned long canID = 0;
 
-  // Priority (3-bits)
-  canID |= ((priority & 0x07) << 26);
+    // Priority (3 bits, bits 26-28)
+    canID |= ((priority & 0x07) << 26);
 
-  // Non-service message (0) 1-bit
-  canID |= (0b0 << 25);
+    // Service, not message (1 bit, bit 25)
+    canID |= (0b0 << 25);
 
-  // Broadcast frame (0) 1-bit
-  canID |= (0b0 << 24);
+    // Anonymous (1 bit, bit 24)
+    canID |= (0b0 << 24);
 
-  // Reserved bits (3-bits)
-  canID |= (0b000 << 21);
+    // Reserved bits (3 bits, bits 21-23)
+    canID |= (0b000 << 21);
 
-  // Subject ID (13-bits)
-  canID |= ((unsigned long)(subjectID & 0x1FFF) << 8);
+    // Subject ID (13 bits, bits 8-20)
+    canID |= ((unsigned long)(subjectID & 0x1FFF) << 8);
 
-  // Reserved bit (1-bit)
-  canID |= (0b0 << 7);
+    // Reserved bit (1 bit, bit 7)
+    canID |= (0b0 << 7);
 
-  // Source Node ID (6-bits)
-  canID |= (sourceNodeID & 0x3F);
+    // Source Node ID (7 bits, bits 0-6)
+    canID |= (sourceNodeID & 0x7F);
 
-  return canID;// | 0x80000000;
+    return canID;  // CAN ID fully constructed
 }
+
 
 void x_MakeThrot(uint16_t *throt, uint8_t *throtOut)
 {
@@ -111,7 +121,7 @@ void x_MakeThrot(uint16_t *throt, uint8_t *throtOut)
   *(uint16_t *)(&throtOut[6]) = throt[3];
 }
 
-void sendCommandControl(uint8_t Tail) 
+void sendCommandControl(uint8_t Tail ,uint8_t sourceNodeID) 
 {
   byte data[4];
 
@@ -120,7 +130,7 @@ void sendCommandControl(uint8_t Tail)
   data[2] = 0x00; // Reserved
   data[3] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(2,6144,1);
+  unsigned long id = calculateCanId(2,6144,sourceNodeID);
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -136,7 +146,7 @@ void sendCommandControl(uint8_t Tail)
   }
 }
 
-void setDeviceID(uint8_t Tail) 
+void setDeviceID(uint8_t Tail,uint8_t sourceNodeID) 
 {
   byte data[3];
 
@@ -144,7 +154,7 @@ void setDeviceID(uint8_t Tail)
   data[1] = 0x10; // Node ID
   data[2] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(4,6145,0x10);
+  unsigned long id = calculateCanId(4,6145,sourceNodeID);
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -160,7 +170,7 @@ void setDeviceID(uint8_t Tail)
   }
 }
 
-void sendThrottleData(uint8_t Tail) 
+void sendThrottleData(uint8_t Tail,uint8_t sourceNodeID) 
 { 
   // 0 - 2048
   uint16_t throt[4] = {100,200,300,0};
@@ -182,7 +192,7 @@ void sendThrottleData(uint8_t Tail)
     Serial.println(data2[x],HEX);
   }
 
-  unsigned long id = calculateCanId(3,6152,1);
+  unsigned long id = calculateCanId(3,6152,sourceNodeID);
   data[7] = Tail; // Tail Byte
   data2[7] = Tail; // Tail Byte
 
@@ -201,7 +211,7 @@ void sendThrottleData(uint8_t Tail)
   tid++;
   delay(10);
 
-  id = calculateCanId(3,6153,1);
+  id = calculateCanId(3,6153,sourceNodeID);
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -217,23 +227,23 @@ void sendThrottleData(uint8_t Tail)
   }
 }
 
-void sendInfoUpload6160(uint8_t Tail) 
+void sendInfoUpload6160(uint8_t Tail,uint8_t sourceNodeID) 
 {
-  byte data[8];
+  byte data[7];
 
   data[0] = random(0, 256); // Electrical speed (low byte)
   data[1] = random(0, 256); // Electrical speed (high byte)
   data[2] = random(0, 256); // Bus current (low byte)
   data[3] = random(0, 256); // Bus current (high byte)
-  data[4] = random(0, 256); // Running status (low byte)
-  data[5] = random(0, 256); // Running status (high byte)
-  data[7] = Tail; // Tail Byte 
+  data[4] = 0b00010100; // Running status (low byte)
+  data[5] = 0b00000001; // Running status (high byte)
+  data[6] = Tail; // Tail Byte 
 
-  unsigned long id = calculateCanId(5,6160,1);
+  unsigned long id = calculateCanId(5,6160,sourceNodeID);
 
   Serial.print("0x");
   Serial.print(id,HEX);
-  if (CAN0.sendMsgBuf(id, 1, 8, data) == CAN_OK)
+  if (CAN0.sendMsgBuf(id, 1, 7, data) == CAN_OK)
   {
     Serial.print("\t");
     Serial.println("Info Upload 6160 sent");
@@ -246,7 +256,7 @@ void sendInfoUpload6160(uint8_t Tail)
   
 }
 
-void sendInfoUpload6161(uint8_t Tail) 
+void sendInfoUpload6161(uint8_t Tail,uint8_t sourceNodeID) 
 {
   byte data[8];
 
@@ -259,7 +269,7 @@ void sendInfoUpload6161(uint8_t Tail)
   data[6] = random(0, 256); // Motor temperature
   data[7] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(5,6161,1);
+  unsigned long id = calculateCanId(5,6161,sourceNodeID);
 
   Serial.print("0x");
   Serial.print(id,HEX);
@@ -275,9 +285,9 @@ void sendInfoUpload6161(uint8_t Tail)
   }
 }
 
-void sendHeartbeat(uint8_t Tail) 
+void sendHeartbeat(uint8_t Tail,uint8_t sourceNodeID) 
 {
-  byte data[8];
+  byte data[7];
 
   unsigned long powerOnTime = millis() / 1000;
 
@@ -287,9 +297,9 @@ void sendHeartbeat(uint8_t Tail)
   data[3] = (powerOnTime >> 24) & 0xFF;
   data[4] = random(0, 4); // Node health status
   data[5] = random(0, 4); // Node current mode
-  data[7] = Tail; // Tail Byte
+  data[6] = Tail; // Tail Byte
 
-  unsigned long id = calculateCanId(4,7509,1);
+  unsigned long id = calculateCanId(4,7509,sourceNodeID);
 
   Serial.print("0x");
   Serial.print(id,HEX);
