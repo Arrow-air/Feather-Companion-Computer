@@ -1,10 +1,13 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial SerialSF(9, 10); // RX, TX
 
 void setup() 
 {
   Serial.begin(115200);
-  Serial1.begin(115200);
+  SerialSF.begin(115200);
 }
 
 void loop() 
@@ -33,7 +36,7 @@ void loop()
 
   // Send the string over UART
   Serial.println(output);
-  Serial1.println(output);
+  SerialSF.println(output);
   // Wait for a second before sending the next packet
   delay(10);
 }

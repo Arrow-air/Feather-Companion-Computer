@@ -53,7 +53,7 @@ void loop()
 
   unsigned long now = millis();
   
-  if (now - lastSent >= 1000) 
+  if (now - lastSent >= 10)
   { // Send data every second
     for (unsigned char unit_id = 0; unit_id < 6; ++unit_id) 
     {  // Loop through each unit
