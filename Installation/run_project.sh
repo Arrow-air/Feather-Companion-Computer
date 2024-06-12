@@ -7,7 +7,7 @@ cd //home/alexdada/Feather-Companion-Computer/
 sudo python3 FCPC.py
 
 # Run System State Window Frontend
-sudo python3 main_2screens_2displays.py &
+sudo python3 display1.py &
 
 # Run System Information Window Frontend
-sudo python3 main_2screens_2displays2.py &
+sudo python3 display2.py &

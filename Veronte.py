@@ -19,7 +19,7 @@ class Veronte:
         self.packet = {}
         self.dataDictionary = {'altitude_AGL':0,'altitude_AGL_set':0,'altitude_ABS':0,'altitude_AGL':0,'heading':0,'compass':0,'attitude_pitch':0,'attitude_roll':0,'vertical_speed_KTS':0,
                                'airspeed_KTS':0,'OAT':0,'altitude_ABS':0}
-
+        
         print("Veronte Init")
         
     def packetStruct(self):
@@ -34,7 +34,7 @@ class Veronte:
         
         #print(self.packet)
         return self.packet
-
+        
     def readData(self):
             
         data = self.VeronteSerial.readline()

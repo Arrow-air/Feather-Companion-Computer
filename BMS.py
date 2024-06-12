@@ -65,18 +65,19 @@ class BMS:
                self.dataDictionary[f'BAT{y}_soc_PCT'] = self.packet[f'{x}']['SOC']
                self.dataDictionary[f'ESC{y}_V'] = self.packet[f'{x}']['packVoltage']
                self.dataDictionary[f'ESC{y}_CUR_AMP'] = self.packet[f'{x}']['packCurrent1']
-
-        self.packet = self.dataDictionary
+        
+        try:
+               self.packet = self.dataDictionary
+        except:
     
-        '''
-        self.packet = {'BAT1_temp_C':random.randint(0,100),'BAT2_temp_C':random.randint(0,100),'BAT3_temp_C':random.randint(0,100),'BAT4_temp_C':random.randint(0,100),'BAT5_temp_C':random.randint(0,100),'BAT6_temp_C':random.randint(0,100),'ESC1_temp_C':random.randint(0,100),
+               self.packet = {'BAT1_temp_C':random.randint(0,100),'BAT2_temp_C':random.randint(0,100),'BAT3_temp_C':random.randint(0,100),'BAT4_temp_C':random.randint(0,100),'BAT5_temp_C':random.randint(0,100),'BAT6_temp_C':random.randint(0,100),'ESC1_temp_C':random.randint(0,100),
                                'ESC2_temp_C':0,'ESC3_temp_C':random.randint(0,100),'ESC4_temp_C':0,'ESC5_temp_C':0,'ESC6_temp_C':0,'MOT1_temp_C':0,'MOT2_temp_C':0,
                                'MOT3_temp_C':random.randint(0,100),'MOT4_temp_C':0,'MOT5_temp_C':0,'MOT6_temp_C':random.randint(0,100),'BAT1_soc_PCT':random.randint(0,100),'BAT2_soc_PCT':random.randint(0,100),'BAT3_soc_PCT':random.randint(0,100),
                                'BAT4_soc_PCT':random.randint(0,100),'BAT5_soc_PCT':0,'BAT6_soc_PCT':random.randint(0,100),'MOT1_rpm_PCT':0,'MOT2_rpm_PCT':0,'MOT3_rpm_PCT':0,'MOT4_rpm_PCT':0,
                                'MOT5_rpm_PCT':0,'MOT6_rpm_PCT':random.randint(0,100),'ESC1_V':0,'ESC2_V':0,'ESC3_V':0,'ESC4_V':0,'ESC5_V':0,'ESC6_V':random.randint(0,100),'ESC1_CUR_AMP':0,
                                'ESC2_CUR_AMP':0,'ESC3_CUR_AMP':0,'ESC4_CUR_AMP':0,'ESC5_CUR_AMP':random.randint(0,100),'ESC6_CUR_AMP':0}
-        '''        
-        print(self.packet) 
+
+        #print(self.packet) 
         return self.packet
     
     def bmsRead(self):

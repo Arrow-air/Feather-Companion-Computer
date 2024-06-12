@@ -13,7 +13,6 @@ pygame.init()
 window_width = 500
 window_height = 500
 
-
 class D1:
     def __init__(self,modeselect:str, display_num):
         #self.display = display

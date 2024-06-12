@@ -126,7 +126,7 @@ class VESCCAN:
             self.msgData['CAN_PACKET_BMS_HUM_TEMP1'] = struct.unpack('>H', data[4:6])[0] * 0.01
 
         else:
-            print(command)
+            #print(command)
             self.msgData['raw_data'] = data
 
         return self.msgData
