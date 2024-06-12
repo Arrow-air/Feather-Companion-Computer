@@ -36,9 +36,9 @@ class CyphalCAN2:
             self.read_message()
         return self.get_data()
 
-    # Example functions for ESC commands
+    # functions for ESC commands
     def set_throttle(self, node_id, throttle_values):
-        can_id = 0x18000000 | (node_id << 8) | 0x152  # Example CAN ID based on PDF protocol
+        can_id = 0x18000000 | (node_id << 8) | 0x152  # CAN ID based on PDF protocol
         data = self.pack_throttle_data(throttle_values)
         self.send_command(can_id, data)
 
@@ -62,7 +62,7 @@ class CyphalCAN2:
 
     # New method to set node ID
     def set_node_id(self, old_node_id, new_node_id):
-        can_id = 0x18000000 | (old_node_id << 8) | 0x145  # Example CAN ID for setting node ID
+        can_id = 0x18000000 | (old_node_id << 8) | 0x145  # CAN ID for setting node ID
         data = struct.pack('<BB', 0, new_node_id)
         self.send_command(can_id, data)
 
@@ -87,7 +87,6 @@ class CyphalCAN2:
             data = struct.pack('<HH', command, parameter)
         self.send_command(can_id, data)
 
-# Usage example
 if __name__ == "__main__":
     esc = CyphalCAN2(channel='can0')
     try:
