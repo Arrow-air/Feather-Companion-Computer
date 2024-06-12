@@ -126,29 +126,11 @@ class Data:
             pass
 
         self.Starttimestamp = str(datetime.now().year)+ '_' + str(datetime.now().month)+ '_' + str(datetime.now().day) + '-' + str(datetime.now().hour) + '_' + str(datetime.now().minute)
-        self.Starthr = datetime.now().hour 
-        self.Startmin = datetime.now().minute
-        self.Startsec = datetime.now().Second
-        self.hr = 0
-        self.min = 0
-        self.sec = 0
+
         self.logFile = open('./Logs/FeatherFlightLog-'+self.Starttimestamp+'.csv','w',encoding='utf-8')
         
         print("Data Init")
     
-    def flightTime(self):
-        
-        nowsec = datetime.now().Second
-        
-        self.sec = nowsec - self.Startsec
-        
-        if flightsec >= 59:
-            self.min = self.min + 1
-        
-        if self.min  >= 59:
-            self.hr = self.hr +1
-            
-        return (str(self.hr)+':':str(self.min)+':'+str(self.sec))
         
     def packetStruct(self):
         
@@ -166,7 +148,6 @@ class Data:
         
         self.ParachutePacket['parachute_state'] = 0
         self.parameters['TimeStamp'] = self.now['TimeStamp']
-        self.parameters['flight_time'] = self.flightTime()
         
         self.packet = str(self.parameters)
 

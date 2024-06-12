@@ -40,23 +40,27 @@ class ESC:
         print("ESC Init")
 
     def packetStruct(self):
-
-        self.superDictionary = self.escRead()
-        data = self.superDictionary
-
-        for i in range(0,5):
-
-
-            x = i + 1
-            
-            self.dataDictionary[f'MOT{x}_rpm_PCTe'] = data[f'{i}']['info_upload_6160']['electrical_speed']
-            self.dataDictionary[f'ESC{x}_CUR_AMPe'] = data[f'{i}']['info_upload_6160']['bus_current']
-            self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
-            self.dataDictionary[f'ESC{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['MOS']
-
-        self.packet = self.dataDictionary
         
-        #print(self.packet)
+        try:
+            self.superDictionary = self.escRead()
+            data = self.superDictionary
+
+            for i in range(0,5):
+
+                x = i + 1
+                
+                self.dataDictionary[f'MOT{x}_rpm_PCTe'] = data[f'{i}']['info_upload_6160']['electrical_speed']
+                self.dataDictionary[f'ESC{x}_CUR_AMPe'] = data[f'{i}']['info_upload_6160']['bus_current']
+                self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
+                self.dataDictionary[f'ESC{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['MOS']
+
+            self.packet = self.dataDictionary
+            
+            #print(self.packet)
+            
+        except:
+            
+            self.packet = self.dataDictionary
         
         return self.packet
 

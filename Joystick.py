@@ -20,9 +20,9 @@ class Joystick:
         
         self.USBJoystick = self.joystick.get_init()
         
-        joystckcan = JoystickCAN(self)
+        #joystckcan = JoystickCAN(self)
         
-        self.CANJoystick = joystckcan.isPresent()
+        self.CANJoystick = False #joystckcan.isPresent()
 
         self.packet = {}
 
