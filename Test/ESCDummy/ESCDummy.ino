@@ -34,23 +34,23 @@ void loop()
 
   setDeviceID(Tailbyte);
   tid++;
-  delay(10);
+  delay(1);
 
   sendThrottleData(Tailbyte);
   tid++;
-  delay(10);
+  delay(1);
 
   sendInfoUpload6160(Tailbyte);
   tid++;
-  delay(10);
+  delay(1);
 
   sendInfoUpload6161(Tailbyte);
   tid++;
-  delay(10);
+  delay(1);
 
   sendHeartbeat(Tailbyte);
   tid++;
-  delay(160);
+  delay(1);
 
   if(tid > 31)
   {
