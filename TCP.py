@@ -1,6 +1,7 @@
 import socket
 import os
 import time
+import server
 
 class TCP:
 
@@ -24,6 +25,7 @@ class TCP:
                                 socket.SOCK_STREAM) # TCP
         
         if self.modeselect == self.mode.get(1):
+            '''
             self.filesocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             try:
                 os.remove("/tmp/socketname")
@@ -43,7 +45,7 @@ class TCP:
             self.filesocket1.bind("/tmp/socketname1")
             self.filesocket1.listen(1)
             self.fileclientsocket1, self.fileaddr1 = self.filesocket1.accept()     # Establish connection with client.
-
+            '''
             self.socket.bind((self.TCP_IP, self.TCP_PORT))        # Bind to the port
             self.socket.listen(5)                 # Now wait for client connection.
             self.clientsocket, self.addr = self.socket.accept()     # Establish connection with client.
@@ -56,11 +58,14 @@ class TCP:
     
     def TCPServer(self):
         self.msg  = f'{len(self.packet):<{self.headersize}}' + self.packet 
+
         self.clientsocket.send(self.msg.encode("utf-8"))
-        self.fileclientsocket.send(self.msg.encode("utf-8"))
-        self.fileclientsocket1.send(self.msg.encode("utf-8"))
-        time.sleep(0.05)
-            
+        server.server_loop_iteration(self.packet)
+
+        #self.fileclientsocket.send(self.msg.encode("utf-8"))
+        #self.fileclientsocket1.send(self.msg.encode("utf-8"))
+        time.sleep(0.01)
+        
     def TCPClient(self):
 
         self.full_msg = ''

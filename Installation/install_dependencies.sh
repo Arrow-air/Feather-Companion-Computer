@@ -64,3 +64,6 @@ pip install 'pycyphal[transport-can-pythoncan,transport-serial,transport-udp]' -
 
 # Install Library for analysis of DBC files
 pip install cantools --break-system-packages
+
+# Install Arduino
+sudo apt-get install arduino
