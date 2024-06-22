@@ -144,7 +144,8 @@ this function serves as 1 iteration of the while loop and now we have the option
 def server_loop_iteration(parameters_updated):
     global parameters, messages_to_send, i
     parameters = parameters_updated
-
+    
+    '''
     i += 1
     if i % 5 == 0:
         parameters["BAT1_temp_C"] += 1
@@ -155,6 +156,7 @@ def server_loop_iteration(parameters_updated):
             parameters["compass"] = 1
         i = 0
     i += 1
+    '''
 
     ready_to_read, ready_to_write, in_error = select.select([server_socket] + client_sockets, [],[])
     for current_socket in ready_to_read: # a loop that go over all of the sockets you can read from

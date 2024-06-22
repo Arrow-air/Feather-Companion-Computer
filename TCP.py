@@ -110,7 +110,8 @@ class TCP:
     def TCPTerminate(self):
         
         self.socket.close()
-        
+        '''
         if self.modeselect == self.mode.get(1):
             self.filesocket.close()
             self.filesocket1.close()
+        '''
