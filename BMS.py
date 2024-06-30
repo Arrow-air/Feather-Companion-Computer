@@ -1,4 +1,5 @@
 import VESCCAN
+import random
 
 class BMS:
 
@@ -56,18 +57,21 @@ class BMS:
 
         self.packet = self.bmsRead()
         
-        for x in range(0,6):
-           
-           if self.packet[f'{x}']['unit_id'] == x:
-               
-               y = x + 1
-               self.dataDictionary[f'BAT{y}_temp_C'] = self.packet[f'{x}']['CAN_PACKET_BMS_TEMP0']
-               self.dataDictionary[f'BAT{y}_soc_PCT'] = self.packet[f'{x}']['SOC']
-               self.dataDictionary[f'ESC{y}_V'] = self.packet[f'{x}']['packVoltage']
-               self.dataDictionary[f'ESC{y}_CUR_AMP'] = self.packet[f'{x}']['packCurrent1']
-        
         try:
-               self.packet = self.dataDictionary
+                for x in range(0,6):
+                   
+                   if self.packet[f'{x}']['unit_id'] == x:
+                       
+                       y = x + 1
+                       self.dataDictionary[f'BAT{y}_temp_C'] = self.packet[f'{x}']['CAN_PACKET_BMS_TEMP0']
+                       self.dataDictionary[f'BAT{y}_soc_PCT'] = self.packet[f'{x}']['SOC']
+                       self.dataDictionary[f'ESC{y}_V'] = self.packet[f'{x}']['packVoltage']
+                       self.dataDictionary[f'ESC{y}_CUR_AMP'] = self.packet[f'{x}']['packCurrent1']
+                
+                self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
+                
+                print(str(x) + str(self.packet))
+                       
         except:
     
                self.packet = {'BAT1_temp_C':random.randint(0,100),'BAT2_temp_C':random.randint(0,100),'BAT3_temp_C':random.randint(0,100),'BAT4_temp_C':random.randint(0,100),'BAT5_temp_C':random.randint(0,100),'BAT6_temp_C':random.randint(0,100),'ESC1_temp_C':random.randint(0,100),

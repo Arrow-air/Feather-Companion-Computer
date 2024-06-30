@@ -46,7 +46,7 @@ sudo apt install RPi.GPIO python-spidev python-can
 
 # Python 3
 sudo apt-get install -y python3-pip python3-pil python3-numpy
-sudo apt install RPi.GPIO python3-spidev python3-can
+sudo apt install python3-spidev python3-can
 
 # Install Pygame and PyQT
 sudo apt-get install -y python3-pygame python3-pyqt5

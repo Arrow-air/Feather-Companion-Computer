@@ -307,4 +307,4 @@ parameters = {
 }
 
 if __name__ == '__main__':
-    D2_func(parameters, 0)
+    D2_func(parameters, 1)

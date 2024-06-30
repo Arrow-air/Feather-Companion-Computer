@@ -54,14 +54,15 @@ class ESC:
                 self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
                 self.dataDictionary[f'ESC{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['MOS']
 
-            self.packet = self.dataDictionary
+            self.packet = {key : round(float(self.dataDictionary[key]),2) for key in self.dataDictionary}
             
-            #print(self.packet)
+            print(str(x) + str(self.packet))
             
         except:
             
             self.packet = self.dataDictionary
         
+        #print(self.packet) 
         return self.packet
 
     def escRead(self):

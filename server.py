@@ -144,28 +144,18 @@ this function serves as 1 iteration of the while loop and now we have the option
 def server_loop_iteration(parameters_updated):
     global parameters, messages_to_send, i
     parameters = parameters_updated
-    
-    '''
-    i += 1
-    if i % 5 == 0:
-        parameters["BAT1_temp_C"] += 1
-        if parameters["BAT1_temp_C"] >= 180:
-            parameters["BAT1_temp_C"] = 1
-        parameters["compass"] += 1
-        if parameters["compass"] >= 360:
-            parameters["compass"] = 1
-        i = 0
-    i += 1
-    '''
 
     ready_to_read, ready_to_write, in_error = select.select([server_socket] + client_sockets, [],[])
+    
     for current_socket in ready_to_read: # a loop that go over all of the sockets you can read from
         if current_socket is server_socket: # if the current socket is the server socket(if a new client arrived)
+            
             (client_socket, client_address) = current_socket.accept() # get the client socket and the client IP/create a conaction with the client
             print("New client joined!",client_address)
             client_sockets.append(client_socket) # append to the sockets list new client socket
             
         else: # if the server got new message
+            
             #print("New data from client")
             try:
                 cmd,data = recv_message_and_parse(current_socket) # gets the command+data
@@ -175,6 +165,7 @@ def server_loop_iteration(parameters_updated):
                     print(current_socket.getpeername(),"disconnect, socket closed")
                 handle_client_message(current_socket, cmd,data)
             except Exception as e: # if it got error (will be ConnectionResetError if the client closed the cmd window)
+               
                 #print("Error user closed cmd window\n",e)
                 try: # trying to logout
                     # doing it because if the client just close the window it wont do the logout

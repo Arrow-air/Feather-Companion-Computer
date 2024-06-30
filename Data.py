@@ -90,33 +90,33 @@ class Data:
             "MOT5_temp_C":0,
             "MOT6_temp_C":0,
 
-            "BAT1_soc_PCT":90, # the percentage of the battery left, warning range: 1-15
-            "BAT2_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-            "BAT3_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-            "BAT4_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-            "BAT5_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-            "BAT6_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
+            "BAT1_soc_PCT":10, # the percentage of the battery left, warning range: 1-15
+            "BAT2_soc_PCT":20, # the percentage of the battery left, warning range: 1-15
+            "BAT3_soc_PCT":30, # the percentage of the battery left, warning range: 1-15
+            "BAT4_soc_PCT":40, # the percentage of the battery left, warning range: 1-15
+            "BAT5_soc_PCT":50, # the percentage of the battery left, warning range: 1-15
+            "BAT6_soc_PCT":60, # the percentage of the battery left, warning range: 1-15
 
-            "MOT1_rpm_PCT":0, # warning range: 120-max=140
-            "MOT2_rpm_PCT":0, # warning range: 120-max=140
-            "MOT3_rpm_PCT":0, # warning range: 120-max=140
-            "MOT4_rpm_PCT":0, # warning range: 120-max=140
-            "MOT5_rpm_PCT":0, # warning range: 120-max=140
-            "MOT6_rpm_PCT":0, # warning range: 120-max=140
+            "MOT1_rpm_PCT":2000, # warning range: 120-max=140
+            "MOT2_rpm_PCT":3000, # warning range: 120-max=140
+            "MOT3_rpm_PCT":3000, # warning range: 120-max=140
+            "MOT4_rpm_PCT":2000, # warning range: 120-max=140
+            "MOT5_rpm_PCT":3000, # warning range: 120-max=140
+            "MOT6_rpm_PCT":3000, # warning range: 120-max=140
 
-            "ESC1_V":0,
-            "ESC2_V":0,
-            "ESC3_V":0,
-            "ESC4_V":0,
-            "ESC5_V":0,
-            "ESC6_V":0,
+            "ESC1_V":100,
+            "ESC2_V":100,
+            "ESC3_V":100,
+            "ESC4_V":100,
+            "ESC5_V":100,
+            "ESC6_V":100,
             
-            "ESC1_CUR_AMP":0,
-            "ESC2_CUR_AMP":0,
-            "ESC3_CUR_AMP":0,
-            "ESC4_CUR_AMP":0,
-            "ESC5_CUR_AMP":0,
-            "ESC6_CUR_AMP":0,
+            "ESC1_CUR_AMP":150,
+            "ESC2_CUR_AMP":150,
+            "ESC3_CUR_AMP":150,
+            "ESC4_CUR_AMP":150,
+            "ESC5_CUR_AMP":150,
+            "ESC6_CUR_AMP":150,
             "TimeStamp":0
         }
 
@@ -149,7 +149,8 @@ class Data:
         self.ParachutePacket['parachute_state'] = 0
         self.parameters['TimeStamp'] = self.now['TimeStamp']
         
-        self.packet = str(self.parameters)
+        #print(self.parameters)
+        self.packet = self.parameters
 
     def logUpdate(self):
         
@@ -165,7 +166,7 @@ class Data:
         with self.tlock:
             #self.Lora.packet = bytes(str(self.telemetryPacket) + '\n', 'ascii')
             #self.Lora.LoRaTransmit()
-            self.TCP.packet = self.telemetryPacket + '\n'
+            self.TCP.packet = self.telemetryPacket
             self.TCP.TCPServer()
         return 0
     

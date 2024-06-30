@@ -49,8 +49,8 @@ class Joystick:
         print("Joystick Init")
 
     def valueMap(self,old_value):
-        #new_value = str(int(round(( ( old_value - self.old_min ) / (self.old_max - self.old_min) ) * (self.new_max - self.new_min) + self.new_min)))
-        new_value = str(( ( old_value - self.old_min ) / (self.old_max - self.old_min) ) * (self.new_max - self.new_min) + self.new_min)
+        new_value = str(round(( ( old_value - self.old_min ) / (self.old_max - self.old_min) ) * (self.new_max - self.new_min) + self.new_min,2))
+        #new_value = str(( ( old_value - self.old_min ) / (self.old_max - self.old_min) ) * (self.new_max - self.new_min) + self.new_min)
         return(new_value)
 
 class JoystickUSB(Joystick):

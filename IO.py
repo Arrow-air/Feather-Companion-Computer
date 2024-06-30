@@ -12,8 +12,8 @@ class IO:
         self.modeselect = modeselect
         self.mode = {0:'GCS',1:'FUI'}
 
-        GPIO.setmode(GPIO.BOARD)
-        #GPIO.setmode(GPIO.BCM)
+        #GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         
         self.INpins = [11,13,15,16,18,22]
@@ -21,13 +21,13 @@ class IO:
         self.outputs = []
         self.PWMpins = [32,33]
 
-        GPIO.setup(self.INpins, GPIO.IN)
-        GPIO.setup(self.OUTpins, GPIO.OUT)
+        #GPIO.setup(self.INpins, GPIO.IN)
+        #GPIO.setup(self.OUTpins, GPIO.OUT)
 
-        self.pwm1 = GPIO.PWM(self.PWMpins[0], 50)
-        self.pwm2 = GPIO.PWM(self.PWMpins[1], 50)
-        self.pwm1.start(0)
-        self.pwm2.start(0)
+        #self.pwm1 = GPIO.PWM(self.PWMpins[0], 50)
+        #self.pwm2 = GPIO.PWM(self.PWMpins[1], 50)
+        #self.pwm1.start(0)
+        #self.pwm2.start(0)
 
         self.packet = {"INPin":0,"INState":0,"OUTPin":0,"OUTState":0}
 

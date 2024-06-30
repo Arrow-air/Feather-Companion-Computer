@@ -25,14 +25,14 @@ class Veronte:
     def packetStruct(self):
         
         try:
-                self.data = self.readData()
-                self.dataDictionary = self.data
-                self.packet = self.dataDictionary
+                self.dataDictionary = sself.readData()
+                self.packet = {key : round(self.dataDictionary[key],2) for key in self.dataDictionary}
+                print(self.packet)
         except:
-                self.packet = {'altitude_AGL':random.uniform(0,100),'altitude_AGL_set':random.uniform(0,100),'altitude_ABS':random.uniform(0,100),'altitude_AGL':random.uniform(0,100),'heading':random.uniform(0,360),'compass':random.uniform(0,360),'attitude_pitch':random.uniform(-30,30),'attitude_roll':random.uniform(-30,30),'vertical_speed_KTS':random.uniform(0,60),
-                       'airspeed_KTS':random.uniform(0,60),'OAT':random.uniform(0,100),"latitude":'40d26a46q','longitude':'79d58a56q',"flight_time":(str(random.randint(0,59))+':'+str(random.randint(0,59)))}
+                self.packet = {'altitude_AGL':round(random.uniform(0,100),2),'altitude_AGL_set':round(random.uniform(0,100),2),'altitude_ABS':round(random.uniform(0,100),2),'altitude_AGL':round(random.uniform(0,100),2),'heading':round(random.uniform(0,100),2),'compass':round(random.uniform(0,100),2),'attitude_pitch':round(random.uniform(0,100),2),'attitude_roll':round(random.uniform(0,100),2),'vertical_speed_KTS':round(random.uniform(0,100),2),
+                       'airspeed_KTS':round(random.uniform(0,100),2),'OAT':round(random.uniform(0,100),2),"latitude":'40d26a46q','longitude':'79d58a56q',"flight_time":(str(random.randint(0,59))+':'+str(random.randint(0,59)))}
         
-        #print(self.packet)
+        print(self.packet)
         return self.packet
         
     def readData(self):

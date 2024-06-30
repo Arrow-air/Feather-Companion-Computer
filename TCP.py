@@ -25,6 +25,7 @@ class TCP:
                                 socket.SOCK_STREAM) # TCP
         
         if self.modeselect == self.mode.get(1):
+            
             '''
             self.filesocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             try:
@@ -57,14 +58,13 @@ class TCP:
         print("TCP Init")
     
     def TCPServer(self):
-        self.msg  = f'{len(self.packet):<{self.headersize}}' + self.packet 
+        self.msg  = f'{len(self.packet):<{self.headersize}}' + str(self.packet) + '\n'
 
         self.clientsocket.send(self.msg.encode("utf-8"))
         server.server_loop_iteration(self.packet)
 
         #self.fileclientsocket.send(self.msg.encode("utf-8"))
         #self.fileclientsocket1.send(self.msg.encode("utf-8"))
-        time.sleep(0.01)
         
     def TCPClient(self):
 
@@ -74,6 +74,7 @@ class TCP:
         while True:
 
             self.rcmsg = self.socket.recv(8192)
+            time.sleep(0.05)
 
             if self.new_msg:
 
@@ -100,6 +101,8 @@ class TCP:
                 #print("Message: ",self.returnmsg)
                 self.new_msg = True
                 self.full_msg = ''
+                
+                server.server_loop_iteration(self.returnmsg)
                 
                 return self.returnmsg
     

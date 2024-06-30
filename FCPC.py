@@ -48,7 +48,7 @@ VeronteComport = '/dev/ttyS0' #Veronte Serial Port
 Serialbitrate = 115200
 
 #IP seting for TCP/IP Telemetry
-TCP_IP = socket.gethostname() #'192.168.1.84'# #"127.0.0.1"
+TCP_IP = "192.168.1.84" #socket.gethostname() #'192.168.1.84'# #"127.0.0.1"
 TCP_PORT = 1234
 TCP_Buffer = 16
 
@@ -93,6 +93,7 @@ if __name__ == '__main__':
 
         if gound_or_flight == 'FUI':
             
+            print('Top')
             #Return Data From Each System Module
             data.JoystickPacket = joystickUSB.packetStruct()
             #data.JoystickPacket = joystickCAN.packetStruct()
