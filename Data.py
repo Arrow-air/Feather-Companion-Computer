@@ -35,11 +35,11 @@ class Data:
                                'MOT5_rpm_PCT':100,'MOT6_rpm_PCT':50,'ESC1_V':0,'ESC2_V':0,'ESC3_V':0,'ESC4_V':0,'ESC5_V':0,'ESC6_V':100,'ESC1_CUR_AMP':0,
                                'ESC2_CUR_AMP':0,'ESC3_CUR_AMP':0,'ESC4_CUR_AMP':0,'ESC5_CUR_AMP':0,'ESC6_CUR_AMP':0}
         
-        self.ESCPacket = {'ESC1_temp_Ce':0, 'ESC2_temp_Ce':0,'ESC3_temp_Ce':0,'ESC4_temp_Ce':0,'ESC5_temp_Ce':0,'ESC6_temp_Ce':0,
-                          'MOT1_temp_Ce':0,'MOT2_temp_Ce':0,'MOT3_temp_Ce':0,'MOT4_temp_Ce':0,'MOT5_temp_Ce':0,'MOT6_temp_Ce':0,
-                          'MOT1_rpm_PCTe':0,'MOT2_rpm_PCTe':0,'MOT3_rpm_PCTe':0,'MOT4_rpm_PCTe':0,'MOT5_rpm_PCTe':0,'MOT6_rpm_PCTe':0,
-                          'ESC1_Ve':0,'ESC2_Ve':0,'ESC3_Ve':0,'ESC4_Ve':0,'ESC5_Ve':0,'ESC6_Ve':0,
-                          'ESC1_CUR_AMPe':0,'ESC2_CUR_AMPe':0,'ESC3_CUR_AMPe':0,'ESC4_CUR_AMPe':0,'ESC5_CUR_AMPe':0,'ESC6_CUR_AMPe':0}
+        self.ESCPacket = {'ESC1_temp_Ce':100, 'ESC2_temp_Ce':100,'ESC3_temp_Ce':80,'ESC4_temp_Ce':70,'ESC5_temp_Ce':90,'ESC6_temp_Ce':70,
+                          'MOT1_temp_Ce':100,'MOT2_temp_Ce':100,'MOT3_temp_Ce':100,'MOT4_temp_Ce':0,'MOT5_temp_Ce':0,'MOT6_temp_Ce':70,
+                          'MOT1_rpm_PCTe':100,'MOT2_rpm_PCTe':100,'MOT3_rpm_PCTe':1000,'MOT4_rpm_PCTe':0,'MOT5_rpm_PCTe':0,'MOT6_rpm_PCTe':0,
+                          'ESC1_Ve':100,'ESC2_Ve':0,'ESC3_Ve':100,'ESC4_Ve':50,'ESC5_Ve':50,'ESC6_Ve':50,
+                          'ESC1_CUR_AMPe':100,'ESC2_CUR_AMPe':100,'ESC3_CUR_AMPe':100,'ESC4_CUR_AMPe':100,'ESC5_CUR_AMPe':100,'ESC6_CUR_AMPe':100}
         
         self.IOPacket = {}
 
@@ -138,6 +138,14 @@ class Data:
         self.J = self.JoystickPacket.keys()
         self.B = self.BMSPacket.keys()
         self.E = self.ESCPacket.keys()
+        
+        for x in range(1,7):
+            
+                self.BMSPacket[f'MOT{x}_rpm_PCT'] = self.ESCPacket[f'MOT{x}_rpm_PCTe']
+                self.BMSPacket[f'ESC{x}_CUR_AMP'] = self.ESCPacket[f'ESC{x}_CUR_AMPe']
+                self.BMSPacket[f'ESC{x}_V'] = self.ESCPacket[f'ESC{x}_Ve']
+                self.BMSPacket[f'ESC{x}_temp_C'] = self.ESCPacket[f'ESC{x}_temp_Ce']
+                self.BMSPacket[f'MOT{x}_temp_C'] = self.ESCPacket[f'MOT{x}_temp_Ce']
 
         for key in self.V:
             self.parameters[key] = self.VerontePacket[key]
@@ -149,7 +157,7 @@ class Data:
         self.ParachutePacket['parachute_state'] = 0
         self.parameters['TimeStamp'] = self.now['TimeStamp']
         
-        #print(self.parameters)
+        print(self.parameters)
         self.packet = self.parameters
 
     def logUpdate(self):

@@ -70,7 +70,7 @@ class BMS:
                 
                 self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
                 
-                print(str(x) + str(self.packet))
+                #print(str(x) + str(self.packet))
                        
         except:
     

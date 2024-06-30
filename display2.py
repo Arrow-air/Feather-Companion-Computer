@@ -133,6 +133,12 @@ class D2:
         
     def draw(self):
         self.screen.fill((65, 95, 255))
+        
+        # structure
+        structure_size = self.images["structure"].get_size()
+        structure_x = self.screen.get_width()//2 - structure_size[0]//2
+        structure_y = self.screen.get_height()//2 - structure_size[1]//2
+        self.screen.blit(self.images["structure"], (structure_x,structure_y))
 
         # left top
         x,y = self.motor_image_positions[0]

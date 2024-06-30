@@ -7,7 +7,7 @@ cd ..
 sudo python3 FCPC.py
 
 # Run System State Window Frontend
-#sudo python3 display1.py &
+sudo python3 display1.py &
 
 # Run System Information Window Frontend
-#sudo python3 display2.py &
+sudo python3 display2.py &

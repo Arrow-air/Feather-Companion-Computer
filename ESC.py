@@ -45,7 +45,7 @@ class ESC:
             self.superDictionary = self.escRead()
             data = self.superDictionary
 
-            for i in range(0,5):
+            for i in range(0,6):
 
                 x = i + 1
                 
@@ -53,10 +53,11 @@ class ESC:
                 self.dataDictionary[f'ESC{x}_CUR_AMPe'] = data[f'{i}']['info_upload_6160']['bus_current']
                 self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
                 self.dataDictionary[f'ESC{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['MOS']
+                self.dataDictionary[f'MOT{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['Motor']
 
-            self.packet = {key : round(float(self.dataDictionary[key]),2) for key in self.dataDictionary}
+            self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
             
-            print(str(x) + str(self.packet))
+            #print(str(x) + str(self.packet))
             
         except:
             

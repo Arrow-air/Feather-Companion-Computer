@@ -93,12 +93,11 @@ if __name__ == '__main__':
 
         if gound_or_flight == 'FUI':
             
-            print('Top')
             #Return Data From Each System Module
             data.JoystickPacket = joystickUSB.packetStruct()
             #data.JoystickPacket = joystickCAN.packetStruct()
             #data.IOPacket = io.packetStruct()
-            data.ESCPacket = esc.packetStruct()
+            #data.ESCPacket = esc.packetStruct()
             data.VerontePacket = veronte.packetStruct()
             data.BMSPacket = bms.packetStruct()
             data.now['TimeStamp'] = str(datetime.now())
