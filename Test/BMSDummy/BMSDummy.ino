@@ -18,12 +18,7 @@ void setup()
   // Start serial communication
   Serial.begin(115200);
 
-  delay(5000);
-
-  while (!Serial) 
-  {
-    ;  // wait for serial port to connect. Used in Testing to start routing on opening serial monitor for debug
-  }
+  delay(10000);
 
   // Initialize CAN bus at 500 kbps
   if (CAN0.begin(CAN_500KBPS) == CAN_OK) 

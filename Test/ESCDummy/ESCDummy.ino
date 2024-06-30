@@ -8,7 +8,7 @@ MCP_CAN CAN0(CAN0_CS);
 void setup() 
 {
   Serial.begin(115200);
-  while(!Serial)
+  delay(10000);
 
   while (CAN_OK != CAN0.begin(CAN_500KBPS)) 
   {
