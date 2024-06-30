@@ -232,9 +232,9 @@ void sendInfoUpload6160(uint8_t Tail,uint8_t sourceNodeID)
   byte data[7];
 
   data[0] = random(0, 256); // Electrical speed (low byte)
-  data[1] = random(0, 256); // Electrical speed (high byte)
-  data[2] = random(0, 256); // Bus current (low byte)
-  data[3] = random(0, 256); // Bus current (high byte)
+  data[1] = random(0, 50); // Electrical speed (high byte)
+  data[2] = random(0, 200); // Bus current (low byte)
+  data[3] = 0; // Bus current (high byte)
   data[4] = 0b00010100; // Running status (low byte)
   data[5] = 0b00000001; // Running status (high byte)
   data[6] = Tail; // Tail Byte 
@@ -260,13 +260,13 @@ void sendInfoUpload6161(uint8_t Tail,uint8_t sourceNodeID)
 {
   byte data[8];
 
-  data[0] = random(0, 256); // Output throttle (low byte)
-  data[1] = random(0, 256); // Output throttle (high byte)
-  data[2] = random(0, 256); // Bus voltage (low byte)
-  data[3] = random(0, 256); // Bus voltage (high byte)
-  data[4] = random(0, 256); // MOS temperature
-  data[5] = random(0, 256); // Capacitance temperature
-  data[6] = random(0, 256); // Motor temperature
+  data[0] = random(0, 100); // Output throttle (low byte)
+  data[1] = 0; // Output throttle (high byte)
+  data[2] = random(0, 100); // Bus voltage (low byte)
+  data[3] = 0; // Bus voltage (high byte)
+  data[4] = random(40, 100); // MOS temperature
+  data[5] = random(40, 100); // Capacitance temperature
+  data[6] = random(40, 100); // Motor temperature
   data[7] = Tail; // Tail Byte
 
   unsigned long id = calculateCanId(5,6161,sourceNodeID);
