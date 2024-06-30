@@ -76,39 +76,39 @@ class VESCCAN:
         if command == 11018:#0x2B1A:  # CAN_PACKET_BMS_TEMPS
             #print(command)
             self.msgData['NoOfCells'] = data[1]
-            self.msgData['auxVoltagesIndividual1'] = struct.unpack('>H', data[2:4])[0] * 0.01
-            self.msgData['auxVoltagesIndividual2'] = struct.unpack('>H', data[4:6])[0] * 0.01
-            self.msgData['auxVoltagesIndividual3'] = struct.unpack('>H', data[6:8])[0] * 0.01
+            self.msgData['auxVoltagesIndividual1'] = struct.unpack('<H', data[2:4])[0] * 0.01
+            self.msgData['auxVoltagesIndividual2'] = struct.unpack('<H', data[4:6])[0] * 0.01
+            self.msgData['auxVoltagesIndividual3'] = struct.unpack('<H', data[6:8])[0] * 0.01
 
         elif command == 9738:#0x260A:  # CAN_PACKET_BMS_V_TOT
             #print(command)
-            self.msgData['packVoltage'] = struct.unpack('>I', data[0:4])[0] * 0.001
-            self.msgData['chargerVoltage'] = struct.unpack('>I', data[4:8])[0] * 0.001
+            self.msgData['packVoltage'] = struct.unpack('<I', data[0:4])[0] * 0.001
+            self.msgData['chargerVoltage'] = struct.unpack('<I', data[4:8])[0] * 0.001
 
         elif command == 9994:#0x271A:  # CAN_PACKET_BMS_I
             #print(command)
-            self.msgData['packCurrent1'] = struct.unpack('>i', data[0:4])[0] * 0.01
-            self.msgData['packCurrent2'] = struct.unpack('>i', data[4:8])[0] * 0.01
+            self.msgData['packCurrent1'] = struct.unpack('<i', data[0:4])[0] * 0.01
+            self.msgData['packCurrent2'] = struct.unpack('<i', data[4:8])[0] * 0.01
 
         elif command == 10250:#0x280A:  # CAN_PACKET_BMS_AH_WH
             #print(command)
-            self.msgData['Ah_Counter'] = struct.unpack('>I', data[0:4])[0] * 0.001
-            self.msgData['Wh_Counter'] = struct.unpack('>I', data[4:8])[0] * 0.001
+            self.msgData['Ah_Counter'] = struct.unpack('<I', data[0:4])[0] * 0.001
+            self.msgData['Wh_Counter'] = struct.unpack('<I', data[4:8])[0] * 0.001
 
         elif command == 10506:#0x291A:  # CAN_PACKET_BMS_V_CELL
             #print(command)
             self.msgData['cellPoint'] = data[0]
             self.msgData['NoOfCells'] = data[1]
-            self.msgData['cellVoltage10'] = struct.unpack('>H', data[2:4])[0] * 0.001
-            self.msgData['cellVoltage11'] = struct.unpack('>H', data[4:6])[0] * 0.001
-            self.msgData['cellVoltage12'] = struct.unpack('>H', data[6:8])[0] * 0.001
+            self.msgData['cellVoltage10'] = struct.unpack('<H', data[2:4])[0] * 0.001
+            self.msgData['cellVoltage11'] = struct.unpack('<H', data[4:6])[0] * 0.001
+            self.msgData['cellVoltage12'] = struct.unpack('<H', data[6:8])[0] * 0.001
 
         elif command == 10762:#0x2A7A:  # CAN_PACKET_BMS_BAL
             #print(command)
             self.msgData['NoOfCells'] = data[0] #struct.unpack('<B', data[0:1])[0]
             data2 = list(data[1:8])
             data2.append(0)
-            self.msgData['bal_state'] = struct.unpack('<Q', bytes(data2))[0] #struct.unpack('<Q', data2)[0] >> 1
+            self.msgData['bal_state'] = struct.unpack('>Q', bytes(data2))[0] #struct.unpack('<Q', data2)[0] >> 1
 
         elif command == 11530:#0x2D1A:  # CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
             #print(command)
@@ -121,9 +121,9 @@ class VESCCAN:
 
         elif command == 11274:#0x2C1A:  # CAN_PACKET_BMS_HUM
             #print(command)
-            self.msgData['CAN_PACKET_BMS_TEMP0'] = struct.unpack('>H', data[0:2])[0] * 0.01
-            self.msgData['CAN_PACKET_BMS_HUM_HUM'] = struct.unpack('>H', data[2:4])[0] * 0.01
-            self.msgData['CAN_PACKET_BMS_HUM_TEMP1'] = struct.unpack('>H', data[4:6])[0] * 0.01
+            self.msgData['CAN_PACKET_BMS_TEMP0'] = struct.unpack('<H', data[0:2])[0] * 0.01
+            self.msgData['CAN_PACKET_BMS_HUM_HUM'] = struct.unpack('<H', data[2:4])[0] * 0.01
+            self.msgData['CAN_PACKET_BMS_HUM_TEMP1'] = struct.unpack('<H', data[4:6])[0] * 0.01
 
         else:
             #print(command)
