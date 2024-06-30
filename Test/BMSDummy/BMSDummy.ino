@@ -110,99 +110,104 @@ void sendDummyData(unsigned long id, unsigned char len, unsigned char *data)
 // Function to set data for different commands for a specific unit
 void setCommandData(unsigned long command, unsigned char unit_id) 
 {
-  txId = calculateCanId(unit_id, command);
-  //Serial.print(command);
-
-  unsigned char data[8];
-  if (command == commands[0]) // CAN_PACKET_BMS_TEMPS
-  {
-    Serial.print("CMD:0 ");
-    len = 8;
-    data[0] = 0; data[1] = 24;  // NoOfCells
-    data[2] = 0x12; data[3] = 0x34;  // auxVoltagesIndividual1
-    data[4] = 0x56; data[5] = 0x78;  // auxVoltagesIndividual2
-    data[6] = 0x9A; data[7] = 0xBC;  // auxVoltagesIndividual3
-  }
-  else if (command == commands[1]) // CAN_PACKET_BMS_V_TOT
-  {
-    Serial.print("CMD:1 ");
-    len = 8;
-    int32_t packVoltage = 42000;  // 42.0V
-    int32_t chargerVoltage = 50000;  // 50.0V
-    memcpy(data, &packVoltage, 4);
-    memcpy(data + 4, &chargerVoltage, 4);
-  }
-  else if (command == commands[2]) // CAN_PACKET_BMS_I
-  {
-    Serial.print("CMD:2 ");
-    len = 8;
-    int32_t packCurrent1 = 1000;  // 10.0A
-    int32_t packCurrent2 = 2000;  // 20.0A
-    memcpy(data, &packCurrent1, 4);
-    memcpy(data + 4, &packCurrent2, 4);
-  }
-  else if (command == commands[3]) // CAN_PACKET_BMS_AH_WH
-  {
-    Serial.print("CMD:3 ");
-    len = 8;
-    int32_t Ah_Counter = 500;  // 0.5 Ah
-    int32_t Wh_Counter = 1000;  // 1.0 Wh
-    memcpy(data, &Ah_Counter, 4);
-    memcpy(data + 4, &Wh_Counter, 4);
-  }
-  else if (command == commands[4]) // CAN_PACKET_BMS_V_CELL
-  {
-    Serial.print("CMD:4 ");
-    len = 8;
-    data[0] = 24;  // cellPoint
-    data[1] = 24;  // NoOfCells
-    data[2] = 0x12; data[3] = 0x34;  // cellVoltage10
-    data[4] = 0x56; data[5] = 0x78;  // cellVoltage11
-    data[6] = 0x9A; data[7] = 0xBC;  // cellVoltage12
-  }
-  else if (command == commands[5]) // CAN_PACKET_BMS_BAL
-  {
-    Serial.print("CMD:5 ");
-    len = 8;
-    data[0] = NULL;  // NoOfCells
-    // Value between 0 and 100
-    uint8_t value = 42;
-
-    // Map the value to a 56-bit number
-    uint64_t bal_state = mapTo56Bit(value);
-
-    // Split the number into 7 slots
-    for (int i = 1; i < 8; ++i) 
+    txId = calculateCanId(unit_id, command);
+    unsigned char data[8];
+    
+    if (command == commands[0]) // CAN_PACKET_BMS_TEMPS
     {
-        data[i] = (bal_state >> (8 * i)) & 0xFF;
+        Serial.print("CMD:0 ");
+        len = 8;
+        data[0] = 0;
+        data[1] = 24;  // NoOfCells
+        int16_t aux1 = 1234;  // 12.34V
+        int16_t aux2 = 5678;  // 56.78V
+        int16_t aux3 = 9101;  // 91.01V
+        memcpy(data + 2, &aux1, 2);
+        memcpy(data + 4, &aux2, 2);
+        memcpy(data + 6, &aux3, 2);
     }
-    //memcpy(data + 1, &bal_state, 7);
-  }
-  else if (command == commands[6]) // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
-  {
-    Serial.print("CMD:6 ");
-    len = 8;
-    int16_t cellVoltageLow = 3000;  // 3.0V
-    int16_t cellVoltageHigh = 4200;  // 4.2V
-    data[0] = (cellVoltageLow >> 8) & 0xFF; data[1] = cellVoltageLow & 0xFF;
-    data[2] = (cellVoltageHigh >> 8) & 0xFF; data[3] = cellVoltageHigh & 0xFF;
-    data[4] = 80 / 0.392156862745098;  // SOC 80%
-    data[5] = 90 / 0.3922;  // SOH 90%
-    data[6] = 30;  // tBattHi 30°C
-    data[7] = 0;  // BitF
-  }
-  else if (command == commands[7]) // CAN_PACKET_BMS_HUM
-  {
-    Serial.print("CMD:7 ");
-    len = 6;
-    int16_t CAN_PACKET_BMS_TEMP0 = 2500;  // 25.0°C
-    int16_t CAN_PACKET_BMS_HUM_HUM = 5000;  // 50.0%
-    int16_t CAN_PACKET_BMS_HUM_TEMP1 = 2600;  // 26.0°C
-    memcpy(data, &CAN_PACKET_BMS_TEMP0, 2);
-    memcpy(data + 2, &CAN_PACKET_BMS_HUM_HUM, 2);
-    memcpy(data + 4, &CAN_PACKET_BMS_HUM_TEMP1, 2);
-  }
-  sendDummyData(txId, len, data);
+    else if (command == commands[1]) // CAN_PACKET_BMS_V_TOT
+    {
+        Serial.print("CMD:1 ");
+        len = 8;
+        int32_t packVoltage = 100000;  // 100.0V
+        int32_t chargerVoltage = 50000;  // 50.0V
+        memcpy(data, &packVoltage, 4);
+        memcpy(data + 4, &chargerVoltage, 4);
+    }
+    else if (command == commands[2]) // CAN_PACKET_BMS_I
+    {
+        Serial.print("CMD:2 ");
+        len = 8;
+        int32_t packCurrent1 = 5000;  // 50.0A
+        int32_t packCurrent2 = -2000;  // -20.0A (discharging)
+        memcpy(data, &packCurrent1, 4);
+        memcpy(data + 4, &packCurrent2, 4);
+    }
+    else if (command == commands[3]) // CAN_PACKET_BMS_AH_WH
+    {
+        Serial.print("CMD:3 ");
+        len = 8;
+        int32_t Ah_Counter = 15000;  // 15.0 Ah
+        int32_t Wh_Counter = 450000;  // 450.0 Wh
+        memcpy(data, &Ah_Counter, 4);
+        memcpy(data + 4, &Wh_Counter, 4);
+    }
+    else if (command == commands[4]) // CAN_PACKET_BMS_V_CELL
+    {
+        Serial.print("CMD:4 ");
+        len = 8;
+        data[0] = 24;  // cellPoint
+        data[1] = 24;  // NoOfCells
+        int16_t cellVoltage1 = 3700;  // 3.7V
+        int16_t cellVoltage2 = 3800;  // 3.8V
+        int16_t cellVoltage3 = 3900;  // 3.9V
+        memcpy(data + 2, &cellVoltage1, 2);
+        memcpy(data + 4, &cellVoltage2, 2);
+        memcpy(data + 6, &cellVoltage3, 2);
+    }
+    else if (command == commands[5]) // CAN_PACKET_BMS_BAL
+    {
+        Serial.print("CMD:5 ");
+        len = 8;
+        data[0] = 24;  // NoOfCells
+        // Value between 0 and 100
+        uint8_t value = 42;
+
+        // Map the value to a 56-bit number
+        uint64_t bal_state = mapTo56Bit(value);
+
+        // Split the number into 7 slots
+        for (int i = 0; i < 7; ++i) 
+        {
+            data[i + 1] = (bal_state >> (8 * i)) & 0xFF;
+        }
+    }
+    else if (command == commands[6]) // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
+    {
+        Serial.print("CMD:6 ");
+        len = 8;
+        int16_t cellVoltageLow = 3000;  // 3.0V
+        int16_t cellVoltageHigh = 4200;  // 4.2V
+        data[0] = (cellVoltageLow >> 8) & 0xFF; data[1] = cellVoltageLow & 0xFF;
+        data[2] = (cellVoltageHigh >> 8) & 0xFF; data[3] = cellVoltageHigh & 0xFF;
+        data[4] = static_cast<uint8_t>(80 / 0.392156862745098);  // SOC 80%
+        data[5] = static_cast<uint8_t>(90 / 0.3922);  // SOH 90%
+        data[6] = 30;  // tBattHi 30°C
+        data[7] = 0;  // BitF
+    }
+    else if (command == commands[7]) // CAN_PACKET_BMS_HUM
+    {
+        Serial.print("CMD:7 ");
+        len = 6;
+        int16_t temp0 = 2500;  // 25.0°C
+        int16_t humidity = 5000;  // 50.0%
+        int16_t temp1 = 2600;  // 26.0°C
+        memcpy(data, &temp0, 2);
+        memcpy(data + 2, &humidity, 2);
+        memcpy(data + 4, &temp1, 2);
+    }
+    sendDummyData(txId, len, data);
 }
 
 uint64_t mapTo56Bit(uint8_t value) 
