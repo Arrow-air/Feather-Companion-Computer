@@ -97,11 +97,23 @@ class VESCCAN:
 
         elif command == 10506:#0x291A:  # CAN_PACKET_BMS_V_CELL
             #print(command)
+            '''
             self.msgData['cellPoint'] = data[0]
             self.msgData['NoOfCells'] = data[1]
             self.msgData['cellVoltage10'] = struct.unpack('<H', data[2:4])[0] * 0.001
             self.msgData['cellVoltage11'] = struct.unpack('<H', data[4:6])[0] * 0.001
             self.msgData['cellVoltage12'] = struct.unpack('<H', data[6:8])[0] * 0.001
+            '''
+
+            if 'cellVoltages' not in self.msgData:
+                self.msgData['cellVoltages'] = [[] for _ in range(8)]
+                
+            self.msgData['cellPoint'] = data[0]
+            self.msgData['NoOfCells'] = data[1]
+            self.msgData['cellVoltages'][0].append(struct.unpack('<H', data[2:4])[0] * 0.001)
+            self.msgData['cellVoltages'][1].append(struct.unpack('<H', data[4:6])[0] * 0.001)
+            self.msgData['cellVoltages'][2].append(struct.unpack('<H', data[6:8])[0] * 0.001)
+
 
         elif command == 10762:#0x2A7A:  # CAN_PACKET_BMS_BAL
             #print(command)
