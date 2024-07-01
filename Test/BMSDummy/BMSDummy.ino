@@ -132,13 +132,14 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         Serial.print("CMD:0 ");
         len = 8;
         uint8_t totalNoOfAux = 24;  // Assuming totalNoOfAux is 24
-        static uint8_t auxPointer = 0;  // Keep track of aux pointer across calls
+        uint8_t auxPointer = 0;  // Keep track of aux pointer across calls
 
         while (auxPointer < totalNoOfAux) 
         {
           // Prepare the data buffer
           data[0] = auxPointer;  // Aux point
           data[1] = totalNoOfAux;  // NoOfCells
+          
 
           // Fill the data buffer with aux voltages
           if (auxPointer < totalNoOfAux) 
@@ -178,10 +179,10 @@ void setCommandData(unsigned long command, unsigned char unit_id)
           sendDummyData(txId, len, data);
 
           // Reset auxPointer if it reaches the end of aux
-          if (auxPointer >= totalNoOfAux) 
-          {
-            auxPointer = 0;
-          }
+          //if (auxPointer >= totalNoOfAux) 
+          //{
+          //  auxPointer = 0;
+         // }
         }
     }
     else if (command == commands[1]) // CAN_PACKET_BMS_V_TOT
@@ -233,7 +234,7 @@ void setCommandData(unsigned long command, unsigned char unit_id)
       len = 8;
 
       uint8_t totalNoOfCells = 24;  // Assuming totalNoOfCells is 24
-      static uint8_t cellPointer = 0;  // Keep track of cell pointer across calls
+      uint8_t cellPointer = 0;  // Keep track of cell pointer across calls
 
       // Prepare the data buffer
       data[0] = cellPointer;  // cellPoint
@@ -279,10 +280,10 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         sendDummyData(txId, len, data);
 
         // Reset cellPointer if it reaches the end of cells
-        if (cellPointer >= totalNoOfCells) 
-        {
-          cellPointer = 0;
-        }
+        //if (cellPointer >= totalNoOfCells) 
+        //{
+        //  cellPointer = 0;
+        //}
       }
     }
     else if (command == commands[5]) // CAN_PACKET_BMS_BAL
