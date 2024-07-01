@@ -32,7 +32,7 @@ class Veronte:
                 self.packet = {'altitude_AGL':round(random.uniform(0,100),2),'altitude_AGL_set':round(random.uniform(0,100),2),'altitude_ABS':round(random.uniform(0,100),2),'altitude_AGL':round(random.uniform(0,100),2),'heading':round(random.uniform(0,100),2),'compass':round(random.uniform(0,100),2),'attitude_pitch':round(random.uniform(0,100),2),'attitude_roll':round(random.uniform(0,100),2),'vertical_speed_KTS':round(random.uniform(0,100),2),
                        'airspeed_KTS':round(random.uniform(0,100),2),'OAT':round(random.uniform(0,100),2),"latitude":'40d26a46q','longitude':'79d58a56q',"flight_time":(str(random.randint(0,59))+':'+str(random.randint(0,59)))}
         
-        print(self.packet)
+        #print(self.packet)
         return self.packet
         
     def readData(self):
@@ -48,3 +48,17 @@ class Veronte:
                 self.data = data
         
                 return self.data
+
+if __name__ == "__main__":
+    
+    VeronteComport = '/dev/ttyS0' #Veronte Serial Port
+    Serialbitrate = 115200
+
+    veronte = Veronte(VeronteComport,Serialbitrate,'FUI')
+    
+    while True:
+        
+        veronte.packetStruct()
+        
+        print(veronte.packet)
+        print("\n")

@@ -11,7 +11,18 @@ class VESCCAN:
         self.unit_id = ''
         self.command = ''
         self.message = ''
-
+        
+        self.auxnum = 0
+        self.cellnum = 0
+        
+        self.auxA = []
+        self.auxB = []
+        self.auxC = []
+        
+        self.cellsA = []
+        self.cellsB = []
+        self.cellsC = []
+        
         self.idData = {}
         self.msgData = {}
         self.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
@@ -72,6 +83,7 @@ class VESCCAN:
     def parse_frame(self, command, data, unit_id):
 
         self.msgData = {'unit_id': unit_id}
+        #print(command)
         
         #Note: Might Need to switch endianness in unpack function for real bms
         if command == 11018:#0x2B1A:  # CAN_PACKET_BMS_TEMPS
@@ -91,14 +103,24 @@ class VESCCAN:
                 self.msgData['auxVoltagesIndividual3'] = []
 
             self.msgData['NoOfCells'] = data[1]
-            self.msgData['auxVoltagesIndividual1'].append(struct.unpack('<H', data[2:4])[0] * 0.01)
-            self.msgData['auxVoltagesIndividual2'].append(struct.unpack('<H', data[4:6])[0] * 0.01)
-            self.msgData['auxVoltagesIndividual3'].append(struct.unpack('<H', data[6:8])[0] * 0.01)
+            
+            self.auxA.append(struct.unpack('<H', data[2:4])[0] * 0.01)
+            self.auxB.append(struct.unpack('<H', data[4:6])[0] * 0.01)
+            self.auxC.append(struct.unpack('<H', data[6:8])[0] * 0.01)
+            
+            self.auxnum += 1
+            
+            if self.auxnum > 7:
 
-            # Limit the lists to 8 values each
-            self.msgData['auxVoltagesIndividual1'] = self.msgData['auxVoltagesIndividual1'][:8]
-            self.msgData['auxVoltagesIndividual2'] = self.msgData['auxVoltagesIndividual2'][:8]
-            self.msgData['auxVoltagesIndividual3'] = self.msgData['auxVoltagesIndividual3'][:8]
+                self.msgData['auxVoltagesIndividual1'] = self.auxA
+                self.msgData['auxVoltagesIndividual2'] = self.auxB 
+                self.msgData['auxVoltagesIndividual3'] = self.auxC 
+            
+                self.auxA = []
+                self.auxB = []
+                self.auxC = []
+                
+                self.auxnum = 0
             
         elif command == 9738:#0x260A:  # CAN_PACKET_BMS_V_TOT
             #print(command)
@@ -128,21 +150,30 @@ class VESCCAN:
             if 'cellVoltage10' not in self.msgData:
                 self.msgData['cellVoltage10'] = []
             if 'cellVoltages11' not in self.msgData:
-                self.msgData['cellVoltages11'] = []
+                self.msgData['cellVoltage11'] = []
             if 'cellVoltages12' not in self.msgData:
-                self.msgData['cellVoltages12'] = []
+                self.msgData['cellVoltage12'] = []
 
             self.msgData['cellPoint'] = data[0]
             self.msgData['NoOfCells'] = data[1]
+            
+            self.cellsA.append(struct.unpack('<H', data[2:4])[0] * 0.001)
+            self.cellsB.append(struct.unpack('<H', data[4:6])[0] * 0.001)
+            self.cellsC.append(struct.unpack('<H', data[6:8])[0] * 0.001)
+            
+            self.cellnum += 1
+            
+            if self.cellnum > 7:
 
-            self.msgData['cellVoltage10'][0].append(struct.unpack('<H', data[2:4])[0] * 0.001)
-            self.msgData['cellVoltages11'][1].append(struct.unpack('<H', data[4:6])[0] * 0.001)
-            self.msgData['cellVoltages12'][2].append(struct.unpack('<H', data[6:8])[0] * 0.001)
-
-            self.msgData['cellVoltage10'] = self.msgData['cellVoltage10'][:8]
-            self.msgData['cellVoltage11'] = self.msgData['cellVoltage11'][:8]
-            self.msgData['cellVoltage12'] = self.msgData['cellVoltage12'][:8]
-
+                self.msgData['cellVoltage10'] = self.cellsA
+                self.msgData['cellVoltage11'] = self.cellsB
+                self.msgData['cellVoltage12'] = self.cellsC
+            
+                self.cellsA = []
+                self.cellsB = []
+                self.cellsC = []
+                
+                self.cellnum = 0
 
         elif command == 10762:#0x2A7A:  # CAN_PACKET_BMS_BAL
             #print(command)
@@ -169,7 +200,8 @@ class VESCCAN:
         else:
             #print(command)
             self.msgData['raw_data'] = data
-
+            
+        #print(self.msgData)
         return self.msgData
         
 if __name__ == "__main__":

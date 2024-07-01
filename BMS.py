@@ -115,5 +115,6 @@ if __name__ == "__main__":
         
         bms.packetStruct()
         
+        print(bms.packet)
         print("\n")
 
