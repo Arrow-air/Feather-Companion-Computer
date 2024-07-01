@@ -76,11 +76,30 @@ class VESCCAN:
         #Note: Might Need to switch endianness in unpack function for real bms
         if command == 11018:#0x2B1A:  # CAN_PACKET_BMS_TEMPS
             #print(command)
+            '''
             self.msgData['NoOfCells'] = data[1]
             self.msgData['auxVoltagesIndividual1'] = struct.unpack('<H', data[2:4])[0] * 0.01
             self.msgData['auxVoltagesIndividual2'] = struct.unpack('<H', data[4:6])[0] * 0.01
             self.msgData['auxVoltagesIndividual3'] = struct.unpack('<H', data[6:8])[0] * 0.01
+            '''
+            
+            if 'auxVoltagesIndividual1' not in self.msgData:
+                self.msgData['auxVoltagesIndividual1'] = []
+            if 'auxVoltagesIndividual2' not in self.msgData:
+                self.msgData['auxVoltagesIndividual2'] = []
+            if 'auxVoltagesIndividual3' not in self.msgData:
+                self.msgData['auxVoltagesIndividual3'] = []
 
+            self.msgData['NoOfCells'] = data[1]
+            self.msgData['auxVoltagesIndividual1'].append(struct.unpack('<H', data[2:4])[0] * 0.01)
+            self.msgData['auxVoltagesIndividual2'].append(struct.unpack('<H', data[4:6])[0] * 0.01)
+            self.msgData['auxVoltagesIndividual3'].append(struct.unpack('<H', data[6:8])[0] * 0.01)
+
+            # Limit the lists to 8 values each
+            self.msgData['auxVoltagesIndividual1'] = self.msgData['auxVoltagesIndividual1'][:8]
+            self.msgData['auxVoltagesIndividual2'] = self.msgData['auxVoltagesIndividual2'][:8]
+            self.msgData['auxVoltagesIndividual3'] = self.msgData['auxVoltagesIndividual3'][:8]
+            
         elif command == 9738:#0x260A:  # CAN_PACKET_BMS_V_TOT
             #print(command)
             self.msgData['packVoltage'] = struct.unpack('<I', data[0:4])[0] * 0.001
@@ -105,15 +124,24 @@ class VESCCAN:
             self.msgData['cellVoltage11'] = struct.unpack('<H', data[4:6])[0] * 0.001
             self.msgData['cellVoltage12'] = struct.unpack('<H', data[6:8])[0] * 0.001
             '''
-
-            if 'cellVoltages' not in self.msgData:
-                self.msgData['cellVoltages'] = [[] for _ in range(8)]
+            
+            if 'cellVoltage10' not in self.msgData:
+                self.msgData['cellVoltage10'] = []
+            if 'cellVoltages11' not in self.msgData:
+                self.msgData['cellVoltages11'] = []
+            if 'cellVoltages12' not in self.msgData:
+                self.msgData['cellVoltages12'] = []
 
             self.msgData['cellPoint'] = data[0]
             self.msgData['NoOfCells'] = data[1]
-            self.msgData['cellVoltages'][0].append(struct.unpack('<H', data[2:4])[0] * 0.001)
-            self.msgData['cellVoltages'][1].append(struct.unpack('<H', data[4:6])[0] * 0.001)
-            self.msgData['cellVoltages'][2].append(struct.unpack('<H', data[6:8])[0] * 0.001)
+
+            self.msgData['cellVoltage10'][0].append(struct.unpack('<H', data[2:4])[0] * 0.001)
+            self.msgData['cellVoltages11'][1].append(struct.unpack('<H', data[4:6])[0] * 0.001)
+            self.msgData['cellVoltages12'][2].append(struct.unpack('<H', data[6:8])[0] * 0.001)
+
+            self.msgData['cellVoltage10'] = self.msgData['cellVoltage10'][:8]
+            self.msgData['cellVoltage11'] = self.msgData['cellVoltage11'][:8]
+            self.msgData['cellVoltage12'] = self.msgData['cellVoltage12'][:8]
 
 
         elif command == 10762:#0x2A7A:  # CAN_PACKET_BMS_BAL
