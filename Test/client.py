@@ -18,24 +18,25 @@ while True:
     while True:
         rcmsg = socketc.recv(8192)
         if new_msg:
-            #print(f"Message Length: {self.rcmsg[:self.headersize]}")
+            print(f"Message Length: {rcmsg[:headersize]}")
             a = f"{rcmsg[:headersize]}"
             msglenprim = a.split('\'')[1]
             try:
                 msglenprim = msglenprim[0]+msglenprim[1]+msglenprim[2]+msglenprim[3]
             except:
                 pass
-            #print(self.msglenprim)
+            print("msglenprim : ",msglenprim)
             try:
                 msglen = int(msglenprim)
             except:
                 msglen = 1070
-            print(msglen)
+            print("msglen: ", msglen)
             new_msg = False
-        full_msg += rcmsg.decode("utf-8")
-        if len(full_msg) - headersize == msglen:
+        full_msg = rcmsg.decode("utf-8")
+        print("fm - hz :", len(full_msg) - headersize - 1)
+        if len(full_msg) - headersize - 1 == msglen:
             returnmsg = rcmsg[headersize:].decode("utf-8")
-            #print("Message: ",returnmsg)
+            print("Message: ",returnmsg)
             new_msg = True
             full_msg = ''
             #return returnmsg

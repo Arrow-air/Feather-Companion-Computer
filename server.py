@@ -120,7 +120,7 @@ def parse_message(data):
     return cmd,data
 
 def recv_message_and_parse(conn):
-    full_msg = conn.recv(1024).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
+    full_msg = conn.recv(8192).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
     if full_msg == "":
         return None, None
     cmd, data = parse_message(full_msg) # split it to a tuple with the command and the data

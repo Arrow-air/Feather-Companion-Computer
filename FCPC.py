@@ -93,15 +93,22 @@ if __name__ == '__main__':
 
         if gound_or_flight == 'FUI':
             
+            print("TOP")
             #Return Data From Each System Module
             data.JoystickPacket = joystickUSB.packetStruct()
+            print("TOP1")
             #data.JoystickPacket = joystickCAN.packetStruct()
             #data.IOPacket = io.packetStruct()
-            #data.ESCPacket = esc.packetStruct()
+            data.ESCPacket = esc.packetStruct()
+            print("TOP2")
             data.VerontePacket = veronte.packetStruct()
+            print("TOP3")
             data.BMSPacket = bms.packetStruct()
+            print("TOP4")
             data.now['TimeStamp'] = str(datetime.now())
+            print("TOP5")
             data.packetStruct()
+            print("Mid")
             
             #Wrtie Data log file
             #data.logUpdate()
@@ -109,6 +116,7 @@ if __name__ == '__main__':
             #Send Data to GCS Telemetry
             
             data.telemetryUpdate()
+            print("Bottom")
 
         elif gound_or_flight == 'GCS':
             

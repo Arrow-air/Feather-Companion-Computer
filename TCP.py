@@ -50,6 +50,7 @@ class TCP:
             self.socket.bind((self.TCP_IP, self.TCP_PORT))        # Bind to the port
             self.socket.listen(5)                 # Now wait for client connection.
             self.clientsocket, self.addr = self.socket.accept()     # Establish connection with client.
+            print("clientFound")
 
         if self.modeselect == self.mode.get(0):
 
@@ -58,7 +59,7 @@ class TCP:
         print("TCP Init")
     
     def TCPServer(self):
-        self.msg  = f'{len(self.packet):<{self.headersize}}' + str(self.packet) + '\n'
+        self.msg  = f'{len(str(self.packet)):<{self.headersize}}' + str(self.packet) + '\n'
 
         self.clientsocket.send(self.msg.encode("utf-8"))
         server.server_loop_iteration(self.packet)
@@ -93,9 +94,9 @@ class TCP:
                 #print(self.msglen)
                 self.new_msg = False
 
-            self.full_msg += self.rcmsg.decode("utf-8")
+            self.full_msg = self.rcmsg.decode("utf-8")
 
-            if len(self.full_msg) - self.headersize == self.msglen:
+            if len(self.full_msg) - self.headersize - 1 == self.msglen:
 
                 self.returnmsg = self.rcmsg[self.headersize:].decode("utf-8")
                 #print("Message: ",self.returnmsg)

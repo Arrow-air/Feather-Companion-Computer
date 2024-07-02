@@ -171,11 +171,11 @@ class Data:
     def telemetryUpdate(self):
         
         self.telemetryPacket = self.packet
-        with self.tlock:
-            #self.Lora.packet = bytes(str(self.telemetryPacket) + '\n', 'ascii')
-            #self.Lora.LoRaTransmit()
-            self.TCP.packet = self.telemetryPacket
-            self.TCP.TCPServer()
+        #with self.tlock:
+        #self.Lora.packet = bytes(str(self.telemetryPacket) + '\n', 'ascii')
+        #self.Lora.LoRaTransmit()
+        self.TCP.packet = self.telemetryPacket
+        self.TCP.TCPServer()
         return 0
     
     def gcsUpdate(self):
