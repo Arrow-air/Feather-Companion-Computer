@@ -1,31 +1,24 @@
-import time
-import pygame,math
-from pygame import gfxdraw
 import socket
-import ast
-import threading
-from concurrent.futures import ThreadPoolExecutor
+import pygame
+from pygame import gfxdraw
+from protocols_functions import PROTOCOL_CLIENT, PROTOCOL_SERVER,DELIMITER, LENGTH_FIELD_LENGTH, extract_parameters_from_string
 
-# Initialize Pygame
 pygame.init()
 
-# Set the dimensions of the window
-window_width = 500
-window_height = 500
+SERVER_IP = "127.0.0.1"  # Our server will run on same computer as client
+SERVER_PORT = 5680
+
 
 class D1:
     def __init__(self,modeselect:str, display_num):
-        #self.display = display
         self.mode = {0:'GCS',1:'FUI'}
         self.modeselect = modeselect
 
-        self.filesocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.filesocket.connect("/tmp/socketname")
-        self.headersize = 16
-        self.full_msg = ''
-        self.new_msg = True
-
-        self.tlock = threading.Lock()
+        try:
+            self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create a socket,   socket.AF_INET = IP protocol,   socket.SOCK_STREAM = protocol TCP
+            self.server_socket.connect((SERVER_IP,SERVER_PORT)) # connect to the socket(make it able to send messages in the socket)
+        except:
+            pass
 
         if self.modeselect == self.mode.get(0):
             self.screen = pygame.display.set_mode((1860,1020), display=display_num)
@@ -35,7 +28,7 @@ class D1:
             print(self.modeselect)
 
         pygame.display.set_caption('UI Window D1')
-        pygame.display.set_icon(pygame.image.load('images/feather-icon.png'))
+        #pygame.display.set_icon(pygame.image.load('images/feather-icon.png'))
 
         self.font = pygame.font.SysFont('Corbel', int(self.screen.get_height()//30))
         self.medium_font = pygame.font.SysFont('Corbel', int(self.screen.get_height()//25))
@@ -80,12 +73,8 @@ class D1:
             elif key == 'OAT':
                 if value >= 30 and value <= 100:
                     warning_variables.append(key)
-        #for i in range(0,len(warning_variables)):
-        #    warning_variables[i] = "Warning: " + warning_variables[i] + " has exceeded tolerance!"
-        return warning_variables
 
-    def background(self):
-        self.screen.fill((65, 95, 255))
+        return warning_variables
 
     def draw_transparent_rect(self,win,size,alpha_level,color,pos, border_width = None, border_radius=5):
         transparent_surface = pygame.Surface((size[0], size[1]), pygame.SRCALPHA)
@@ -96,15 +85,15 @@ class D1:
         win.blit(transparent_surface, (pos[0],pos[1]))
 
     def draw(self):
-
-        self.background()
+        self.screen.fill((65, 95, 255))
 
         # show the warnings
         # warning are on the Left screen(Left part of the window)(D1)
         warnings = self.check_for_warning()
         if warnings != []:
-            warnings = ", ".join(warnings)
-            text = "Warning: " + warnings + " has exceeded tolerance!"
+            #warnings = ", ".join(warnings)
+            #text = "Warning: " + warnings + " has exceeded tolerance!"
+            text = "Warning: " + ", ".join(warnings) + " has exceeded tolerance!"
 
             max_text_width = self.screen.get_width()//5*4
             x =  self.screen.get_width() - max_text_width - self.bigger_font.size("5")[0] # the warnings are on the right part of the first screen(D1), doing minus the size of 5 because there are the lines of the height and this is how they are made
@@ -155,9 +144,9 @@ class D1:
         pygame.draw.rect(self.screen, (255,255,255), [speed_bar_x, 5, speed_bar_width*(abs(self.parameters["airspeed_KTS"])/ self.parameters_value_range["airspeed_KTS"]), speed_bar_height], border_radius=5)
 
         # placing the text of the speed with it's units
-        speed_text_y = 20
-        self.screen.blit( self.bigger_font.render( str(round(self.parameters["airspeed_KTS"],1)), True,(255,255,255) ) , (self.bigger_font.size("5")[0]//2,speed_text_y))
-        self.screen.blit( self.font.render( "m/s", True,(255,255,255) ) , (self.bigger_font.size("5")[0]//2,speed_text_y + self.bigger_font.size("5")[1]))
+        # not using text y variable for faster running time
+        self.screen.blit( self.bigger_font.render( str(round(self.parameters["airspeed_KTS"],1)), True,(255,255,255) ) , (self.bigger_font.size("5")[0]//2,20))
+        self.screen.blit( self.font.render( "m/s", True,(255,255,255) ) , (self.bigger_font.size("5")[0]//2,20 + self.bigger_font.size("5")[1]))
 
         # aircraft height variables(bar variables):
         num_of_lines = 29 # 1 on the text y, 9 below and 9 above
@@ -256,7 +245,6 @@ class D1:
         self.screen.blit(self.medium_font.render("Attitude Pitch",True,(255,255,255)),(pitch_x, pitch_y-rect_around_pitch_size[1]//2 - self.medium_font.size("A")[1]*1.1))
         
         # Drawing the lines
-
         # drawing the lines that shown the angle using the ratio
         closest_above_round = pitch_angle + (10 -(pitch_angle%10)) # closest number above the current angle
         closest_below_round = pitch_angle - (pitch_angle%10) # closest number below the current angle
@@ -295,7 +283,7 @@ class D1:
         self.screen.blit(self.medium_font.render(str(round(pitch_angle,1)),True,(255,255,255)),(pitch_x , pitch_y - self.medium_font.size("1")[1]//2))
         
         # roll image showing
-        rotated_roll_img = pygame.transform.rotate(self.images["roll"], round(-self.parameters["attitude_roll"],1)) # doing minus the angle because pygame rotates to the left side when positive and we need to the right side when positive
+        rotated_roll_img = pygame.transform.rotate(self.images["roll"], round(-self.parameters["attitude_roll"],1)) # doing minus the angle because pygame rotates to the left side when positive and we need to the right side when positive, round(num,1) round to one number after the decimal point
         roll_x = pitch_x + rect_around_pitch_size[0]*1.1 + self.images["roll"].get_width()//2 - rotated_roll_img.get_width()//2 # on the right side of the pitch angle representation
         roll_y = pitch_y - rotated_roll_img.get_height()//2 
         self.screen.blit(rotated_roll_img,(roll_x,roll_y))
@@ -339,91 +327,75 @@ class D1:
                           roll_y + rotated_roll_img.get_height()//2 - self.images["compass"].get_height()//2 - self.images["pointer"].get_height()*2
                           ))
 
-    def Fileclient(self,parameters_dict):
-        i = 0
-        while True:
-            
-            with self.tlock:
+    def build_message(self,cmd, data):
+        """
+        Gets command name (str) and data field (str) and creates a valid protocol message
+        Returns: str, or None if error occured
+        example of the function:
+        build_message("LOGIN", "aaaa#bbbb") will return "LOGIN           |0009|aaaa#bbbb"
+        """
+        """get the command plus data and return the protocol message(what parse_message gets)"""
 
-                self.rcmsg = self.filesocket.recv(8192)
-                time.sleep(0.01)
+        protocol_message = ""
+        num = len(data)
+        if len(str(num)) < LENGTH_FIELD_LENGTH: # create the message and the message length(009,0100)
+            num1 = LENGTH_FIELD_LENGTH - len(str(num))
+            num = "0"*num1 + str(num)
+        protocol_message += str(cmd) + DELIMITER + num + DELIMITER + str(data) # implement everything you did in the function to the protocol that send   DELIMITER = |
 
-                if self.new_msg:
-                    #print(f"Message Length: {self.rcmsg[:self.headersize]}")
-                    self.a = f"{self.rcmsg[:self.headersize]}"
-                    self.msglenprim = self.a.split('\'')[1]
-                    try:
-                        self.msglenprim = self.msglenprim[0]+self.msglenprim[1]+self.msglenprim[2]+self.msglenprim[3]
-                    except:
-                        pass
-                        #print(self.msglenprim)
-                    try:
-                        self.msglen = int(self.msglenprim)
-                    except:
-                        self.msglen = 1070
-                        #print(self.msglen)
-                    self.new_msg = False
-                self.full_msg += self.rcmsg.decode("utf-8")
+        return protocol_message
+    def build_and_send_message(self,conn, code, data): # code = command
+        message = self.build_message(code,data) # create the message( will look like this: LOGIN           |0009|aaaa#bbbb)
+        
+        print("[CLIENT]:", message)
+        
+        conn.send(message.encode()) # send to the server the message in the right format
+    def parse_message(self,data):
+        """
+        Parses protocol message and returns command name and data field
+        Returns: cmd (str), data (str). If some error occured, returns None, None
+        """
+        "get the message(what build_message returns) and need to return the command and the data"
+        split_data = data.split(DELIMITER)
+        cmd,length,data = split_data
+        return cmd,data
+    def recv_message_and_parse(self,conn):
+        full_msg = conn.recv(8192).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
+        cmd, data = self.parse_message(full_msg) # split it to a tuple with the command and the data
+        
+        print("[SERVER]:", full_msg)
+        return cmd, data
+    
+    def send_and_receive_message(self):
+        self.build_and_send_message(self.server_socket, "MESSAGE", "test")
 
-                if len(self.full_msg) - self.headersize == self.msglen:
-                    self.returnmsg = self.rcmsg[self.headersize:].decode("utf-8")
-                    #print("Message: ",self.returnmsg)
-                    self.dicy = ast.literal_eval(self.returnmsg)
-                    self.parameters = self.dicy
-                    self.new_msg = True
-                    self.full_msg = ''
-            
-                    #print(self.parameters)
-                    #return self.parameters
+        command,data = self.recv_message_and_parse(self.server_socket)
+    def receive_parameters(self):
+        self.build_and_send_message(self.server_socket, PROTOCOL_CLIENT["ask parameters"], "")
+        cmd,data = self.recv_message_and_parse(self.server_socket)
+        if cmd == PROTOCOL_SERVER["give parameters"]:
+            self.parameters = extract_parameters_from_string(data)
 
-def D1_func(gound_or_flight,parameters_dict, display_num):
 
-    # create the class of the window
-    D1_ui = D1(gound_or_flight,display_num)
-
+def D1_func(parameters_dict, display_num):
+    D1_ui = D1("FUI",display_num)
     # update the class parameters
     D1_ui.parameters = parameters_dict
-    
-    #D1_ui.Fileclient(D1_ui.parameters)
-    
+
+    print("Connected to the server: [SERVER]"+str(SERVER_IP)+":"+str(SERVER_PORT))
+
     running = True
-    i = 0
-    _stop_event = threading.Event()
-    
-    #with ThreadPoolExecutor(max_workers=100) as executor:  # Adjust max_workers as needed
     while running:
-        
-        #future = executor.submit(D1_ui.Fileclient, parameters)
-        #max_threads = 1000
-        #threads = []
-        _stop_event.clear()
-        while not _stop_event.is_set():
-            dataThread = threading.Thread(target=D1_ui.Fileclient,args=(D1_ui.parameters,),daemon=True)
-            dataThread.start()
-            
-            
-            D1_ui.draw()
+        D1_ui.receive_parameters()
+        D1_ui.draw()
 
-            i += 1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                running = False
 
-            # Update the display
-            pygame.display.update()
 
-            # intialise pygame refresh rate and call it clock
-            clock = pygame.time.Clock()
-            clock.tick(6)
-                    
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                            
-            time.sleep(0.1)
-            print(threading.active_count())
-            _stop_event.set()
-        
-
-    # Quit Pygame
-    pygame.quit()
+        pygame.display.update()
 
 parameters = {
     "altitude_AGL":0,
@@ -446,19 +418,19 @@ parameters = {
     "switch_states":0,
     "parachute_state":0,
 
-    "BAT1_temp_C":0, # warning range: 80-180
-    "BAT2_temp_C":0, # warning range: 80-180
-    "BAT3_temp_C":0, # warning range: 80-180
-    "BAT4_temp_C":0, # warning range: 80-180
-    "BAT5_temp_C":0, # warning range: 80-180
-    "BAT6_temp_C":0, # warning range: 80-180
+    "BAT1_temp_C":90, # warning range: 80-180
+    "BAT2_temp_C":10, # warning range: 80-180
+    "BAT3_temp_C":40, # warning range: 80-180
+    "BAT4_temp_C":90, # warning range: 80-180
+    "BAT5_temp_C":85, # warning range: 80-180
+    "BAT6_temp_C":50, # warning range: 80-180
 
-    "ESC1_temp_C":0,
-    "ESC2_temp_C":0,
-    "ESC3_temp_C":0,
-    "ESC4_temp_C":0,
-    "ESC5_temp_C":0,
-    "ESC6_temp_C":0,
+    "ESC1_temp_C":60,
+    "ESC2_temp_C":70,
+    "ESC3_temp_C":20,
+    "ESC4_temp_C":40,
+    "ESC5_temp_C":10,
+    "ESC6_temp_C":30,
 
     "MOT1_temp_C":0,
     "MOT2_temp_C":0,
@@ -467,14 +439,14 @@ parameters = {
     "MOT5_temp_C":0,
     "MOT6_temp_C":0,
 
-    "BAT1_soc_PCT":90, # the percentage of the battery left, warning range: 1-15
+    "BAT1_soc_PCT":12, # the percentage of the battery left, warning range: 1-15
     "BAT2_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
     "BAT3_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-    "BAT4_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-    "BAT5_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
-    "BAT6_soc_PCT":100, # the percentage of the battery left, warning range: 1-15
+    "BAT4_soc_PCT":57, # the percentage of the battery left, warning range: 1-15
+    "BAT5_soc_PCT":80, # the percentage of the battery left, warning range: 1-15
+    "BAT6_soc_PCT":40, # the percentage of the battery left, warning range: 1-15
 
-    "MOT1_rpm_PCT":0, # warning range: 120-max=140
+    "MOT1_rpm_PCT":130, # warning range: 120-max=140
     "MOT2_rpm_PCT":0, # warning range: 120-max=140
     "MOT3_rpm_PCT":0, # warning range: 120-max=140
     "MOT4_rpm_PCT":0, # warning range: 120-max=140
@@ -497,6 +469,5 @@ parameters = {
     "TimeStamp":0
 }
 
-if __name__ == "__main__":
-
-    D1_func("FUI",parameters,0)
+if __name__ == '__main__':
+    D1_func(parameters, 0)

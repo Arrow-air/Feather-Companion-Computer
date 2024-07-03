@@ -18,7 +18,29 @@ def create_parameters_string(parameters:dict):
     final_string = ""
     for param_name in parameters:
         final_string += param_name + KEY_DATA_DELIMITER + str(parameters[param_name]) + ","
+        
     return final_string[:-1] # doing until -1 because we have , as the last character
+
+def create_parameters_string(parameters:dict):
+    strings = ["",""]
+    i = 0
+    for param_name in parameters:
+        if i == 0:
+            strings[0] += param_name + KEY_DATA_DELIMITER + str(parameters[param_name]) + ","
+            #final_string += param_name + KEY_DATA_DELIMITER + str(parameters[param_name]) + ","
+            i += 1
+        else:
+            strings[1] += param_name + KEY_DATA_DELIMITER + str(parameters[param_name]) + ","
+            i = 0
+    strings[0] = strings[0][:-1]
+    strings[1] = strings[1][:-1]
+    return strings
+    final_string = ""
+    for param_name in parameters:
+        final_string += param_name + KEY_DATA_DELIMITER + str(parameters[param_name]) + ","
+        
+    return final_string[:-1] # doing until -1 because we have , as the last character
+
 
 def extract_parameters_from_string(parameters_string:str):
     parameters_list = parameters_string.split(",")

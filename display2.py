@@ -63,6 +63,8 @@ class D2:
             (structure_x + structure_size[0] + self.motor_circle_size[0]*0.1, structure_y + structure_size[1]//2 - self.motor_circle_size[1]//2), # right middle
             (structure_x + structure_size[0] - self.motor_circle_size[0]*0.2, structure_y  + structure_size[1] - self.motor_circle_size[1]//10) # right down
         ]
+
+        self.current_parameters_part = 1
         
     def draw_circle_info(self, motor_num,x,y,outer_circle_size, text_side):
 
@@ -133,12 +135,6 @@ class D2:
         
     def draw(self):
         self.screen.fill((65, 95, 255))
-        
-        # structure
-        structure_size = self.images["structure"].get_size()
-        structure_x = self.screen.get_width()//2 - structure_size[0]//2
-        structure_y = self.screen.get_height()//2 - structure_size[1]//2
-        self.screen.blit(self.images["structure"], (structure_x,structure_y))
 
         # left top
         x,y = self.motor_image_positions[0]
@@ -203,7 +199,7 @@ class D2:
         cmd,length,data = split_data
         return cmd,data
     def recv_message_and_parse(self,conn):
-        full_msg = conn.recv(8192).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
+        full_msg = conn.recv(1024).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
         cmd, data = self.parse_message(full_msg) # split it to a tuple with the command and the data
         
         print("[SERVER]:", full_msg)
@@ -214,10 +210,18 @@ class D2:
 
         command,data = self.recv_message_and_parse(self.server_socket)
     def receive_parameters(self):
-        self.build_and_send_message(self.server_socket, PROTOCOL_CLIENT["ask parameters"], "")
+        if self.current_parameters_part == 1:
+            param_part = "1"
+            self.current_parameters_part = 2
+        else:
+            param_part = "2"
+            self.current_parameters_part = 1
+        self.build_and_send_message(self.server_socket, PROTOCOL_CLIENT["ask parameters"], param_part)
         cmd,data = self.recv_message_and_parse(self.server_socket)
         if cmd == PROTOCOL_SERVER["give parameters"]:
-            self.parameters = extract_parameters_from_string(data)
+            updated_params = extract_parameters_from_string(data)
+            for key in updated_params:
+                self.parameters[key] = updated_params[key]
 
 
 def D2_func(parameters_dict, display_num):
@@ -313,4 +317,4 @@ parameters = {
 }
 
 if __name__ == '__main__':
-    D2_func(parameters, 1)
+    D2_func(parameters, 0)

@@ -53,7 +53,8 @@ class D1:
         roll_pointer_ratio = self.images["pointer above roll"].get_height() / self.images["pointer above roll"].get_width()
         self.images["pointer above roll"] = pygame.transform.smoothscale(self.images["pointer above roll"], (self.screen.get_height()//3.5,self.screen.get_height()//3.5*roll_pointer_ratio))
         self.images["pointer"] = pygame.transform.smoothscale(self.images["pointer"], (self.images["compass"].get_width()//10,self.images["compass"].get_width()//10))
-    
+        
+        self.current_parameters_part = 1
     def check_for_warning(self):
         warning_variables = []
 
@@ -360,8 +361,11 @@ class D1:
         cmd,length,data = split_data
         return cmd,data
     def recv_message_and_parse(self,conn):
-        full_msg = conn.recv(8192).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
-        cmd, data = self.parse_message(full_msg) # split it to a tuple with the command and the data
+        full_msg = conn.recv(1024).decode() # gets the message from the server   need to be something like this for example "LOGIN           |0009|aaaa#bbbb"
+        try:
+            cmd, data = self.parse_message(full_msg) # split it to a tuple with the command and the data
+        except:
+            cmd,data = "",""
         
         print("[SERVER]:", full_msg)
         return cmd, data
@@ -371,10 +375,18 @@ class D1:
 
         command,data = self.recv_message_and_parse(self.server_socket)
     def receive_parameters(self):
-        self.build_and_send_message(self.server_socket, PROTOCOL_CLIENT["ask parameters"], "")
+        if self.current_parameters_part == 1:
+            param_part = "1"
+            self.current_parameters_part = 2
+        else:
+            param_part = "2"
+            self.current_parameters_part = 1
+        self.build_and_send_message(self.server_socket, PROTOCOL_CLIENT["ask parameters"], param_part)
         cmd,data = self.recv_message_and_parse(self.server_socket)
         if cmd == PROTOCOL_SERVER["give parameters"]:
-            self.parameters = extract_parameters_from_string(data)
+            updated_params = extract_parameters_from_string(data)
+            for key in updated_params:
+                self.parameters[key] = updated_params[key]
 
 
 def D1_func(parameters_dict, display_num):
