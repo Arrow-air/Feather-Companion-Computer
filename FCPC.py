@@ -104,7 +104,7 @@ if __name__ == '__main__':
             data.packetStruct()
             
             #Wrtie Data log file
-            #data.logUpdate()
+            data.logUpdate()
             
             #Send Data to GCS Telemetry
             
@@ -113,7 +113,7 @@ if __name__ == '__main__':
         elif gound_or_flight == 'GCS':
             
             #Read Data from Telemtry and send to UI programs
-            data.gscUpdate()
+            data.gcsUpdate()
 
         for event in pygame.event.get():
 
