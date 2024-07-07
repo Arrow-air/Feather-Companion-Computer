@@ -103,7 +103,7 @@ class TCP:
                 self.new_msg = True
                 self.full_msg = ''
                 
-                server.server_loop_iteration(self.returnmsg)
+                server.server_loop_iteration(eval(self.returnmsg))
                 
                 return self.returnmsg
     
