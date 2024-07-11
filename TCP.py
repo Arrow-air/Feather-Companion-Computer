@@ -75,7 +75,7 @@ class TCP:
         while True:
 
             self.rcmsg = self.socket.recv(8192)
-            time.sleep(0.05)
+            #time.sleep(0.05)
 
             if self.new_msg:
 
@@ -102,8 +102,8 @@ class TCP:
                 #print("Message: ",self.returnmsg)
                 self.new_msg = True
                 self.full_msg = ''
-                
-                server.server_loop_iteration(self.returnmsg)
+                print(type(self.returnmsg))
+                server.server_loop_iteration(eval(self.returnmsg))
                 
                 return self.returnmsg
     

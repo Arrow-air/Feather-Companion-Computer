@@ -12,14 +12,13 @@ class IO:
         self.modeselect = modeselect
         self.mode = {0:'GCS',1:'FUI'}
 
-        #GPIO.setmode(GPIO.BOARD)
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         
-        self.INpins = [11,13,15,16,18,22]
-        self.OUTpins = [29,31,36,37,38,40]
+        self.INpins = [17,27,22,23,24,25]
+        self.OUTpins = [5,6,16,26,20,21]
         self.outputs = []
-        self.PWMpins = [32,33]
+        self.PWMpins = [12,13]
 
         #GPIO.setup(self.INpins, GPIO.IN)
         #GPIO.setup(self.OUTpins, GPIO.OUT)

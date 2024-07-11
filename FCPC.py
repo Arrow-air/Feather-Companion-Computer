@@ -33,8 +33,8 @@ import Veronte
 import Joystick
 
 #Onboard Flight UI or Ground Control Station Selector
-#gound_or_flight = 'GCS' #GroundControlStation
-gound_or_flight = 'FUI' #Flight UI
+gound_or_flight = 'GCS' #GroundControlStation
+#gound_or_flight = 'FUI' #Flight UI
 
 #Serial Comport Settings for Lora Telemetry & Flight Controller Interfaces
 '''TEST
@@ -48,7 +48,8 @@ VeronteComport = '/dev/ttyS0' #Veronte Serial Port
 Serialbitrate = 115200
 
 #IP seting for TCP/IP Telemetry
-TCP_IP = "192.168.1.84" #socket.gethostname() #'192.168.1.84'# #"127.0.0.1"
+TCP_IP = "192.168.1.84" #socket.gethostname() #'192.168.1.84'# #"127.0.0.1" Rpi
+#TCP_IP = "192.168.1.69" # Laptop
 TCP_PORT = 1234
 TCP_Buffer = 16
 
@@ -96,7 +97,7 @@ if __name__ == '__main__':
             #Return Data From Each System Module
             data.JoystickPacket = joystickUSB.packetStruct()
             #data.JoystickPacket = joystickCAN.packetStruct()
-            #data.IOPacket = io.packetStruct()
+            data.IOPacket = io.packetStruct()
             data.ESCPacket = esc.packetStruct()
             data.VerontePacket = veronte.packetStruct()
             data.BMSPacket = bms.packetStruct()
@@ -104,16 +105,15 @@ if __name__ == '__main__':
             data.packetStruct()
             
             #Wrtie Data log file
-            #data.logUpdate()
+            data.logUpdate()
             
             #Send Data to GCS Telemetry
-            
             data.telemetryUpdate()
             
         elif gound_or_flight == 'GCS':
             
             #Read Data from Telemtry and send to UI programs
-            data.gscUpdate()
+            data.gcsUpdate()
 
         for event in pygame.event.get():
 
