@@ -25,7 +25,7 @@ class VESCCAN:
         
         self.idData = {}
         self.msgData = {}
-        self.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
+        self.unitData = {'1':{},'2':{},'3':{},'4':{},'5':{},'6':{}}
 
     def calculate_can_id(self,unit_id, command):
 
@@ -210,9 +210,9 @@ if __name__ == "__main__":
     
     while True:
         
-        vesc.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
+        vesc.unitData = {'1':{},'2':{},'3':{},'4':{},'5':{},'6':{}}
         
-        while len(vesc.unitData['5']) < 25:
+        while len(vesc.unitData['6']) < 25:
         
             rawData = vesc.read_frame()
             
