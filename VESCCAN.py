@@ -1,5 +1,6 @@
 import can
 import struct
+import time
 
 class VESCCAN:
     def __init__(self):
@@ -11,7 +12,9 @@ class VESCCAN:
         self.unit_id = ''
         self.command = ''
         self.message = ''
-        
+        self.message = None
+        self.prev_message = None
+
         self.auxnum = 0
         self.cellnum = 0
         
@@ -63,13 +66,17 @@ class VESCCAN:
     
     def read_frame(self):
 
-        self.message = self.can0.recv()
+        if self.message is None:
+            self.message = self.can0.recv()
+
+        elif self.message is not None:
+            self.message = self.can0.recv(timeout=0.1)
+
+            if self.message is None:
+                self.message = self.prev_message
 
         self.id = self.message.arbitration_id
 
-        if self.message is None:
-            return None
-        
         if self.message.is_extended_id:
             self.decode_can_id(self.id)
         else:
@@ -77,7 +84,6 @@ class VESCCAN:
             self.command = (self.id >> 5) & 0xFF
 
         self.data = self.message.data
-
         return self.parse_frame(self.command, self.data, self.unit_id)
 
     def parse_frame(self, command, data, unit_id):
@@ -202,6 +208,7 @@ class VESCCAN:
             self.msgData['raw_data'] = data
             
         #print(self.msgData)
+        self.prev_message = self.message
         return self.msgData
         
 if __name__ == "__main__":
