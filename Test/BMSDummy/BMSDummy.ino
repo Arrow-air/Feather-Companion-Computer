@@ -7,8 +7,24 @@
 // Define dummy data for different commands
 unsigned long txId;
 unsigned char len = 8;
-//constexpr unsigned long commands[8] = {0x2B1A, 0x260A, 0x271A, 0x280A, 0x291A, 0x2A7A, 0x2D1A, 0x2C1A};
-constexpr unsigned long commands[8] = {11018, 9738, 9994, 10250, 10506, 10762, 11530, 11274};
+//constexpr unsigned long commands[8] = {0x260A, 0x271A, 0x280A, 0x291A, 0x2A7A, 0x2B1A, 0x2C1A, 0x2D1A};
+constexpr unsigned long commands[8] = { 9738, 9994, 10250, 10506, 10762, 11018, 11274, 11530};
+
+/*
+uint32_t CAN_PACKET_BMS_STATUS_MAIN_IV = 30;						// 30, Transmit the BMS current, pack voltage every 0.5 seconds with modCANSendSimpleStatusSlow(), Destination ID == CANID (broadcasted)
+uint32_t CAN_PACKET_BMS_STATUS_CELLVOLTAGE = 31;						// 31, Transmit the BMS cell voltage high & cell voltage low every 0.5 seconds with modCANSendSimpleStatusSlow(), Destination ID == CANID (broadcasted)
+uint32_t CAN_PACKET_BMS_STATUS_THROTTLE_CH_DISCH_BOOL = 32; // 32, Transmit the desired throttle & BMS status (SOC, load, voltage, booleans) every 0.2 seconds with modCANSendSimpleStatusFast(), Destination ID == CANID (broadcasted)
+
+uint32_t CAN_PACKET_BMS_V_TOT = 39;
+uint32_t CAN_PACKET_BMS_I = 40;
+uint32_t CAN_PACKET_BMS_AH_WH = 41;
+uint32_t CAN_PACKET_BMS_V_CELL = 42;
+uint32_t CAN_PACKET_BMS_BAL = 43;
+uint32_t CAN_PACKET_BMS_TEMPS = 44;
+uint32_t CAN_PACKET_BMS_HUM = 45;
+uint32_t CAN_PACKET_BMS_SOC_SOH_TEMP_STAT = 46;
+*/
+constexpr uint32_t CAN_PACKET_ID[8] = {39, 40, 41, 42, 43, 44, 45, 46};
 
 // Instantiate the CAN object
 MCP_CAN CAN0(CAN0_CS);
@@ -48,13 +64,14 @@ void loop()
 
   unsigned long now = millis();
   
-  if (now - lastSent >= 10)
+  if (now - lastSent >= 1000)
   { // Send data every second
-    for (unsigned char unit_id = 0; unit_id < 6; ++unit_id) 
+    for (unsigned char unit_id = 1; unit_id < 7; ++unit_id) 
     {  // Loop through each unit
       for (unsigned char i = 0; i < 8; ++i) 
       {
-        setCommandData(commands[i], unit_id);
+        //setCommandData(commands[i], unit_id);
+        setCommandData(CAN_PACKET_ID[i], unit_id);
         delay(1); // Small delay between commands
       }
     }
@@ -63,9 +80,10 @@ void loop()
 }
 
 // Function to calculate CAN ID
-unsigned long calculateCanId(unsigned char controller_id, unsigned long command) 
+unsigned long calculateCanId(uint32_t controller_id, unsigned long command) 
 {
-  uint32_t CAN_ID = (0 << 26) | (((command >> 8) & 0xFF) << 8) | controller_id; //(((command >> 8) & 0xFF) << 8)
+  //uint32_t CAN_ID = (0 << 26) | (((command >> 8) & 0xFF) << 8) | controller_id; //(((command >> 8) & 0xFF) << 8)
+  uint32_t CAN_ID = ((uint32_t) controller_id) | ((uint32_t)command << 8);
   return CAN_ID;
 }
 
@@ -74,6 +92,8 @@ void sendDummyData(unsigned long id, unsigned char len, unsigned char *data)
 {
   if (CAN0.sendMsgBuf(id, 1, len, data) == CAN_OK) 
   {
+    Serial.print("id");
+    Serial.print("\t");
     Serial.print(id);
     Serial.print("\t");
     Serial.print(len);
@@ -91,6 +111,8 @@ void sendDummyData(unsigned long id, unsigned char len, unsigned char *data)
   } 
   else 
   {
+    Serial.print("id");
+    Serial.print("\t");
     Serial.print(id);
     Serial.print("\t");
     Serial.print(len);
@@ -113,81 +135,9 @@ void setCommandData(unsigned long command, unsigned char unit_id)
     txId = calculateCanId(unit_id, command);
     unsigned char data[8];
     
-    /*if (command == commands[0]) // CAN_PACKET_BMS_TEMPS
+    if (command == commands[0] || command == CAN_PACKET_ID[0]) // CAN_PACKET_BMS_V_TOT
     {
         Serial.print("CMD:0 ");
-        len = 8;
-        data[0] = 0;
-        data[1] = 24;  // NoOfCells
-        int16_t aux1 = 1234;  // 12.34V
-        int16_t aux2 = 5678;  // 56.78V
-        int16_t aux3 = 9101;  // 91.01V
-        memcpy(data + 2, &aux1, 2);
-        memcpy(data + 4, &aux2, 2);
-        memcpy(data + 6, &aux3, 2);
-        sendDummyData(txId, len, data);
-    }*/
-    if (command == commands[0]) // CAN_PACKET_BMS_TEMPS
-    {
-        Serial.print("CMD:0 ");
-        len = 8;
-        uint8_t totalNoOfAux = 24;  // Assuming totalNoOfAux is 24
-        uint8_t auxPointer = 0;  // Keep track of aux pointer across calls
-
-        while (auxPointer < totalNoOfAux) 
-        {
-          // Prepare the data buffer
-          data[0] = auxPointer;  // Aux point
-          data[1] = totalNoOfAux;  // NoOfCells
-          
-
-          // Fill the data buffer with aux voltages
-          if (auxPointer < totalNoOfAux) 
-          {
-            int16_t auxVoltage = 1234 + auxPointer * 10;  // Simulate aux voltage
-            memcpy(data + 2, &auxVoltage, 2);
-            auxPointer++;
-          } 
-          else 
-          {
-            memset(data + 2, 0, 2);  // Fill with zeros if no more aux
-          }
-
-          if (auxPointer < totalNoOfAux) 
-          {
-            int16_t auxVoltage = 5678 + auxPointer * 10;  // Simulate aux voltage
-            memcpy(data + 4, &auxVoltage, 2);
-            auxPointer++;
-          } 
-          else 
-          {
-            memset(data + 4, 0, 2);  // Fill with zeros if no more aux
-          }
-
-          if (auxPointer < totalNoOfAux) 
-          {
-            int16_t auxVoltage = 9101 + auxPointer * 10;  // Simulate aux voltage
-            memcpy(data + 6, &auxVoltage, 2);
-            auxPointer++;
-          } 
-          else 
-          {
-            memset(data + 6, 0, 2);  // Fill with zeros if no more aux
-          }
-
-          // Transmit the data
-          sendDummyData(txId, len, data);
-
-          // Reset auxPointer if it reaches the end of aux
-          //if (auxPointer >= totalNoOfAux) 
-          //{
-          //  auxPointer = 0;
-         // }
-        }
-    }
-    else if (command == commands[1]) // CAN_PACKET_BMS_V_TOT
-    {
-        Serial.print("CMD:1 ");
         len = 8;
         int32_t packVoltage = 100000;  // 100.0V
         int32_t chargerVoltage = 50000;  // 50.0V
@@ -195,9 +145,9 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         memcpy(data + 4, &chargerVoltage, 4);
         sendDummyData(txId, len, data);
     }
-    else if (command == commands[2]) // CAN_PACKET_BMS_I
+    else if (command == commands[1] || command == CAN_PACKET_ID[1]) // CAN_PACKET_BMS_I
     {
-        Serial.print("CMD:2 ");
+        Serial.print("CMD:1 ");
         len = 8;
         int32_t packCurrent1 = 5000;  // 50.0A
         int32_t packCurrent2 = -2000;  // -20.0A (discharging)
@@ -205,9 +155,9 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         memcpy(data + 4, &packCurrent2, 4);
         sendDummyData(txId, len, data);
     }
-    else if (command == commands[3]) // CAN_PACKET_BMS_AH_WH
+    else if (command == commands[2] || command == CAN_PACKET_ID[2]) // CAN_PACKET_BMS_AH_WH
     {
-        Serial.print("CMD:3 ");
+        Serial.print("CMD:2 ");
         len = 8;
         int32_t Ah_Counter = 15000;  // 15.0 Ah
         int32_t Wh_Counter = 450000;  // 450.0 Wh
@@ -215,9 +165,9 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         memcpy(data + 4, &Wh_Counter, 4);
         sendDummyData(txId, len, data);
     }
-    /*else if (command == commands[4]) // CAN_PACKET_BMS_V_CELL
+    /*else if (command == commands[3] || command == CAN_PACKET_ID[3]) // CAN_PACKET_BMS_V_CELL
     {
-        Serial.print("CMD:4 ");
+        Serial.print("CMD:3 ");
         len = 8;
         data[0] = 24;  // cellPoint
         data[1] = 24;  // NoOfCells
@@ -228,9 +178,9 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         memcpy(data + 4, &cellVoltage2, 2);
         memcpy(data + 6, &cellVoltage3, 2);
     }*/
-    else if (command == commands[4]) // CAN_PACKET_BMS_V_CELL
+    else if (command == commands[3] || command == CAN_PACKET_ID[3]) // CAN_PACKET_BMS_V_CELL
     {
-      Serial.print("CMD:4 ");
+      Serial.print("CMD:3 ");
       len = 8;
 
       uint8_t totalNoOfCells = 24;  // Assuming totalNoOfCells is 24
@@ -286,9 +236,9 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         //}
       }
     }
-    else if (command == commands[5]) // CAN_PACKET_BMS_BAL
+    else if (command == commands[4] || command == CAN_PACKET_ID[4]) // CAN_PACKET_BMS_BAL
     {
-        Serial.print("CMD:5 ");
+        Serial.print("CMD:4 ");
         len = 8;
         data[0] = 24;  // NoOfCells
         // Value between 0 and 100
@@ -304,9 +254,93 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         }
         sendDummyData(txId, len, data);
     }
-    else if (command == commands[6]) // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
+    /*if (command == commands[5]) // CAN_PACKET_BMS_TEMPS
+    {
+        Serial.print("CMD:5 ");
+        len = 8;
+        data[0] = 0;
+        data[1] = 24;  // NoOfCells
+        int16_t aux1 = 1234;  // 12.34V
+        int16_t aux2 = 5678;  // 56.78V
+        int16_t aux3 = 9101;  // 91.01V
+        memcpy(data + 2, &aux1, 2);
+        memcpy(data + 4, &aux2, 2);
+        memcpy(data + 6, &aux3, 2);
+        sendDummyData(txId, len, data);
+    }*/
+    else if (command == commands[5] || command == CAN_PACKET_ID[5]) // CAN_PACKET_BMS_TEMPS
+    {
+        Serial.print("CMD:5 ");
+        len = 8;
+        uint8_t totalNoOfAux = 24;  // Assuming totalNoOfAux is 24
+        uint8_t auxPointer = 0;  // Keep track of aux pointer across calls
+
+        while (auxPointer < totalNoOfAux) 
+        {
+          // Prepare the data buffer
+          data[0] = auxPointer;  // Aux point
+          data[1] = totalNoOfAux;  // NoOfCells
+          
+
+          // Fill the data buffer with aux voltages
+          if (auxPointer < totalNoOfAux) 
+          {
+            int16_t auxVoltage = 1234 + auxPointer * 10;  // Simulate aux voltage
+            memcpy(data + 2, &auxVoltage, 2);
+            auxPointer++;
+          } 
+          else 
+          {
+            memset(data + 2, 0, 2);  // Fill with zeros if no more aux
+          }
+
+          if (auxPointer < totalNoOfAux) 
+          {
+            int16_t auxVoltage = 5678 + auxPointer * 10;  // Simulate aux voltage
+            memcpy(data + 4, &auxVoltage, 2);
+            auxPointer++;
+          } 
+          else 
+          {
+            memset(data + 4, 0, 2);  // Fill with zeros if no more aux
+          }
+
+          if (auxPointer < totalNoOfAux) 
+          {
+            int16_t auxVoltage = 9101 + auxPointer * 10;  // Simulate aux voltage
+            memcpy(data + 6, &auxVoltage, 2);
+            auxPointer++;
+          } 
+          else 
+          {
+            memset(data + 6, 0, 2);  // Fill with zeros if no more aux
+          }
+
+          // Transmit the data
+          sendDummyData(txId, len, data);
+
+          // Reset auxPointer if it reaches the end of aux
+          //if (auxPointer >= totalNoOfAux) 
+          //{
+          //  auxPointer = 0;
+         // }
+        }
+    }
+    else if (command == commands[6] || command == CAN_PACKET_ID[6]) // CAN_PACKET_BMS_HUM
     {
         Serial.print("CMD:6 ");
+        len = 6;
+        int16_t temp0 = 2500;  // 25.0°C
+        int16_t humidity = 5000;  // 50.0%
+        int16_t temp1 = 2600;  // 26.0°C
+        memcpy(data, &temp0, 2);
+        memcpy(data + 2, &humidity, 2);
+        memcpy(data + 4, &temp1, 2);
+        sendDummyData(txId, len, data);
+    }
+    else if (command == commands[7] || command == CAN_PACKET_ID[7]) // CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
+    {
+        Serial.print("CMD:7 ");
         len = 8;
         int16_t cellVoltageLow = 3000;  // 3.0V
         int16_t cellVoltageHigh = 4200;  // 4.2V
@@ -316,18 +350,6 @@ void setCommandData(unsigned long command, unsigned char unit_id)
         data[5] = static_cast<uint8_t>(90 / 0.3922);  // SOH 90%
         data[6] = 30;  // tBattHi 30°C
         data[7] = 0;  // BitF
-        sendDummyData(txId, len, data);
-    }
-    else if (command == commands[7]) // CAN_PACKET_BMS_HUM
-    {
-        Serial.print("CMD:7 ");
-        len = 6;
-        int16_t temp0 = 2500;  // 25.0°C
-        int16_t humidity = 5000;  // 50.0%
-        int16_t temp1 = 2600;  // 26.0°C
-        memcpy(data, &temp0, 2);
-        memcpy(data + 2, &humidity, 2);
-        memcpy(data + 4, &temp1, 2);
         sendDummyData(txId, len, data);
     }
 }
