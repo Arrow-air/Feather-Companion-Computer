@@ -33,8 +33,8 @@ import Veronte
 import Joystick
 
 #Onboard Flight UI or Ground Control Station Selector
-gound_or_flight = 'GCS' #GroundControlStation
-#gound_or_flight = 'FUI' #Flight UI
+#gound_or_flight = 'GCS' #GroundControlStation
+gound_or_flight = 'FUI' #Flight UI
 
 #Serial Comport Settings for Lora Telemetry & Flight Controller Interfaces
 '''TEST
