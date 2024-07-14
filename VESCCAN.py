@@ -68,11 +68,12 @@ class VESCCAN:
 
         if self.message is None:
             self.message = self.can0.recv()
+            self.prev_message = self.message
 
         elif self.message is not None:
-            self.message = self.can0.recv(timeout=0.1)
+            self.message = self.can0.recv(timeout=0.01)
 
-            if self.message is None:
+            if self.message == None:
                 self.message = self.prev_message
 
         self.id = self.message.arbitration_id
