@@ -100,4 +100,6 @@ if __name__ == "__main__":
         
         esc.packetStruct()
         
+        print(esc.packet) 
+        
         print("\n")
