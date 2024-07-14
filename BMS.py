@@ -58,15 +58,14 @@ class BMS:
         self.packet = self.bmsRead()
         
         try:
-                for x in range(0,6):
+                for x in range(1,7):
                    
                    if self.packet[f'{x}']['unit_id'] == x:
                        
-                       y = x + 1
-                       self.dataDictionary[f'BAT{y}_temp_C'] = self.packet[f'{x}']['CAN_PACKET_BMS_TEMP0']
-                       self.dataDictionary[f'BAT{y}_soc_PCT'] = self.packet[f'{x}']['SOC']
-                       self.dataDictionary[f'ESC{y}_V'] = self.packet[f'{x}']['packVoltage']
-                       self.dataDictionary[f'ESC{y}_CUR_AMP'] = self.packet[f'{x}']['packCurrent1']
+                       self.dataDictionary[f'BAT{x}_temp_C'] = self.packet[f'{x}']['CAN_PACKET_BMS_TEMP0']
+                       self.dataDictionary[f'BAT{x}_soc_PCT'] = self.packet[f'{x}']['SOC']
+                       self.dataDictionary[f'ESC{x}_V'] = self.packet[f'{x}']['packVoltage']
+                       self.dataDictionary[f'ESC{x}_CUR_AMP'] = self.packet[f'{x}']['packCurrent1']
                 
                 self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
                 
@@ -86,15 +85,13 @@ class BMS:
     
     def bmsRead(self):
         
-        self.vesc.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
+        self.vesc.unitData = {'1':{},'2':{},'3':{},'4':{},'5':{},'6':{}}
         
-        while len(self.vesc.unitData['5']) < 25:
+        while len(self.vesc.unitData['6']) < 25:
         
             self.rawData = self.vesc.read_frame()
             
-            if self.rawData['unit_id'] == 0:
-                self.vesc.unitData['0'] |= self.rawData
-            elif self.rawData['unit_id'] == 1:
+            if self.rawData['unit_id'] == 1:
                 self.vesc.unitData['1'] |= self.rawData
             elif self.rawData['unit_id'] == 2:
                 self.vesc.unitData['2'] |= self.rawData
@@ -104,6 +101,8 @@ class BMS:
                 self.vesc.unitData['4'] |= self.rawData
             elif self.rawData['unit_id'] == 5:
                 self.vesc.unitData['5'] |= self.rawData
+            elif self.rawData['unit_id'] == 6:
+                self.vesc.unitData['6'] |= self.rawData
 
         return self.vesc.unitData
 

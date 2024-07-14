@@ -2,6 +2,7 @@ import socket
 import os
 import time
 import server
+import ast
 
 class TCP:
 
@@ -103,7 +104,7 @@ class TCP:
                 self.new_msg = True
                 self.full_msg = ''
                 print(type(self.returnmsg))
-                server.server_loop_iteration(eval(self.returnmsg))
+                server.server_loop_iteration(ast.literal_eval(self.returnmsg))
                 
                 return self.returnmsg
     
