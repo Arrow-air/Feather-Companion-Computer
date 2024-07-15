@@ -5,7 +5,7 @@ import time
 class VESCCAN:
     def __init__(self):
 
-        self.can0 = can.interface.Bus(channel = 'can0', bustype = 'socketcan') # socketcan_native Bitrate implicit at 500K
+        self.can0 = can.interface.Bus(channel='can0', bustype='socketcan', bitrate=500000)
 
         self.id = ''
         self.data = ''
