@@ -4,10 +4,10 @@
 cd ..
 
 # Run Backend Data handler
-sudo python3 FCPC.py
+sudo python3 src/FCPC.py
 
 # Run System State Window Frontend
-sudo python3 display1.py &
+sudo python3 src/display1.py &
 
 # Run System Information Window Frontend
-sudo python3 display2.py &
+sudo python3 src/display2.py &
