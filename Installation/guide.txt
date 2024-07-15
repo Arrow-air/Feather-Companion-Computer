@@ -12,3 +12,5 @@ bash run_project.sh
 
 
 replace "cd /path/to/your/project" with your actually python project path
+
+**Run FUI FCPC.py First, then Run GCS FCPC.py 

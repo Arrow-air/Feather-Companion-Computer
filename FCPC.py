@@ -23,7 +23,6 @@ from datetime import datetime
 
 #Created Packages 
 import IO
-#import UI
 import ESC
 import BMS
 #import LoRa
@@ -37,18 +36,12 @@ import Joystick
 gound_or_flight = 'FUI' #Flight UI
 
 #Serial Comport Settings for Lora Telemetry & Flight Controller Interfaces
-'''TEST
-#LoraComport = 'COM10'   #Lora Serial Port
-VeronteComport = 'COM9' #Veronte Serial Port
-Serialbitrate = 115200
-'''
 
 #LoraComport = '/dev/tty6'   #Lora Serial Port
 VeronteComport = '/dev/ttyS0' #Veronte Serial Port
 Serialbitrate = 115200
 
 #IP seting for TCP/IP Telemetry
-#TCP_IP = "192.168.1.69" # Laptop
 TCP_IP = "192.168.1.84" #Rpi
 TCP_PORT = 1234
 TCP_Buffer = 16
@@ -70,7 +63,6 @@ if gound_or_flight == 'FUI':
 
     #lora = LoRa.LoRa(LoraComport,Serialbitrate,gound_or_flight)
     veronte = Veronte.Veronte(VeronteComport,Serialbitrate,gound_or_flight)
-    #ui = UI.UI(pydisplay,pytime,gound_or_flight)
     data = Data.Data(tcp,gound_or_flight)
 
     joystickUSB = Joystick.JoystickUSB(pyjoystick,pytime,gound_or_flight)
@@ -81,7 +73,6 @@ elif gound_or_flight == 'GCS':
 
     tcp = TCP.TCP(TCP_IP,TCP_PORT,TCP_Buffer,gound_or_flight)
     #lora = LoRa.LoRa(LoraComport,Serialbitrate,gound_or_flight)
-    #ui = UI.UI(pydisplay,pytime,gound_or_flight)
     data = Data.Data(tcp,gound_or_flight)
 
 #tlock = threading.Lock()
