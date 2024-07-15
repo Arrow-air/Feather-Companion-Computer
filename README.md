@@ -76,7 +76,7 @@ Sets up a network connection to `display1.py` and `display2.py` to send telement
 
 ### protocols_functions.py
 **Protocols Utility Functions Module**  
-Contains utility functions used by `server.py`, `display1.py`, and `display2.py. Provides common functionalities such as message parsing, checksum calculation, and other specific operations.
+Contains utility functions used by `server.py`, `display1.py`, and `display2.py`. Provides common functionalities such as message parsing, checksum calculation, and other specific operations.
 
 ### display1.py
 **Display Module 1**  
