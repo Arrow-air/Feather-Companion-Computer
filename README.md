@@ -100,4 +100,12 @@ Manages I/O on the RPI GPIO pins.
 
 ---
 
-This README provides a comprehensive overview of the Project Feather system and its components. For detailed usage and additional information, refer to the documentation within each module and the main `FCPC.py` script.
+This README provides a comprehensive overview of the Project Feather system and its components. For detailed usage and additional information, refer to the documentation within each module and the main `FCPC.py` script, as well as the following reference documents:
+
+## FCPC Concept Document 
+
+[FCPC Concept]( https://docs.google.com/document/d/15r7cTYvV1hOLt8er7vyQtWU0twEOfAIIOQ0pdE-wRtA/edit?pli=1#heading=h.xr0raokzut1w )
+
+## Project Feather Data Network & Ground Equipment Document
+
+[Data Network & Ground Equipment]( https://docs.google.com/document/d/11VlSYsE245VFLZsYB7TvqWuuJ1UnPRjPKnnLWUzqcEM/edit )
