@@ -61,6 +61,7 @@ class CyphalCAN3:
 			self.parse_heartbeat(data)
 		
 		self.esc_data['unit_id'] = message.arbitration_id
+		print(self.esc_data['unit_id'])
 
 	def parse_command_control(self, data):
 		command, node_id = struct.unpack('<BBx', data)
