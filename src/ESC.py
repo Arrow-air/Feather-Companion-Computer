@@ -49,7 +49,7 @@ class ESC:
 
                 x = i + 1
                 
-                self.dataDictionary[f'MOT{x}_rpm_PCTe'] = data[f'{i}']['info_upload_6160']['electrical_speed']
+                self.dataDictionary[f'MOT{x}_rpm_PCTe'] = data[f'{i}']['info_upload_6160']['electrical_speed'] * 3 # RPM = 3 x electrical speed
                 self.dataDictionary[f'ESC{x}_CUR_AMPe'] = data[f'{i}']['info_upload_6160']['bus_current']
                 self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
                 self.dataDictionary[f'ESC{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['MOS']
