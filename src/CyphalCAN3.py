@@ -35,7 +35,7 @@ class CyphalCAN3:
 
 	def receive_data(self):
 		message = self.can0.recv()
-		#print(message.data)
+		print(message.data)
 		if message:
 			self.parse_message(message)
 
