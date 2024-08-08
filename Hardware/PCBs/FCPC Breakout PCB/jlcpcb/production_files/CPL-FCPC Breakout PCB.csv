@@ -1,6 +1,6 @@
 Designator,Val,Package,Mid X,Mid Y,Rotation,Layer
-C1,10uF,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,109.4635,-119.1589,-90.0,top
-C2,10uF,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,120.8427,-119.1589,-90.0,top
+C1,C,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,109.4635,-119.1589,-90.0,top
+C2,C,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,120.8427,-119.1589,-90.0,top
 J1,CAN,"PhoenixContact_MCV_1,5_4-G-3.5_1x04_P3.50mm_Vertical",186.7023,-127.5409,0.0,top
 J10,RS485,PinHeader_1x04_P2.54mm_Vertical,169.1588,-119.126,270.0,bottom
 J2,RS485,"PhoenixContact_MCV_1,5_4-G-3.5_1x04_P3.50mm_Vertical",169.2832,-127.5588,0.0,top
@@ -11,3 +11,5 @@ J6,UART,PinHeader_1x02_P2.54mm_Vertical,155.138,-119.126,270.0,bottom
 J7,CAN,PinHeader_1x04_P2.54mm_Vertical,186.888,-119.126,270.0,bottom
 J8,5V,PinHeader_1x02_P2.54mm_Vertical,125.3081,-119.0573,270.0,bottom
 J9,12V,PinHeader_1x02_P2.54mm_Vertical,113.8323,-119.0573,270.0,bottom
+R1,470,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,148.2344,-125.476,90.0,top
+R2,1K,R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,148.2344,-121.158,90.0,top

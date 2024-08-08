@@ -6,8 +6,8 @@
 	(paper "A5")
 	(title_block
 		(title "FCPC Breakout PCB")
-		(date "2024-07-16")
-		(rev "V1")
+		(date "2024-08-08")
+		(rev "V1.1")
 		(company "Arrow Air DAO")
 		(comment 1 "Connector Breakout Board")
 		(comment 2 "@21stCenturyAlex")
@@ -1037,6 +1037,128 @@
 				)
 			)
 		)
+		(symbol "Device:R_Small"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0.254) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 0.762 0.508 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "R_Small"
+				(at 0.762 -1.016 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor, small symbol"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_Small_0_1"
+				(rectangle
+					(start -0.762 1.778)
+					(end 0.762 -1.778)
+					(stroke
+						(width 0.2032)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_Small_1_1"
+				(pin passive line
+					(at 0 2.54 270)
+					(length 0.762)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 0.762)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "power:+12V"
 			(power)
 			(pin_numbers hide)
@@ -1496,6 +1618,16 @@
 	)
 	(wire
 		(pts
+			(xy 64.77 96.52) (xy 64.77 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "470df037-06ea-4362-b5be-fc27c2c6a6e4")
+	)
+	(wire
+		(pts
 			(xy 33.02 45.72) (xy 34.29 45.72)
 		)
 		(stroke
@@ -1503,6 +1635,16 @@
 			(type default)
 		)
 		(uuid "4a34afc7-cef1-46a7-94c9-2fc05378adcb")
+	)
+	(wire
+		(pts
+			(xy 64.77 90.17) (xy 64.77 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "503cff1d-9872-4664-8812-692cae987baf")
 	)
 	(wire
 		(pts
@@ -1663,6 +1805,16 @@
 			(type default)
 		)
 		(uuid "e0df4914-d51a-4b28-a860-a5880124ed27")
+	)
+	(wire
+		(pts
+			(xy 64.77 104.14) (xy 64.77 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e19b4b92-b115-4c04-ae99-29643864ea5a")
 	)
 	(wire
 		(pts
@@ -3080,24 +3232,24 @@
 			)
 		)
 	)
-	(global_label "UART TX"
+	(global_label "UART TX 3.3V"
 		(shape input)
-		(at 34.29 50.8 0)
+		(at 64.77 97.79 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "da620abb-16cd-4505-b026-a1a0c261652a")
+		(uuid "d39213a4-4393-445b-84a3-fedaa4ecfcbf")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 45.0766 50.8 0)
+			(at 48.9034 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -3115,6 +3267,28 @@
 		(uuid "f664f013-6bd5-4e68-b6d1-681835e40598")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 47.9189 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART TX 3.3V"
+		(shape input)
+		(at 34.29 50.8 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fb7c1d69-1dbc-4748-9a5f-37fe495671ac")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 50.1566 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3142,6 +3316,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UART TX"
+		(shape input)
+		(at 64.77 90.17 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "fe39e0e7-e569-4cbe-9fe2-d4857ad55e84")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 64.77 79.3834 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -3768,6 +3964,75 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Small")
+		(at 64.77 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3a8af9ec-df76-4491-bf53-bff8d8097c44")
+		(property "Reference" "R2"
+			(at 66.04 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1K"
+			(at 64.77 103.124 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 64.77 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.77 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 64.77 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "fbbd3d9e-4ffe-4f33-9bd1-15ccd4d4d097")
+		)
+		(pin "1"
+			(uuid "0994a342-98d3-41bd-9d65-c768fbc103ca")
+		)
+		(instances
+			(project "FCPC Breakout PCB"
+				(path "/6306dc53-4a7c-4b79-9878-04f46fe5b23f"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+12V")
 		(at 60.96 72.39 90)
 		(unit 1)
@@ -4041,6 +4306,72 @@
 			(project "FCPC Breakout PCB"
 				(path "/6306dc53-4a7c-4b79-9878-04f46fe5b23f"
 					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 64.77 105.41 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6609ec4e-3c62-46c4-9bf6-de1ca2592ef5")
+		(property "Reference" "#PWR014"
+			(at 64.77 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 64.77 107.95 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 64.77 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 64.77 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 64.77 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4c5957f9-58ac-4786-b3e8-2480e841fa7f")
+		)
+		(instances
+			(project "FCPC Breakout PCB"
+				(path "/6306dc53-4a7c-4b79-9878-04f46fe5b23f"
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -4391,6 +4722,75 @@
 			(project "FCPC Breakout PCB"
 				(path "/6306dc53-4a7c-4b79-9878-04f46fe5b23f"
 					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 64.77 93.98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b777d3d2-d21b-4951-a07f-1a0051bf3e8a")
+		(property "Reference" "R1"
+			(at 66.294 94.234 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "470"
+			(at 65.024 96.012 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 64.77 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.77 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 64.77 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "248796f2-e6b4-4607-9dc7-357a718e7675")
+		)
+		(pin "1"
+			(uuid "6ac610a5-c1bc-483e-b8d7-5d6122261cb7")
+		)
+		(instances
+			(project ""
+				(path "/6306dc53-4a7c-4b79-9878-04f46fe5b23f"
+					(reference "R1")
 					(unit 1)
 				)
 			)

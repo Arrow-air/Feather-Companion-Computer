@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,8.0.3*%
-%TF.CreationDate,2024-08-02T17:34:24+01:00*%
+%TF.CreationDate,2024-08-08T19:12:20+01:00*%
 %TF.ProjectId,FCPC Breakout PCB,46435043-2042-4726-9561-6b6f75742050,V1.1*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Copper,L2,Bot*%
 %TF.FilePolarity,Positive*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 8.0.3) date 2024-08-02 17:34:24*
+G04 Created by KiCad (PCBNEW 8.0.3) date 2024-08-08 19:12:20*
 %MOMM*%
 %LPD*%
 G01*
@@ -42,7 +42,10 @@ G04 Aperture macros list end*
 %ADD13O,1.700000X1.700000*%
 %TD*%
 %TA.AperFunction,ViaPad*%
-%ADD14C,0.800000*%
+%ADD14C,0.600000*%
+%TD*%
+%TA.AperFunction,ViaPad*%
+%ADD15C,0.800000*%
 %TD*%
 G04 APERTURE END LIST*
 D10*
@@ -128,7 +131,7 @@ X126578100Y-119057300D03*
 %TD*%
 D12*
 %TO.P,J6,1,Pin_1*%
-%TO.N,UART TX*%
+%TO.N,UART TX 3.3V*%
 X153868000Y-119126000D03*
 D13*
 %TO.P,J6,2,Pin_2*%
@@ -161,8 +164,12 @@ X115102300Y-119057300D03*
 %TD*%
 D14*
 %TO.N,GND*%
+X149148800Y-119075200D03*
+D15*
 X108142700Y-120327300D03*
 X119471100Y-120327300D03*
+D14*
+X147320000Y-119075200D03*
 %TD*%
 %TA.AperFunction,Conductor*%
 %TO.N,GND*%
