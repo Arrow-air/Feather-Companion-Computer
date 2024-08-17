@@ -25,7 +25,7 @@ class Veronte:
     def packetStruct(self):
         
         try:
-                self.dataDictionary = sself.readData()
+                self.dataDictionary = self.readData()
                 self.packet = {key : round(self.dataDictionary[key],2) for key in self.dataDictionary}
                 print(self.packet)
         except:

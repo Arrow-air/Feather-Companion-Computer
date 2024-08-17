@@ -64,7 +64,7 @@ class ESC:
             self.packet = self.dataDictionary
         
         #print(self.packet) 
-        return self.packet
+        return [self.packet, data]
 
     def escRead(self):
         
@@ -77,17 +77,17 @@ class ESC:
             self.esc.receive_data()
             rawData = self.esc.get_data()
             
-            if rawData['unit_id'] - 0x180810 == 0 or rawData['unit_id'] - 0x180910 == 0 or rawData['unit_id'] - 0x181010 == 0 or rawData['unit_id'] - 0x181110 == 0 or rawData['unit_id'] - 0x1D5510 == 0:
+            if rawData['unit_id'] - 0x14780810 == 0 or rawData['unit_id'] - 0x14780910 == 0 or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
                 self.esc.unitData['0'] |= rawData
-            elif rawData['unit_id'] - 0x180810 == 1 or rawData['unit_id'] - 0x180910 == 1 or rawData['unit_id'] - 0x181010 == 1 or rawData['unit_id'] - 0x181110 == 1 or rawData['unit_id'] - 0x1D5510 == 1:
+            elif rawData['unit_id'] - 0x14780810 == 1 or rawData['unit_id'] - 0x14780910 == 1 or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
                 self.esc.unitData['1'] |= rawData
-            elif rawData['unit_id'] - 0x180810 == 2 or rawData['unit_id'] - 0x180910 == 2 or rawData['unit_id'] - 0x181010 == 2 or rawData['unit_id'] - 0x181110 == 2 or rawData['unit_id'] - 0x1D5510 == 2:
+            elif rawData['unit_id'] - 0x14780810 == 2 or rawData['unit_id'] - 0x14780910 == 2 or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
                 self.esc.unitData['2'] |= rawData
-            elif rawData['unit_id'] - 0x180810 == 3 or rawData['unit_id'] - 0x180910 == 3 or rawData['unit_id'] - 0x181010 == 3 or rawData['unit_id'] - 0x181110 == 3 or rawData['unit_id'] - 0x1D5510 == 3:
+            elif rawData['unit_id'] - 0x14780810 == 3 or rawData['unit_id'] - 0x14780910 == 3 or rawData['unit_id'] - 0x14781010 == 3 or rawData['unit_id'] - 0x14781110 == 3 or rawData['unit_id'] - 0x107D5510 == 3:
                 self.esc.unitData['3'] |= rawData
-            elif rawData['unit_id'] - 0x180810 == 4 or rawData['unit_id'] - 0x180910 == 4 or rawData['unit_id'] - 0x181010 == 4 or rawData['unit_id'] - 0x181110 == 4 or rawData['unit_id'] - 0x1D5510 == 4:
+            elif rawData['unit_id'] - 0x14780810 == 4 or rawData['unit_id'] - 0x14780910 == 4 or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
                 self.esc.unitData['4'] |= rawData
-            elif rawData['unit_id'] - 0x180810 == 5 or rawData['unit_id'] - 0x180910 == 5 or rawData['unit_id'] - 0x181010 == 5 or rawData['unit_id'] - 0x181110 == 5 or rawData['unit_id'] - 0x1D5510 == 5:
+            elif rawData['unit_id'] - 0x14780810 == 5 or rawData['unit_id'] - 0x14780910 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
                 self.esc.unitData['5'] |= rawData
         
         return self.esc.unitData

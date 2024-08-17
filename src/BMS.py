@@ -92,7 +92,7 @@ class BMS:
                                'ESC2_CUR_AMP':0,'ESC3_CUR_AMP':0,'ESC4_CUR_AMP':0,'ESC5_CUR_AMP':random.randint(0,100),'ESC6_CUR_AMP':0}
 
         #print(self.packet) 
-        return self.packet
+        return [self.packet,self.previous_packet]
     
     def bmsRead(self):
         

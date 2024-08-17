@@ -128,35 +128,67 @@ class CyphalCAN3:
 if __name__ == "__main__":
 	
 	cyphalcan = CyphalCAN3()
+
+	Test = True
 	
-	while True:
-		
-		cyphalcan.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
-		
-		while len(cyphalcan.unitData['5']) < 5:
+	if Test == True:
+
+		while True:
 			
-			cyphalcan.esc_data = {}
+			cyphalcan.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
 			
-			cyphalcan.receive_data()
-			rawData = cyphalcan.get_data()
+			while len(cyphalcan.unitData['5']) < 5:
+				
+				cyphalcan.esc_data = {}
+				
+				cyphalcan.receive_data()
+				rawData = cyphalcan.get_data()
+				
+				if rawData['unit_id'] - 0x14780810 == 0 or rawData['unit_id'] - 0x14780910 == 0 or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
+					cyphalcan.unitData['0'] |= rawData
+					cyphalcan.unitData['1'] |= rawData
+					cyphalcan.unitData['2'] |= rawData
+					cyphalcan.unitData['3'] |= rawData
+					cyphalcan.unitData['4'] |= rawData
+					cyphalcan.unitData['5'] |= rawData
+				'''
+				elif rawData['unit_id'] - 0x14780810 == 1 or rawData['unit_id'] - 0x14780910 == 1 or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
+					cyphalcan.unitData['1'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 2 or rawData['unit_id'] - 0x14780910 == 2 or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
+					cyphalcan.unitData['2'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 3 or rawData['unit_id'] - 0x14780910 == 3 or rawData['unit_id'] - 0x14781010 == 3 or rawData['unit_id'] - 0x14781110 == 3 or rawData['unit_id'] - 0x107D5510 == 3:
+					cyphalcan.unitData['3'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 4 or rawData['unit_id'] - 0x14780910 == 4 or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
+					cyphalcan.unitData['4'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 5 or rawData['unit_id'] - 0x14780910 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
+					cyphalcan.unitData['5'] |= rawData
+				'''
+			print(cyphalcan.unitData['0'])
+
+	else:
+		while True:
 			
-			if rawData['unit_id'] - 0x14780810 == 0 or rawData['unit_id'] - 0x14780910 == 0 or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
-				cyphalcan.unitData['0'] |= rawData
-				cyphalcan.unitData['1'] |= rawData
-				cyphalcan.unitData['2'] |= rawData
-				cyphalcan.unitData['3'] |= rawData
-				cyphalcan.unitData['4'] |= rawData
-				cyphalcan.unitData['5'] |= rawData
-			'''
-			elif rawData['unit_id'] - 0x14780810 == 1 or rawData['unit_id'] - 0x14780910 == 1 or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
-				cyphalcan.unitData['1'] |= rawData
-			elif rawData['unit_id'] - 0x14780810 == 2 or rawData['unit_id'] - 0x14780910 == 2 or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
-				cyphalcan.unitData['2'] |= rawData
-			elif rawData['unit_id'] - 0x14780810 == 3 or rawData['unit_id'] - 0x14780910 == 3 or rawData['unit_id'] - 0x14781010 == 3 or rawData['unit_id'] - 0x14781110 == 3 or rawData['unit_id'] - 0x107D5510 == 3:
-				cyphalcan.unitData['3'] |= rawData
-			elif rawData['unit_id'] - 0x14780810 == 4 or rawData['unit_id'] - 0x14780910 == 4 or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
-				cyphalcan.unitData['4'] |= rawData
-			elif rawData['unit_id'] - 0x14780810 == 5 or rawData['unit_id'] - 0x14780910 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
-				cyphalcan.unitData['5'] |= rawData
-			'''
-		print(cyphalcan.unitData['0'])
+			cyphalcan.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
+			
+			while len(cyphalcan.unitData['5']) < 5:
+				
+				cyphalcan.esc_data = {}
+				
+				cyphalcan.receive_data()
+				rawData = cyphalcan.get_data()
+				
+				if rawData['unit_id'] - 0x14780810 == 0 or rawData['unit_id'] - 0x14780910 == 0 or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
+					cyphalcan.unitData['0'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 1 or rawData['unit_id'] - 0x14780910 == 1 or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
+					cyphalcan.unitData['1'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 2 or rawData['unit_id'] - 0x14780910 == 2 or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
+					cyphalcan.unitData['2'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 3 or rawData['unit_id'] - 0x14780910 == 3 or rawData['unit_id'] - 0x14781010 == 3 or rawData['unit_id'] - 0x14781110 == 3 or rawData['unit_id'] - 0x107D5510 == 3:
+					cyphalcan.unitData['3'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 4 or rawData['unit_id'] - 0x14780910 == 4 or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
+					cyphalcan.unitData['4'] |= rawData
+				elif rawData['unit_id'] - 0x14780810 == 5 or rawData['unit_id'] - 0x14780910 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
+					cyphalcan.unitData['5'] |= rawData
+			
+			print(cyphalcan.unitData)
+
