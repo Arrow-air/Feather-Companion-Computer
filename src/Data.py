@@ -163,7 +163,7 @@ class Data:
 
         self.Starttimestamp = str(datetime.now().year)+ '_' + str(datetime.now().month)+ '_' + str(datetime.now().day) + '-' + str(datetime.now().hour) + '_' + str(datetime.now().minute)
 
-        self.logFile = open('./Logs/FeatherFlightLog-'+self.Starttimestamp+'.csv','w',encoding='utf-8')
+        self.logFile = open('../Logs/FeatherFlightLog-'+self.Starttimestamp+'.csv','w',encoding='utf-8')
         
         print("Data Init")
     
