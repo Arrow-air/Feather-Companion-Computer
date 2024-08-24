@@ -86,7 +86,7 @@ if __name__ == '__main__':
         if gound_or_flight == 'FUI':
             
             #Return Data From Each System Module
-            data.JoystickPacket = joystickUSB.packetStruct()
+            #data.JoystickPacket = joystickUSB.packetStruct()
             #data.JoystickPacket = joystickCAN.packetStruct()
             data.IOPacket = io.packetStruct()
             data.ESCout = esc.packetStruct()
