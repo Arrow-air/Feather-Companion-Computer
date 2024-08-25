@@ -43,6 +43,7 @@ Serialbitrate = 115200
 
 #IP seting for TCP/IP Telemetry
 TCP_IP = "192.168.1.84" #Rpi
+#TCP_IP = "192.168.1.84" #Rpi Test
 TCP_PORT = 1234
 TCP_Buffer = 16
 

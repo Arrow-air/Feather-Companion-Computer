@@ -163,7 +163,7 @@ if __name__ == "__main__":
 				elif rawData['unit_id'] - 0x14780810 == 5 or rawData['unit_id'] - 0x14780910 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
 					cyphalcan.unitData['5'] |= rawData
 				'''
-			print(cyphalcan.unitData['0'])
+			print(cyphalcan.unitData)
 
 	else:
 		while True:
