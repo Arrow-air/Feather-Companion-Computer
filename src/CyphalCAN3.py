@@ -108,7 +108,7 @@ class CyphalCAN3:
 		output_throttle, bus_voltage, mos_temp, cap_temp, motor_temp = struct.unpack('<HhBBB', data)
 		self.esc_data['info_upload_6161'] = {
 		'output_throttle': output_throttle,
-		'bus_voltage': bus_voltage,
+		'bus_voltage': bus_voltage/10,
 		'temperatures': {
 		'MOS': mos_temp - 40,
 		'Capacitance': cap_temp - 40,

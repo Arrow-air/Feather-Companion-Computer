@@ -238,6 +238,6 @@ if __name__ == "__main__":
             elif rawData['unit_id'] == 6:
                 vesc.unitData['6'] |= rawData
                 
-        print(vesc.unitData)
+            print(vesc.unitData)
         print("\n")
 
