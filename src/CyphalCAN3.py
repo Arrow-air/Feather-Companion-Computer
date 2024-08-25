@@ -118,12 +118,13 @@ class CyphalCAN3:
 		#print(self.esc_data['info_upload_6161'])
 
 	def parse_heartbeat(self, data):
-		power_on_timeA,power_on_timeB,power_on_timeC,power_on_timeD, health_status, current_mode = struct.unpack('<6B', data)
+		power_on_timeA, power_on_timeB, power_on_timeC, power_on_timeD, health_status, current_mode, user_defined = struct.unpack('<7B', data)
 		power_on_time = (power_on_timeA << 24) | (power_on_timeB << 16) | (power_on_timeC << 8) | power_on_timeD
 		self.esc_data['heartbeat'] = {
 		'power_on_time': power_on_time,
 		'health_status': health_status,
-		'current_mode': current_mode
+		'current_mode': current_mode,
+		'user_defined': user_defined
 		}
 		#print(self.esc_data['heartbeat'])
 
