@@ -66,6 +66,8 @@ class VESCCAN:
     
     def read_frame(self):
 
+        print("Reading BMS")
+
         if self.message is None:
             self.message = self.can0.recv()
             self.prev_message = self.message
