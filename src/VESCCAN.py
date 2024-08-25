@@ -11,7 +11,7 @@ class VESCCAN:
         self.data = ''
         self.unit_id = ''
         self.command = ''
-        self.message = ''
+        #self.message = ''
         self.message = None
         self.prev_message = None
 
@@ -80,7 +80,7 @@ class VESCCAN:
 
             if self.message is None:
                 self.message = self.prev_message
-                #print(self.message)
+                print(self.message)
 		
         self.id = self.message.arbitration_id
 

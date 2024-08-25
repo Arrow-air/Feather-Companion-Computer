@@ -51,7 +51,7 @@ class CyphalCAN3:
 		
 		data = message.data[0:len(message.data) - 1] # Remove tail byte
 		
-		if message.arbitration_id in range(0x14780810,0x14780817) or message.arbitration_id in range(0x14780910,0x14780917): #0x181:
+		if message.arbitration_id in range(0xC780801,0xC780807) or message.arbitration_id in range(0xC780901,0xC780907): #0x181:
 			self.parse_throttle_data(data)
 		elif message.arbitration_id in range(0x14781010,0x14781017):#0x182:
 			self.parse_info_upload_6160(data)
@@ -151,17 +151,17 @@ if __name__ == "__main__":
 				cyphalcan.receive_data()
 				rawData = cyphalcan.get_data()
 				
-				if rawData['unit_id'] - 0x14780810 == 0 or rawData['unit_id'] - 0x14780910 == 0 or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
+				if rawData['unit_id'] - 0xC780801 == 0 or rawData['unit_id'] - 0xC780901 == 0 or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
 					cyphalcan.unitData['0'] |= rawData
-				elif rawData['unit_id'] - 0x14780810 == 1 or rawData['unit_id'] - 0x14780910 == 1 or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
+				elif rawData['unit_id'] - 0xC780801 == 1 or rawData['unit_id'] - 0xC780901 == 1 or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
 					cyphalcan.unitData['1'] |= rawData
-				elif rawData['unit_id'] - 0x14780810 == 2 or rawData['unit_id'] - 0x14780910 == 2 or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
+				elif rawData['unit_id'] - 0xC780801 == 2 or rawData['unit_id'] - 0xC780901 == 2 or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
 					cyphalcan.unitData['2'] |= rawData
-				elif rawData['unit_id'] - 0x14780810 == 3 or rawData['unit_id'] - 0x14780910 == 3 or rawData['unit_id'] - 0x14781010 == 3 or rawData['unit_id'] - 0x14781110 == 3 or rawData['unit_id'] - 0x107D5510 == 3:
+				elif rawData['unit_id'] - 0xC780801 == 3 or rawData['unit_id'] - 0xC780901 == 3 or rawData['unit_id'] - 0x14781010 == 3 or rawData['unit_id'] - 0x14781110 == 3 or rawData['unit_id'] - 0x107D5510 == 3:
 					cyphalcan.unitData['3'] |= rawData
-				elif rawData['unit_id'] - 0x14780810 == 4 or rawData['unit_id'] - 0x14780910 == 4 or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
+				elif rawData['unit_id'] - 0xC780801 == 4 or rawData['unit_id'] - 0xC780901 == 4 or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
 					cyphalcan.unitData['4'] |= rawData
-				elif rawData['unit_id'] - 0x14780810 == 5 or rawData['unit_id'] - 0x14780910 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
+				elif rawData['unit_id'] - 0xC780801 == 5 or rawData['unit_id'] - 0xC780901 == 5 or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
 					cyphalcan.unitData['5'] |= rawData
 				
 				print(cyphalcan.unitData)
