@@ -157,11 +157,11 @@ if __name__ == "__main__":
 					cyphalcan.unitData['1'] |= rawData
 				elif ((rawData['unit_id'] - 0xC780801 == 0) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][1] == 0)) or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
 					cyphalcan.unitData['2'] |= rawData
-				elif ((rawData['unit_id'] - 0xC780901 == 1) and (rawData['throttle_data'][1] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
+				elif ((rawData['unit_id'] - 0xC780901 == 0) and (rawData['throttle_data'][1] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
 					cyphalcan.unitData['3'] |= rawData
-				elif ((rawData['unit_id'] - 0xC780901 == 1) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
+				elif ((rawData['unit_id'] - 0xC780901 == 0) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
 					cyphalcan.unitData['4'] |= rawData
-				elif ((rawData['unit_id'] - 0xC780901 == 1) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][1] == 0)) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
+				elif ((rawData['unit_id'] - 0xC780901 == 0) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][1] == 0)) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
 					cyphalcan.unitData['5'] |= rawData
 				
 				print(cyphalcan.unitData)
@@ -184,11 +184,11 @@ if __name__ == "__main__":
 					cyphalcan.unitData['1'] |= rawData
 				elif ((rawData['unit_id'] - 0xC780801 == 0) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][1] == 0)) or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
 					cyphalcan.unitData['2'] |= rawData
-				elif ((rawData['unit_id'] - 0xC780901 == 1) and (rawData['throttle_data'][1] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
+				elif ((rawData['unit_id'] - 0xC780901 == 0) and (rawData['throttle_data'][1] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
 					cyphalcan.unitData['3'] |= rawData
-				elif ((rawData['unit_id'] - 0xC780901 == 1) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
+				elif ((rawData['unit_id'] - 0xC780901 == 0) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][2] == 0)) or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
 					cyphalcan.unitData['4'] |= rawData
-				elif ((rawData['unit_id'] - 0xC780901 == 1) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][1] == 0)) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
+				elif ((rawData['unit_id'] - 0xC780901 == 0) and (rawData['throttle_data'][0] == 0 and rawData['throttle_data'][1] == 0)) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
 					cyphalcan.unitData['5'] |= rawData
 			
 			print(cyphalcan.unitData)
