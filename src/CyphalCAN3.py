@@ -101,6 +101,7 @@ class CyphalCAN3:
 		'bus_current': bus_current,
 		'running_status': running_status
 		}
+		print(self.esc_data['info_upload_6160'])
 
 	def parse_info_upload_6161(self, data):
 		output_throttle, bus_voltage, mos_temp, cap_temp, motor_temp = struct.unpack('<HhBBB', data)
@@ -113,6 +114,7 @@ class CyphalCAN3:
 		'Motor': motor_temp - 40
 		}
 		}
+		print(self.esc_data['info_upload_6161'])
 
 	def parse_heartbeat(self, data):
 		power_on_timeA,power_on_timeB,power_on_timeC,power_on_timeD, health_status, current_mode = struct.unpack('<6B', data)
@@ -122,6 +124,7 @@ class CyphalCAN3:
 		'health_status': health_status,
 		'current_mode': current_mode
 		}
+		print(self.esc_data['heartbeat'])
 
 	def get_data(self):
 		return self.esc_data
