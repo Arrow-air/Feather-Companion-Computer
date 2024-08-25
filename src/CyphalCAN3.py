@@ -58,7 +58,8 @@ class CyphalCAN3:
 		elif message.arbitration_id in range(0x14781110,0x14781117):#0x183:
 			self.parse_info_upload_6161(data)
 		elif message.arbitration_id in range(0x107D5510,0x107D5517):#0x184:
-			self.parse_heartbeat(data)
+			#self.parse_heartbeat(data)
+			pass
 		
 		self.esc_data['unit_id'] = message.arbitration_id
 		#print(self.esc_data['unit_id'])
