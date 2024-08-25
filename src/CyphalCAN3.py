@@ -61,7 +61,7 @@ class CyphalCAN3:
 			#self.parse_heartbeat(data)
 			pass
 		
-		self.esc_data['unit_id'] = hex(message.arbitration_id)
+		self.esc_data['unit_id'] = message.arbitration_id
 		#print(self.esc_data['unit_id'])
 
 	def parse_command_control(self, data):
