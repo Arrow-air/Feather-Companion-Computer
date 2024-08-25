@@ -98,8 +98,9 @@ class CyphalCAN3:
 	def parse_info_upload_6160(self, data):
 		electrical_speed, bus_current, running_status = struct.unpack('<HhH', data)
 		self.esc_data['info_upload_6160'] = {
-		'electrical_speed': electrical_speed,
-		'bus_current': bus_current,
+		'electrical_speed': electrical_speed/10,
+		'RPM': (electrical_speed/10)*3,
+		'bus_current': bus_current/10,
 		'running_status': running_status
 		}
 		#print(self.esc_data['info_upload_6160'])
