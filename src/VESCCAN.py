@@ -239,5 +239,5 @@ if __name__ == "__main__":
                 vesc.unitData['6'] |= rawData
                 
             print(vesc.unitData)
-        print("\n")
+            print("\n")
 
