@@ -93,6 +93,7 @@ class CyphalCAN3:
 	def parse_throttle_data(self, data):
 		throttles = struct.unpack('<7B', data)
 		self.esc_data['throttle_data'] = self.reverseMakeThrot(throttles)
+		print(self.esc_data['throttle_data'])
 
 	def parse_info_upload_6160(self, data):
 		electrical_speed, bus_current, running_status = struct.unpack('<HhH', data)
