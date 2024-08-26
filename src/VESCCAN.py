@@ -80,7 +80,7 @@ class VESCCAN:
 
             if self.message is None:
                 self.message = self.prev_message
-                print(self.message)
+                #print(self.message)
 		
         self.id = self.message.arbitration_id
 
@@ -230,7 +230,7 @@ if __name__ == "__main__":
         while len(vesc.unitData['6']) < 25:
         
             rawData = vesc.read_frame()
-            
+            print(rawData)
             if rawData['unit_id'] == 1:
                 vesc.unitData['1'] |= rawData
             elif rawData['unit_id'] == 2:
@@ -244,6 +244,6 @@ if __name__ == "__main__":
             elif rawData['unit_id'] == 6:
                 vesc.unitData['6'] |= rawData
                 
-            print(vesc.unitData)
-            print("\n")
+        print(vesc.unitData)
+        print("\n")
 
