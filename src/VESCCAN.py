@@ -212,8 +212,9 @@ class VESCCAN:
             self.msgData['CAN_PACKET_BMS_HUM_TEMP1'] = struct.unpack('<H', data[4:6])[0] * 0.01
 
         else:
+            pass
             #print(command)
-            self.msgData['raw_data'] = data
+            #self.msgData['raw_data'] = data
             
         #print(self.msgData)
         self.prev_message = self.message
@@ -230,7 +231,7 @@ if __name__ == "__main__":
         while len(vesc.unitData['6']) < 25:
         
             rawData = vesc.read_frame()
-            print(rawData)
+            
             if rawData['unit_id'] == 1:
                 vesc.unitData['1'] |= rawData
             elif rawData['unit_id'] == 2:
@@ -243,7 +244,10 @@ if __name__ == "__main__":
                 vesc.unitData['5'] |= rawData
             elif rawData['unit_id'] == 6:
                 vesc.unitData['6'] |= rawData
-                
+
+            print(vesc.unitData['1'])
+            print("\n")
+            
         print(vesc.unitData)
         print("\n")
 
