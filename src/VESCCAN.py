@@ -101,14 +101,14 @@ class VESCCAN:
         if (command == 9738 or command == 38) and unit_id in range(10,17):#0x260A:  # CAN_PACKET_BMS_V_TOT
             #print(command)
             #print(unit_id)
-            self.msgData['packVoltage'] = struct.unpack('>I', data[0:4])[0] * 0.001
-            self.msgData['chargerVoltage'] = struct.unpack('>I', data[4:8])[0] * 0.001
+            self.msgData['packVoltage'] = struct.unpack('>I', data[0:4])[0] * 0.0000001
+            self.msgData['chargerVoltage'] = struct.unpack('>I', data[4:8])[0] * 0.0000001
 
         elif (command == 9994 or command == 39) and unit_id in range(10,17):#0x271A:  # CAN_PACKET_BMS_I
             #print(command)
             #print(unit_id)
-            self.msgData['packCurrent1'] = struct.unpack('<i', data[0:4])[0] * 0.01
-            self.msgData['packCurrent2'] = struct.unpack('<i', data[4:8])[0] * 0.01
+            self.msgData['packCurrent1'] = struct.unpack('>i', data[0:4])[0] * 0.000001
+            self.msgData['packCurrent2'] = struct.unpack('>i', data[4:8])[0] * 0.000001
 
         elif (command == 10250 or command == 40) and unit_id in range(10,17):#0x280A:  # CAN_PACKET_BMS_AH_WH
             #print(command)
