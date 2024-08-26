@@ -96,7 +96,7 @@ class VESCCAN:
     def parse_frame(self, command, data, unit_id):
 
         self.msgData = {'unit_id': unit_id}
-        print(command)
+        #print(command)
         #Note: Might Need to switch endianness in unpack function for real bms
         if (command == 9738 or command == 38) and unit_id in range(10,17):#0x260A:  # CAN_PACKET_BMS_V_TOT
             #print(command)
