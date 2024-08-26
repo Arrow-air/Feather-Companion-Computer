@@ -223,7 +223,7 @@ class VESCCAN:
 
         else:
             #pass
-            print(command)
+            #print(command)
             self.msgData['raw_data'] = data
             
         #print(self.msgData)
@@ -242,22 +242,24 @@ if __name__ == "__main__":
         
             rawData = vesc.read_frame()
             
-            if rawData['unit_id'] == 1:
+            print(rawData)
+            print("\n")
+
+            if rawData['unit_id'] == 11:
                 vesc.unitData['1'] |= rawData
-            elif rawData['unit_id'] == 2:
+            elif rawData['unit_id'] == 12:
                 vesc.unitData['2'] |= rawData
-            elif rawData['unit_id'] == 3:
+            elif rawData['unit_id'] == 13:
                 vesc.unitData['3'] |= rawData
-            elif rawData['unit_id'] == 4:
+            elif rawData['unit_id'] == 14:
                 vesc.unitData['4'] |= rawData
-            elif rawData['unit_id'] == 5:
+            elif rawData['unit_id'] == 15:
                 vesc.unitData['5'] |= rawData
-            elif rawData['unit_id'] == 6:
+            elif rawData['unit_id'] == 16:
                 vesc.unitData['6'] |= rawData
 
-            print(vesc.unitData['1'])
-            print("\n")
             
+
         print(vesc.unitData)
         print("\n")
 
