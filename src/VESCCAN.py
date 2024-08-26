@@ -102,7 +102,7 @@ class VESCCAN:
             print(command)
             print(unit_id)
             self.msgData['packVoltage'] = struct.unpack('<I', data[0:4])[0] * 0.001
-            self.msgData['chargerVoltage'] = struct.unpack('<I', data[4:8])[0] * 0.001
+            #self.msgData['chargerVoltage'] = struct.unpack('<I', data[4:8])[0] * 0.001
 
         elif command == 9994 or command == 40:#0x271A:  # CAN_PACKET_BMS_I
             print(command)
@@ -208,7 +208,7 @@ class VESCCAN:
             self.msgData['CAN_PACKET_BMS_TEMP0'] = struct.unpack('<H', data[0:2])[0] * 0.01
             self.msgData['CAN_PACKET_BMS_HUM_HUM'] = struct.unpack('<H', data[2:4])[0] * 0.01
             self.msgData['CAN_PACKET_BMS_HUM_TEMP1'] = struct.unpack('<H', data[4:6])[0] * 0.01
-              
+
         elif command == 11530 or command == 46:#0x2D1A:  # CAN_PACKET_BMS_SOC_SOH_TEMP_STAT
             print(command)
             print(unit_id)
