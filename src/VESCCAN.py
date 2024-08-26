@@ -185,7 +185,7 @@ class VESCCAN:
             
             self.auxA.append(struct.unpack('<H', data[2:4])[0] * 0.01)
             self.auxB.append(struct.unpack('<H', data[4:6])[0] * 0.01)
-            self.auxC.append(struct.unpack('<H', data[6:8])[0] * 0.01)
+            #self.auxC.append(struct.unpack('<H', data[6:8])[0] * 0.01)
             
             self.auxnum += 1
             
@@ -193,7 +193,7 @@ class VESCCAN:
 
                 self.msgData['auxVoltagesIndividual1'] = self.auxA
                 self.msgData['auxVoltagesIndividual2'] = self.auxB 
-                self.msgData['auxVoltagesIndividual3'] = self.auxC 
+                #self.msgData['auxVoltagesIndividual3'] = self.auxC 
             
                 self.auxA = []
                 self.auxB = []
