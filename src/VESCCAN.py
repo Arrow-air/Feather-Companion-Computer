@@ -162,7 +162,7 @@ class VESCCAN:
             self.msgData['NoOfCells'] = data[0] #struct.unpack('<B', data[0:1])[0]
             data2 = list(data[1:8])
             data2.append(0)
-            self.msgData['bal_state'] = struct.unpack('>Q', bytes(data2))[0] #struct.unpack('<Q', data2)[0] >> 1
+            #self.msgData['bal_state'] = struct.unpack('>Q', bytes(data2))[0] #struct.unpack('<Q', data2)[0] >> 1
         
         elif (command == 11018 or command == 44) and unit_id in range(10,17):#0x2B1A:  # CAN_PACKET_BMS_TEMPS
             print(command)
