@@ -108,7 +108,7 @@ class VESCCAN:
             print(command)
             print(unit_id)
             self.msgData['packCurrent1'] = struct.unpack('<i', data[0:4])[0] * 0.01
-            self.msgData['packCurrent2'] = struct.unpack('<i', data[4:8])[0] * 0.01
+            #self.msgData['packCurrent2'] = struct.unpack('<i', data[4:8])[0] * 0.01
 
         elif command == 10250 or command == 41:#0x280A:  # CAN_PACKET_BMS_AH_WH
             print(command)
