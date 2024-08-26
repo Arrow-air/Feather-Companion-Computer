@@ -66,16 +66,16 @@ class VESCCAN:
     
     def read_frame(self):
 
-        print("Reading BMS")
+        #print("Reading BMS")
 
         if self.message is None:
             self.message = self.can0.recv()
             self.prev_message = self.message
-            print(self.message.arbitration_id)
+            #print(self.message.arbitration_id)
 
         elif self.message is not None:
             self.message = self.can0.recv(timeout=0.01)
-            print(self.message.arbitration_id)
+            #print(self.message.arbitration_id)
             
 
             if self.message is None:
