@@ -185,7 +185,7 @@ class VESCCAN:
             
             self.auxA.append(struct.unpack('>H', data[2:4])[0] * 0.01)
             self.auxB.append(struct.unpack('>H', data[4:6])[0] * 0.01)
-            self.auxC.append(struct.unpack('<H', data[6:8])[0] * 0.000001)
+            #self.auxC.append(struct.unpack('>H', data[6:8])[0] * 0.01)
             
             self.auxnum += 1
             
