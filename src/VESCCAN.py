@@ -242,8 +242,8 @@ if __name__ == "__main__":
         
             rawData = vesc.read_frame()
             
-            print(rawData)
-            print("\n")
+            #print(rawData)
+            #print("\n")
 
             if rawData['unit_id'] == 11:
                 vesc.unitData['1'] |= rawData
@@ -258,8 +258,9 @@ if __name__ == "__main__":
             elif rawData['unit_id'] == 16:
                 vesc.unitData['6'] |= rawData
 
+            print(vesc.unitData)
+            print("\n")
             
-
         print(vesc.unitData)
         print("\n")
 
