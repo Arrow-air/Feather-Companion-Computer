@@ -42,11 +42,11 @@ class CyphalCAN3:
 	def parse_message(self, message):
 		
 		'''
-			0x14780810	Throttle Data 6152 sent
-			0x14780910	Throttle Data 6153 sent
-			0x14781010	Info Upload 6160 sent
-			0x14781110	Info Upload 6161 sent
-			0x107D5510	Heartbeat sent
+			0xC780801	Throttle Data 6152 ID
+			0xC780901	Throttle Data 6153 ID
+			0x14781010	Info Upload 6160 ID
+			0x14781110	Info Upload 6161 ID
+			0x107D5510	Heartbeat ID
 		'''
 		
 		data = message.data[0:len(message.data) - 1] # Remove tail byte
