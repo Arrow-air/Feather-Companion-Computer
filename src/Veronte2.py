@@ -42,7 +42,7 @@ class Veronte2:
             return {}
 
     def readData(self):
-        #time.sleep(0.05)
+        time.sleep(0.1)
         """
         Reads and parses a telemetry packet from the serial stream.
         """
@@ -81,7 +81,7 @@ class Veronte2:
                 # Read variables (XTYPE, assuming float32 for example)
                 for _ in range(data_length // 4):  # Adjust as per actual format
                     variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
-                    telemetry_data.append({f"Variable{_}": variable})
+                    telemetry_data.append({f"Variable{_}": round(variable,2)})
 
                 packet['data'] = telemetry_data
 
