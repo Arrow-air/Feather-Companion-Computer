@@ -42,14 +42,14 @@ class Veronte2:
             return {}
 
     def readData(self):
-        time.sleep(0.05)
+        #time.sleep(0.05)
         """
         Reads and parses a telemetry packet from the serial stream.
         """
         try:
             packet = {}
 
-            print(self.VeronteSerial.readline())
+            #print(self.VeronteSerial.readline())
 
             # Check if there's data available in the serial buffer
             if self.VeronteSerial.in_waiting > 0:
@@ -110,5 +110,5 @@ if __name__ == '__main__':
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
-        veronte.readData()
+        print(veronte.readData())
         #print(veronte.getTelemetryAsJSON())
