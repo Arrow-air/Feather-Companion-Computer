@@ -57,56 +57,56 @@ class Veronte2:
 
                 #print(self.VeronteSerial.read())
 
+                
+
+                #if packet['start_byte'] == 0xBA:
                 packet['start_byte'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
+                packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
+                packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
+                packet['fixed_byte_1'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
+                packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
+                packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
+                packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
 
-                if packet['start_byte'] == 0xBA:
+                # Now read the data segment (length - 2 bytes)
+                data_length = packet['length'] - 2
 
-                    packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
-                    packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
-                    packet['fixed_byte_1'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
+                print(packet['start_byte'])
 
-                    # Now read the data segment (length - 2 bytes)
-                    data_length = packet['length'] - 2
+                print(packet['uav_address'])
 
-                    print(packet['start_byte'])
+                print(packet['command_bytes'])
 
-                    print(packet['uav_address'])
+                print(packet['fixed_byte_1'])
 
-                    print(packet['command_bytes'])
+                print(packet['fixed_byte_2'])
 
-                    print(packet['fixed_byte_1'])
+                print(data_length)
 
-                    print(packet['fixed_byte_2'])
+                print(packet['crc'])
 
-                    print(data_length)
+                telemetry_data = []
 
-                    print(packet['crc'])
+                # Read timestamp (FLOAT32)
+                timestamp = struct.unpack('f', self.VeronteSerial.read(4))[0]
+                telemetry_data.append({"Timestamp": timestamp})
 
-                    telemetry_data = []
+                # Read hash value (UINT32)
+                hash_value = struct.unpack('I', self.VeronteSerial.read(4))[0]
+                telemetry_data.append({"Hash": hash_value})
 
-                    # Read timestamp (FLOAT32)
-                    timestamp = struct.unpack('f', self.VeronteSerial.read(4))[0]
-                    telemetry_data.append({"Timestamp": timestamp})
+                # Read variables (XTYPE, assuming float32 for example)
+                for _ in range((data_length // 4)):  # Adjust as per actual format
+                    variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
+                    telemetry_data.append({f"Variable{_}": variable})
 
-                    # Read hash value (UINT32)
-                    hash_value = struct.unpack('I', self.VeronteSerial.read(4))[0]
-                    telemetry_data.append({"Hash": hash_value})
+                packet['data'] = telemetry_data
 
-                    # Read variables (XTYPE, assuming float32 for example)
-                    for _ in range((data_length // 4)):  # Adjust as per actual format
-                        variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
-                        telemetry_data.append({f"Variable{_}": variable})
+                # Read the final CRC (2 bytes)
+                packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
-                    packet['data'] = telemetry_data
-
-                    # Read the final CRC (2 bytes)
-                    packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
-
-                    # Return the parsed telemetry data
-                    return telemetry_data
+                # Return the parsed telemetry data
+                return telemetry_data
 
         except Exception as e:
             print(f"Error reading data: {e}")
