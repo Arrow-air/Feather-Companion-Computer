@@ -52,7 +52,7 @@ class Veronte2:
             if self.VeronteSerial.in_waiting > 0:
                 # Start reading the telemetry packet
 
-                print(self.VeronteSerial.read())
+                #print(self.VeronteSerial.read())
 
                 packet['start_byte'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                 packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
