@@ -63,7 +63,8 @@ class TCP:
         self.msg  = f'{len(str(self.packet)):<{self.headersize}}' + str(self.packet) + '\n'
 
         self.clientsocket.send(self.msg.encode("utf-8"))
-        server.server_loop_iteration(self.packet)
+        
+        #server.server_loop_iteration(self.packet)
 
         #self.fileclientsocket.send(self.msg.encode("utf-8"))
         #self.fileclientsocket1.send(self.msg.encode("utf-8"))

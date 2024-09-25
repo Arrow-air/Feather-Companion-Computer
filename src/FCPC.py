@@ -29,6 +29,7 @@ import BMS
 import TCP
 import Data
 import Veronte
+import Veronte2
 import Joystick
 
 #Onboard Flight UI or Ground Control Station Selector
@@ -63,7 +64,8 @@ if gound_or_flight == 'FUI':
     tcp = TCP.TCP(TCP_IP,TCP_PORT,TCP_Buffer,gound_or_flight)
 
     #lora = LoRa.LoRa(LoraComport,Serialbitrate,gound_or_flight)
-    veronte = Veronte.Veronte(VeronteComport,Serialbitrate,gound_or_flight)
+    #veronte = Veronte.Veronte(VeronteComport,Serialbitrate,gound_or_flight)
+    veronte2 = Veronte2.Veronte2(VeronteComport,Serialbitrate,gound_or_flight)
     data = Data.Data(tcp,gound_or_flight)
 
     joystickUSB = Joystick.JoystickUSB(pyjoystick,pytime,gound_or_flight)
@@ -91,7 +93,8 @@ if __name__ == '__main__':
             #data.JoystickPacket = joystickCAN.packetStruct()
             data.IOPacket = io.packetStruct()
             data.ESCout = esc.packetStruct()
-            data.VerontePacket = veronte.packetStruct()
+            #data.VerontePacket = veronte.packetStruct()
+            data.Veronteout = veronte2.packetStruct()
             data.BMSout = bms.packetStruct()
             data.now['TimeStamp'] = str(datetime.now())
             data.packetStruct()

@@ -25,7 +25,10 @@ class Data:
 
         self.ParachutePacket = {'parachute_state':0}
 
-        self.VerontePacket  = {'altitude_AGL':0,'altitude_AGL_set':0,'altitude_ABS':0,'altitude_AGL':0,'heading':0,'compass':0,'attitude_pitch':0,'attitude_roll':0,'vertical_speed_KTS':0,
+        self.Veronteout = []
+        self.VeronteLog = {}
+
+        self.VerontePacket  = {'altitude_AGL':0,'altitude_AGL_set':0,'altitude_ABS':0,'heading':0,'compass':0,'attitude_pitch':0,'attitude_roll':0,'vertical_speed_KTS':0,
                                'airspeed_KTS':0,'OAT':0,'altitude_ABS':40,'latitude':'40d26a46q','longitude':'79d58a56q','flight_time':'50:39'}
         
         self.BMSout = []
@@ -170,6 +173,9 @@ class Data:
         
     def packetStruct(self):
         
+        self.VerontePacket = self.Veronteout[0]
+        self.VeronteLog = self.Veronteout[1]
+
         self.ESCPacket = self.ESCout[0]
         self.ESCLog = self.ESCout[1]
 
@@ -204,7 +210,7 @@ class Data:
 
     def logUpdate(self):
         
-        self.logPacket = self.VerontePacket | self.JoystickPacket | self.ParachutePacket | self.BMSLog | self.ESCLog | self.IOPacket | self.now
+        self.logPacket = self.VerontePacket | self.VeronteLog | self.JoystickPacket | self.ParachutePacket | self.BMSLog | self.ESCLog | self.IOPacket | self.now
         #print(self.logPacket)
         self.logFile.write(str(self.logPacket) + '\n')
         
