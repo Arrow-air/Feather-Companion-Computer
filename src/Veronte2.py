@@ -51,6 +51,9 @@ class Veronte2:
             # Check if there's data available in the serial buffer
             if self.VeronteSerial.in_waiting > 0:
                 # Start reading the telemetry packet
+
+                print(self.VeronteSerial.read())
+
                 packet['start_byte'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                 packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
                 packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
@@ -103,5 +106,5 @@ if __name__ == '__main__':
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
-        veronte.packetStruct()
+        print(veronte.readData())
         #print(veronte.getTelemetryAsJSON())
