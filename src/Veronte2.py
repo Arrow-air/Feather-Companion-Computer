@@ -33,6 +33,9 @@ class Veronte2:
         try:
             self.dataDictionary = self.readData()
             self.packet = {key: round(self.dataDictionary[0][key], 2) for key in self.dataDictionary[0]}
+            
+            print([self.packet, self.dataDictionary[1]])
+
             return [self.packet, self.dataDictionary[1]] 
         except Exception as e:
             print(f"Error parsing telemetry packet: {e}")
@@ -100,4 +103,5 @@ if __name__ == '__main__':
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
-        print(veronte.getTelemetryAsJSON())
+        veronte.packetStruct()
+        #print(veronte.getTelemetryAsJSON())
