@@ -42,6 +42,7 @@ class Veronte2:
             return {}
 
     def readData(self):
+        time.sleep(0.05)
         """
         Reads and parses a telemetry packet from the serial stream.
         """
@@ -64,6 +65,7 @@ class Veronte2:
 
                 # Now read the data segment (length - 2 bytes)
                 data_length = packet['length'] - 2
+                print(data_length)
                 telemetry_data = []
 
                 # Read timestamp (FLOAT32)
