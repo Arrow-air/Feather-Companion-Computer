@@ -98,7 +98,7 @@ class Veronte2:
                     # Read variables (XTYPE, assuming float32 for example)
                     for _ in range((data_length // 4)-1):  # Adjust as per actual format
                         variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
-                        telemetry_data.append({f"Variable{_}": variable})
+                        telemetry_data.append({f"Variable{_}": round(variable,3)})
 
                     packet['data'] = telemetry_data
 
