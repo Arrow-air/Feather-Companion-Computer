@@ -49,6 +49,8 @@ class Veronte2:
         try:
             packet = {}
 
+            print(self.VeronteSerial.readline())
+
             # Check if there's data available in the serial buffer
             if self.VeronteSerial.in_waiting > 0:
                 # Start reading the telemetry packet
@@ -65,7 +67,7 @@ class Veronte2:
 
                 # Now read the data segment (length - 2 bytes)
                 data_length = packet['length'] - 2
-                print(data_length)
+                #print(data_length)
                 telemetry_data = []
 
                 # Read timestamp (FLOAT32)
@@ -108,5 +110,5 @@ if __name__ == '__main__':
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
-        print(veronte.readData())
+        veronte.readData()
         #print(veronte.getTelemetryAsJSON())
