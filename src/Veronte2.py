@@ -81,7 +81,7 @@ class Veronte2:
 
                     print(packet['fixed_byte_2'])
 
-                    print(data_length // 4)
+                    print(data_length)
 
                     print(packet['crc'])
 
@@ -96,7 +96,7 @@ class Veronte2:
                     telemetry_data.append({"Hash": hash_value})
 
                     # Read variables (XTYPE, assuming float32 for example)
-                    for _ in range(1,(data_length // 4)):  # Adjust as per actual format
+                    for _ in range((data_length // 4)):  # Adjust as per actual format
                         variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
                         telemetry_data.append({f"Variable{_}": variable})
 
