@@ -58,10 +58,11 @@ class Veronte2:
                 #print(self.VeronteSerial.read())
 
                 packet['start_byte'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
+                packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
-                if packet['start_byte'] == 0xBA:
+                if packet['start_byte'] == 0xBA and packet['uav_address'] == 255:
 
-                    packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
+                    
                     packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
                     packet['fixed_byte_1'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
