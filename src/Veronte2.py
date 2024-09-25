@@ -96,9 +96,9 @@ class Veronte2:
                     telemetry_data.append({"Hash": hash_value})
 
                     # Read variables (XTYPE, assuming float32 for example)
-                    for _ in range(data_length // 4):  # Adjust as per actual format
+                    for _ in range((data_length // 4)-1):  # Adjust as per actual format
                         variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
-                        telemetry_data.append({f"Variable{_}": round(variable,2)})
+                        telemetry_data.append({f"Variable{_}": variable})
 
                     packet['data'] = telemetry_data
 
@@ -107,8 +107,6 @@ class Veronte2:
 
                     # Return the parsed telemetry data
                     return telemetry_data
-                else:
-                    return {}
 
         except Exception as e:
             print(f"Error reading data: {e}")
