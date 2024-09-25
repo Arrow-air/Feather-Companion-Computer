@@ -67,7 +67,21 @@ class Veronte2:
 
                 # Now read the data segment (length - 2 bytes)
                 data_length = packet['length'] - 2
+
+                print(packet['start_byte'])
+
+                print(packet['uav_address'])
+
+                print(packet['command_bytes'])
+
+                print(packet['fixed_byte_1'])
+
+                print(packet['fixed_byte_2'])
+
                 print(data_length // 4)
+
+                print(packet['crc'])
+
                 telemetry_data = []
 
                 # Read timestamp (FLOAT32)
@@ -110,5 +124,5 @@ if __name__ == '__main__':
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
-        print(veronte.readData())
+        veronte.readData()
         #print(veronte.getTelemetryAsJSON())
