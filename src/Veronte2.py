@@ -129,5 +129,5 @@ if __name__ == '__main__':
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
-        veronte.readData()
+        print(veronte.readData())
         #print(veronte.getTelemetryAsJSON())
