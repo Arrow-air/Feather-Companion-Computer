@@ -67,7 +67,7 @@ class Veronte2:
 
                 # Now read the data segment (length - 2 bytes)
                 data_length = packet['length'] - 2
-                #print(data_length)
+                print(data_length // 4)
                 telemetry_data = []
 
                 # Read timestamp (FLOAT32)
