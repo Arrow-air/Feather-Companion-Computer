@@ -111,8 +111,8 @@ class VESCCAN:
 
             #print(command)
             #print(unit_id)
-            self.msgData['packCurrent1'] = struct.unpack('>i', data[0:4])[0] * 0.000001
-            self.msgData['packCurrent2'] = struct.unpack('>i', data[4:8])[0] * 0.000001
+            self.msgData['packCurrent1'] = struct.unpack('<i', data[0:4])[0] * 0.000001
+            self.msgData['packCurrent2'] = struct.unpack('<i', data[4:8])[0] * 0.000001
 
         elif (command == 40) and unit_id in range(10,17):# CAN_PACKET_BMS_AH_WH
 
@@ -144,9 +144,9 @@ class VESCCAN:
             self.msgData['cellPoint'] = data[0]
             self.msgData['NoOfCellsA'] = data[1]
             
-            self.cellsA.append(struct.unpack('>H', data[2:4])[0] * 100)
-            self.cellsB.append(struct.unpack('>H', data[4:6])[0] * 100)
-            self.cellsC.append(struct.unpack('>H', data[6:8])[0] * 100)
+            self.cellsA.append(struct.unpack('>H', data[2:4])[0] * 0.001)
+            self.cellsB.append(struct.unpack('>H', data[4:6])[0] * 0.001)
+            self.cellsC.append(struct.unpack('>H', data[6:8])[0] * 0.001)
             
             self.cellnum += 1
             
