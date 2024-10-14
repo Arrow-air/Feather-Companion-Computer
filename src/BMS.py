@@ -98,7 +98,7 @@ class BMS:
         
         self.vesc.unitData = {'1':{},'2':{},'3':{},'4':{},'5':{},'6':{}}
         
-        while len(self.vesc.unitData['6']) < 29:
+        while len(self.vesc.unitData['6']) <= 28:
         
             self.rawData = self.vesc.read_frame()
             
