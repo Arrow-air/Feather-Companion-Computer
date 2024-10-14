@@ -16,12 +16,38 @@ class Veronte2:
         # Serial connection to the telemetry source
         self.VeronteSerial = serial.Serial(self.Veronteport, self.Verontebitrate, timeout=1)
 
-        self.Data = ''
+        self.Data = []
         self.packet = {}
         self.dataDictionary = {
             'altitude_AGL': 0, 'altitude_AGL_set': 0, 'altitude_ABS': 0, 
             'heading': 0, 'compass': 0, 'attitude_pitch': 0, 'attitude_roll': 0, 
             'vertical_speed_KTS': 0, 'airspeed_KTS': 0, 'OAT': 0
+        }
+        self.dataPacket = {
+            'start_byte': 0xBA,         # Start byte, assumed to be 0xBA
+            'uav_address': 4041,        # UAV address, dummy value
+            'command_bytes': [0xFF, 0x00],  # Command bytes, dummy values
+            'fixed_byte_1': 0x00,       # Fixed byte 1, dummy value
+            'fixed_byte_2': 0x05,       # Fixed byte 2, dummy value
+            'length': 10,               # Length of the packet, dummy value
+            'crc': 0xAB,                # CRC, dummy value
+            'data': [
+                {'Timestamp': 162255.56},   # Timestamp (dummy value)
+                {'Hash': 123456},           # Hash value (dummy value)
+                {'Variable0': 42.5},        # Variable 0, example variable
+                {'Variable1': 13.8},        # Variable 1, example variable
+                {'Variable2': 13.8},        # Variable 1, example variable
+                {'Variable3': 13.8},        # Variable 1, example variable
+                {'Variable4': 13.8},        # Variable 1, example variable
+                {'Variable5': 13.8},        # Variable 1, example variable
+                {'Variable6': 13.8},        # Variable 1, example variable
+                {'Variable7': 13.8},        # Variable 1, example variable
+                {'Variable8': 13.8},        # Variable 1, example variable
+                {'Variable9': 13.8},        # Variable 1, example variable
+                {'Variable10': 13.8},        # Variable 1, example variable
+                {'Variable11': 13.8},        # Variable 1, example variable
+            ],
+            'end_crc': 0x1234            # End CRC, dummy value
         }
 
         print("Veronte Init")
@@ -31,12 +57,15 @@ class Veronte2:
         Reads and parses telemetry data from the serial stream.
         """
         try:
-            self.dataDictionary = self.readData()
-            self.packet = {key: round(self.dataDictionary[0][key], 2) for key in self.dataDictionary[0]}
-            
-            print([self.packet, self.dataDictionary[1]])
+            self.data = self.readData()
+            if self.data:  # Only process valid data
+                
+                self.packet = {key: round(self.data[1][key], 2) for key in self.dataDictionary}
+                print([self.packet, self.data[0]])
+                return [self.packet, self.data[0]]
+            else:
+                return [self.packet, self.dataPacket]
 
-            return [self.packet, self.dataDictionary[1]] 
         except Exception as e:
             print(f"Error parsing telemetry packet: {e}")
             return {}
@@ -49,18 +78,13 @@ class Veronte2:
         try:
             packet = {}
 
-            #print(self.VeronteSerial.readline())
-
             # Check if there's data available in the serial buffer
             if self.VeronteSerial.in_waiting > 0:
                 # Start reading the telemetry packet
-
-                #print(self.VeronteSerial.read())
-
                 packet['start_byte'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
 
+                # Only process the packet if the start byte is 0xBA
                 if packet['start_byte'] == 0xBA:
-
                     packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
                     packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
                     packet['fixed_byte_1'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
@@ -71,24 +95,11 @@ class Veronte2:
                     # Now read the data segment (length - 2 bytes)
                     data_length = packet['length'] - 2
 
-                    print(packet['start_byte'])
-
-                    print(packet['uav_address'])
-
-                    print(packet['command_bytes'])
-
-                    print(packet['fixed_byte_1'])
-
-                    print(packet['fixed_byte_2'])
-
-                    print(data_length)
-
-                    print(packet['crc'])
-
                     telemetry_data = []
 
-                    # Read timestamp (FLOAT32)
-                    timestamp = struct.unpack('f', self.VeronteSerial.read(4))[0]
+                    # Read timestamp (FLOAT32, mixed-endian)
+                    timestamp_bytes = self.VeronteSerial.read(4)
+                    timestamp = self.unpack_mixed_endian_float(timestamp_bytes)
                     telemetry_data.append({"Timestamp": timestamp})
 
                     # Read hash value (UINT32)
@@ -96,9 +107,10 @@ class Veronte2:
                     telemetry_data.append({"Hash": hash_value})
 
                     # Read variables (XTYPE, assuming float32 for example)
-                    for _ in range((data_length // 4)):  # Adjust as per actual format
-                        variable = struct.unpack('f', self.VeronteSerial.read(4))[0]
-                        telemetry_data.append({f"Variable{_}": variable})
+                    for i in range((data_length // 4)):  # Adjust as per actual format
+                        variable_bytes = self.VeronteSerial.read(4)
+                        variable = self.unpack_mixed_endian_float(variable_bytes)
+                        telemetry_data.append({f"Variable{i}": variable})
 
                     packet['data'] = telemetry_data
 
@@ -106,11 +118,20 @@ class Veronte2:
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
                     # Return the parsed telemetry data
-                    return telemetry_data
+                    return [packet , telemetry_data]
 
         except Exception as e:
             print(f"Error reading data: {e}")
             return {}
+
+    def unpack_mixed_endian_float(self, byte_data):
+        """
+        Unpacks a mixed-endian float32 value from 4 bytes.
+        Assumes mixed-endian means swapping AABBCCDD to CCDDAABB.
+        """
+        # Swapping bytes AABBCCDD to CCDDAABB
+        mixed_endian_bytes = byte_data[2:4] + byte_data[0:2]
+        return struct.unpack('f', mixed_endian_bytes)[0]
 
     def getTelemetryAsJSON(self):
         """
@@ -121,11 +142,11 @@ class Veronte2:
 
 if __name__ == '__main__':
 
-    VeronteComport = '/dev/ttyS0' #Veronte Serial Port
+    VeronteComport = '/dev/ttyS0'  # Veronte Serial Port
     Serialbitrate = 115200
 
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
 
     while True:
         print(veronte.readData())
-        #print(veronte.getTelemetryAsJSON())
+        # print(veronte.getTelemetryAsJSON())
