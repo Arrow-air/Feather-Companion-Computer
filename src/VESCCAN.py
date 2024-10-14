@@ -271,7 +271,7 @@ if __name__ == "__main__":
 
             #print(vesc.unitData)
             #print("\n")
-            print(len(vesc.unitData['6']))
+            #print(len(vesc.unitData['6']))
 
         print(vesc.unitData)
         print("\n")
