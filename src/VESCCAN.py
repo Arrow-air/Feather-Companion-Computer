@@ -92,7 +92,7 @@ class VESCCAN:
 
         self.msgData = {'unit_id': unit_id}
         #print(command)
-        #print(unit_id)
+        print(unit_id)
         
         #Note: Might Need to switch endianness in unpack function for real bms
         #Note: Scaling Factors might differ from those stipulated in the DBC packet structure file
