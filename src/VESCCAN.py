@@ -249,7 +249,7 @@ if __name__ == "__main__":
         
         vesc.unitData = {'1':{},'2':{},'3':{},'4':{},'5':{},'6':{}}
         
-        while len(vesc.unitData['6']) < 28:
+        while len(vesc.unitData['6']) < 29:
         
             rawData = vesc.read_frame()
             
