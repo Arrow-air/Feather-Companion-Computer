@@ -260,7 +260,7 @@ if __name__ == "__main__":
                 vesc.unitData['1'] |= rawData
             elif rawData['unit_id'] == 12:
                 vesc.unitData['2'] |= rawData
-            elif rawData['unit_id'] == 18:
+            elif rawData['unit_id'] == 13:
                 vesc.unitData['3'] |= rawData
             elif rawData['unit_id'] == 14:
                 vesc.unitData['4'] |= rawData
