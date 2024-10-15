@@ -28,8 +28,8 @@ class Data:
         self.Veronteout = []
         self.VeronteLog = {}
 
-        self.VerontePacket  = {'altitude_AGL':0,'altitude_AGL_set':0,'altitude_ABS':0,'heading':0,'compass':0,'attitude_pitch':0,'attitude_roll':0,'vertical_speed_KTS':0,
-                               'airspeed_KTS':0,'OAT':0,'altitude_ABS':40,'latitude':'40d26a46q','longitude':'79d58a56q','flight_time':'50:39'}
+        self.VerontePacket  = {'altitude_AGL':0,'altitude_AGL_set':0,'altitude_ABS':40,'heading':0,'compass':0,'attitude_pitch':0,'attitude_roll':0,'vertical_speed_KTS':0,
+                               'airspeed_KTS':0,'OAT':0,'latitude':'40d26a46q','longitude':'79d58a56q','flight_time':'50:39'}
         
         self.BMSout = []
 

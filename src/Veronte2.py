@@ -18,11 +18,15 @@ class Veronte2:
 
         self.Data = []
         self.packet = {}
-        self.dataDictionary = {
-            'altitude_AGL': 0, 'altitude_AGL_set': 0, 'altitude_ABS': 0, 
-            'heading': 0, 'compass': 0, 'attitude_pitch': 0, 'attitude_roll': 0, 
-            'vertical_speed_KTS': 0, 'airspeed_KTS': 0, 'OAT': 0
-        }
+        self.dataDictionary = {'altitude_AGL': 0, 'altitude_AGL_set': 0, 'altitude_ABS': 40, 'heading': 0, 
+                               'compass': 0, 'attitude_pitch': 0, 'attitude_roll': 0, 'vertical_speed_KTS': 0,
+                               'airspeed_KTS': 0, 'OAT': 0, 'latitude': '40d26a46q', 'longitude': '79d58a56q'}
+        
+        # Ordered list of keys for telemetry data
+        self.datalist = ['altitude_AGL', 'altitude_AGL_set', 'altitude_ABS', 'heading', 'compass', 'attitude_pitch', 
+                         'attitude_roll', 'vertical_speed_KTS', 'airspeed_KTS', 'OAT', 'latitude', 'longitude']
+        
+        # Example data packet for testing purposes
         self.dataPacket = {
             'start_byte': 0xBA,         # Start byte, assumed to be 0xBA
             'uav_address': 4041,        # UAV address, dummy value
@@ -36,16 +40,16 @@ class Veronte2:
                 {'Hash': 123456},           # Hash value (dummy value)
                 {'Variable0': 42.5},        # Variable 0, example variable
                 {'Variable1': 13.8},        # Variable 1, example variable
-                {'Variable2': 13.8},        # Variable 1, example variable
-                {'Variable3': 13.8},        # Variable 1, example variable
-                {'Variable4': 13.8},        # Variable 1, example variable
-                {'Variable5': 13.8},        # Variable 1, example variable
-                {'Variable6': 13.8},        # Variable 1, example variable
-                {'Variable7': 13.8},        # Variable 1, example variable
-                {'Variable8': 13.8},        # Variable 1, example variable
-                {'Variable9': 13.8},        # Variable 1, example variable
-                {'Variable10': 13.8},        # Variable 1, example variable
-                {'Variable11': 13.8},        # Variable 1, example variable
+                {'Variable2': 13.8},        # Variable 2, example variable
+                {'Variable3': 13.8},        # Variable 3, example variable
+                {'Variable4': 13.8},        # Variable 4, example variable
+                {'Variable5': 13.8},        # Variable 5, example variable
+                {'Variable6': 13.8},        # Variable 6, example variable
+                {'Variable7': 13.8},        # Variable 7, example variable
+                {'Variable8': 13.8},        # Variable 8, example variable
+                {'Variable9': 13.8},        # Variable 9, example variable
+                {'Variable10': 13.8},       # Variable 10, example variable
+                {'Variable11': 13.8},       # Variable 11, example variable
             ],
             'end_crc': 0x1234            # End CRC, dummy value
         }
@@ -55,20 +59,30 @@ class Veronte2:
     def packetStruct(self):
         """
         Reads and parses telemetry data from the serial stream.
+        Populates self.packet according to the ordered keys in self.datalist.
         """
         try:
             self.data = self.readData()
             if self.data:  # Only process valid data
                 
-                self.packet = {key: round(self.data[1][key], 2) for key in self.dataDictionary}
+                # Parse telemetry data into self.packet using the ordered list
+                telemetry_data = self.data[1]
+                for i, key in enumerate(self.datalist):
+                    self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
+                
                 print([self.packet, self.data[0]])
+                
+                # Return the packet and all other data elements that are not telemetry data
                 return [self.packet, self.data[0]]
             else:
-                return [self.packet, self.dataPacket]
+                return [self.dataDictionary, self.dataPacket]
 
         except Exception as e:
+
             print(f"Error parsing telemetry packet: {e}")
-            return {}
+
+            return [self.dataDictionary, self.dataPacket]
+            
 
     def readData(self):
         time.sleep(0.1)
@@ -118,7 +132,7 @@ class Veronte2:
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
                     # Return the parsed telemetry data
-                    return [packet , telemetry_data]
+                    return [packet, telemetry_data]
 
         except Exception as e:
             print(f"Error reading data: {e}")
