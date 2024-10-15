@@ -160,6 +160,8 @@ class Veronte2:
 
                     packet['data'] = telemetry_data
 
+                    len(telemetry_data)
+                    
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
