@@ -102,17 +102,17 @@ class BMS:
         
             self.rawData = self.vesc.read_frame()
             
-            if self.rawData['unit_id'] == 1:
+            if self.rawData['unit_id'] == 11:
                 self.vesc.unitData['1'] |= self.rawData
-            elif self.rawData['unit_id'] == 2:
+            elif self.rawData['unit_id'] == 12:
                 self.vesc.unitData['2'] |= self.rawData
-            elif self.rawData['unit_id'] == 3:
+            elif self.rawData['unit_id'] == 13:
                 self.vesc.unitData['3'] |= self.rawData
-            elif self.rawData['unit_id'] == 4:
+            elif self.rawData['unit_id'] == 14:
                 self.vesc.unitData['4'] |= self.rawData
-            elif self.rawData['unit_id'] == 5:
+            elif self.rawData['unit_id'] == 15:
                 self.vesc.unitData['5'] |= self.rawData
-            elif self.rawData['unit_id'] == 6:
+            elif self.rawData['unit_id'] == 16:
                 self.vesc.unitData['6'] |= self.rawData
 
         return self.vesc.unitData
