@@ -45,7 +45,7 @@ class ESC:
         try:
             self.superDictionary = self.escRead()
             self.data = self.superDictionary
-            print(self.data)
+            #print(self.data)
 
             for i in range(0,6):
 
@@ -78,7 +78,7 @@ class ESC:
             
         self.esc.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
         
-        while len(self.esc.unitData['5']) < 5:
+        while len(self.esc.unitData['5']) < 8:
             
             self.esc.esc_data = {}
         
@@ -105,7 +105,7 @@ class ESC:
                 rawData['throttle_data'] = []
                 self.esc.unitData['5'] |= rawData
 
-            return self.esc.unitData
+        return self.esc.unitData
 
 if __name__ == "__main__":
     

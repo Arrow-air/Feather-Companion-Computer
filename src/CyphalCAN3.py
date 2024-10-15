@@ -148,7 +148,7 @@ if __name__ == "__main__":
 		
 		cyphalcan.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
 		
-		while len(cyphalcan.unitData['5']) < 5:
+		while len(cyphalcan.unitData['5']) < 8:
 			
 			cyphalcan.esc_data = {}
 			
@@ -174,5 +174,5 @@ if __name__ == "__main__":
 				rawData['throttle_data'] = []
 				cyphalcan.unitData['5'] |= rawData
 			
-			print(cyphalcan.unitData)
+		print(cyphalcan.unitData)
 
