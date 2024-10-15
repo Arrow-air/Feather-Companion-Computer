@@ -204,6 +204,7 @@ class Veronte2:
             Returns:
             tuple: A tuple in the form (degrees, minutes, seconds, direction).
         """
+        decimal_degree = math.degrees(decimal_degree)
         # Determine if the value is latitude or longitude and set the direction accordingly
         if decimal_degree < 0:
             direction = 'S' if abs(decimal_degree) <= 90 else 'W'
