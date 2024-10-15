@@ -86,6 +86,8 @@ class Veronte2:
                 # Parse telemetry data into self.packet using the ordered list
                 telemetry_data = self.data[1]
 
+                len(telemetry_data)
+
                 if (len(telemetry_data) <=13):
 
                     print(len(telemetry_data))
@@ -161,7 +163,7 @@ class Veronte2:
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
-                    print(packet['end_crc'])
+                    print(hex(packet['end_crc']))
 
                     if packet['end_crc'] == 0xff10:
                         # Return the parsed telemetry data
