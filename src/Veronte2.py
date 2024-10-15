@@ -165,6 +165,7 @@ class Veronte2:
 
                     if hex(packet['end_crc']) == 0xff10:
                         # Return the parsed telemetry data
+                        print("end reached")
                         packet2 = packet 
                         packet = {}
                         return [packet2, telemetry_data]
