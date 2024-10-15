@@ -71,6 +71,9 @@ class Veronte2:
                 for i, key in enumerate(self.datalist):
                     self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
                 
+                self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
+                self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
+
                 print(self.packet)
                 
                 # Return the packet and all other data elements that are not telemetry data
@@ -154,6 +157,36 @@ class Veronte2:
         """
         packet = self.packetStruct()
         return json.dumps(packet[0], indent=4)
+    
+    def decimal_to_dms(self, decimal_degree):
+        """
+            Convert a decimal degree value to degrees, minutes, and seconds (DMS) format.
+            
+            Args:
+            decimal_degree (float): The decimal degree value (positive for N/E, negative for S/W).
+            
+            Returns:
+            tuple: A tuple in the form (degrees, minutes, seconds, direction).
+        """
+        # Determine if the value is latitude or longitude and set the direction accordingly
+        if decimal_degree < 0:
+            direction = 'S' if abs(decimal_degree) <= 90 else 'W'
+        else:
+            direction = 'N' if abs(decimal_degree) <= 90 else 'E'
+        
+        # Get the absolute value of the decimal degree
+        decimal_degree = abs(decimal_degree)
+
+        # Extract degrees
+        degrees = int(decimal_degree)
+        
+        # Extract minutes
+        minutes = int((decimal_degree - degrees) * 60)
+        
+        # Extract seconds
+        seconds = (decimal_degree - degrees - minutes / 60) * 3600
+        
+        return str([degrees, minutes, seconds, direction])
 
 if __name__ == '__main__':
 
