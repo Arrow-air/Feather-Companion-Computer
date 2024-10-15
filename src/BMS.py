@@ -63,6 +63,7 @@ class BMS:
 
         if self.current_time - self.last_update_time >= self.external_update_rate:
             self.packet = self.bmsRead()
+            print(str(self.packet))
             self.previous_packet = self.packet
             self.last_update_time = self.current_time
 
@@ -125,6 +126,6 @@ if __name__ == "__main__":
         
         bms.packetStruct()
         
-        print(bms.packet)
+       #print(bms.packet)
         print("\n")
 
