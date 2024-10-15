@@ -62,19 +62,23 @@ class Veronte2:
         Populates self.packet according to the ordered keys in self.datalist.
         """
         try:
+
             self.data = self.readData()
+
             if self.data:  # Only process valid data
                 
                 # Parse telemetry data into self.packet using the ordered list
                 telemetry_data = self.data[1]
-                telemetry_data = self.data[1]
+
+                print(len(telemetry_data))
+                
                 for i, key in enumerate(self.datalist):
                     self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
                 
                 self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
                 self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
-                print("p: " + str(self.packet['attitude_pitch']) + '|' + " r: " + str(self.packet['attitude_roll']) + '|' + " y: " + str(self.packet['attitude_yaw']) )
+                print("p: " + str(self.packet['attitude_pitch']) + "| r: " + str(self.packet['attitude_roll']) + "|y: " + str(self.packet['attitude_yaw']) )
                
                 #print(self.packet)
                 # Return the packet and all other data elements that are not telemetry data
@@ -90,7 +94,7 @@ class Veronte2:
             
 
     def readData(self):
-        #time.sleep(0.1)
+        
         """
         Reads and parses a telemetry packet from the serial stream.
         """
@@ -187,7 +191,7 @@ class Veronte2:
         # Extract seconds
         seconds = (decimal_degree - degrees - minutes / 60) * 3600
         
-        return str([degrees, minutes, seconds, direction])
+        return str((degrees,minutes,seconds,direction))
 
 if __name__ == '__main__':
 
