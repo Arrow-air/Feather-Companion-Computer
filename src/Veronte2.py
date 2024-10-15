@@ -161,18 +161,20 @@ class Veronte2:
                     packet['data'] = telemetry_data
 
                     len(telemetry_data)
-                    
+
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
                     print(hex(packet['end_crc']))
 
+                    packet2 = packet 
+                    packet = {}
+                    return [packet2, telemetry_data]
+                
                     if packet['end_crc'] == 0x94B0:
                         # Return the parsed telemetry data
                         print("end reached")
-                        packet2 = packet 
-                        packet = {}
-                        return [packet2, telemetry_data]
+                        
 
         except Exception as e:
             print(f"Error reading data: {e}")
