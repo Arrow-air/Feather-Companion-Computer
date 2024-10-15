@@ -154,7 +154,7 @@ class Veronte2:
 
                     # Read variables (XTYPE, assuming float32 for example)
                     for i in range((data_length // 4)):  # Adjust as per actual format
-                        variable_bytes = struct.unpack('B',self.VeronteSerial.read(4))[0]
+                        variable_bytes = struct.unpack('4B',self.VeronteSerial.read(4))[0]
                         variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable,2)})
 
