@@ -75,8 +75,9 @@ class Veronte2:
                     print(len(telemetry_data))
                     
                     for i, key in enumerate(self.datalist):
+                        print(str(i) + ' | ' + key)
                         self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
-                    
+
                     self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
                     self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
