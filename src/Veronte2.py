@@ -74,8 +74,9 @@ class Veronte2:
                 self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
                 self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
-                print(self.packet)
-                
+                print("p: " + str(self.packet['attitude_pitch']) + '|' + " r: " + str(self.packet['attitude_roll']) + '|' + " y: " + str(self.packet['attitude_yaw']) )
+               
+                #print(self.packet)
                 # Return the packet and all other data elements that are not telemetry data
                 return [self.packet, self.data[0]]
             else:
