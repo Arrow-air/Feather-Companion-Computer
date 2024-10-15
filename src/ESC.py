@@ -8,6 +8,7 @@ class ESC:
         self.modeselect = modeselect
         self.mode = {0:'GCS',1:'FUI'}
         
+        self.data = {}
         self.packet = {}
         self.superDictionary = {}
         '''
@@ -43,7 +44,7 @@ class ESC:
         
         try:
             self.superDictionary = self.escRead()
-            data = self.superDictionary
+            self.data = self.superDictionary
             print('D')
 
             for i in range(0,6):
@@ -69,7 +70,7 @@ class ESC:
             print('G')
         
             print(self.packet) 
-        return [self.packet, data]
+        return [self.packet,  self.data]
 
     def escRead(self):
             
