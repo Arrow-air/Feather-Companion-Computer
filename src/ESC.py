@@ -53,11 +53,11 @@ class ESC:
                 
                 print(x)
                 print('E')
-                self.dataDictionary[f'MOT{x}_rpm_PCTe'] = data[f'{i}']['info_upload_6160']['electrical_speed'] * 3 # RPM = 3 x electrical speed
-                self.dataDictionary[f'ESC{x}_CUR_AMPe'] = data[f'{i}']['info_upload_6160']['bus_current']
-                self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
-                self.dataDictionary[f'ESC{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['MOS']
-                self.dataDictionary[f'MOT{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['Motor']
+                self.dataDictionary[f'MOT{x}_rpm_PCTe'] = self.data[f'{i}']['info_upload_6160']['electrical_speed'] * 3 # RPM = 3 x electrical speed
+                self.dataDictionary[f'ESC{x}_CUR_AMPe'] = self.data[f'{i}']['info_upload_6160']['bus_current']
+                self.dataDictionary[f'ESC{x}_Ve'] = self.data[f'{i}']['info_upload_6161']['bus_voltage']
+                self.dataDictionary[f'ESC{x}_temp_Ce'] = self.data[f'{i}']['info_upload_6161']['temperatures']['MOS']
+                self.dataDictionary[f'MOT{x}_temp_Ce'] = self.data[f'{i}']['info_upload_6161']['temperatures']['Motor']
 
             self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
             print('F')
@@ -85,25 +85,26 @@ class ESC:
             rawData = self.esc.get_data()
             print('B')
             
-        if (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
-            rawData['throttle_data2'] = []
-            self.esc.unitData['0'] |= rawData
-        elif (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][0] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
-            rawData['throttle_data2'] = []
-            self.esc.unitData['1'] |= rawData
-        elif (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][0] == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
-            rawData['throttle_data2'] = []
-            self.esc.unitData['2'] |= rawData
-        elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][2] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
-            rawData['throttle_data'] = []
-            self.esc.unitData['3'] |= rawData
-        elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][2] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
-            rawData['throttle_data'] = []
-            self.esc.unitData['4'] |= rawData
-        elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
-            rawData['throttle_data'] = []
-            self.esc.unitData['5'] |= rawData
-        print('C')
+            if (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
+                rawData['throttle_data2'] = []
+                self.esc.unitData['0'] |= rawData
+            elif (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][0] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 1 or rawData['unit_id'] - 0x14781110 == 1 or rawData['unit_id'] - 0x107D5510 == 1:
+                rawData['throttle_data2'] = []
+                self.esc.unitData['1'] |= rawData
+            elif (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][0] == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 2 or rawData['unit_id'] - 0x14781110 == 2 or rawData['unit_id'] - 0x107D5510 == 2:
+                rawData['throttle_data2'] = []
+                self.esc.unitData['2'] |= rawData
+            elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][2] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 4 or rawData['unit_id'] - 0x14781110 == 4 or rawData['unit_id'] - 0x107D5510 == 4:
+                rawData['throttle_data'] = []
+                self.esc.unitData['3'] |= rawData
+            elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][2] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 5 or rawData['unit_id'] - 0x14781110 == 5 or rawData['unit_id'] - 0x107D5510 == 5:
+                rawData['throttle_data'] = []
+                self.esc.unitData['4'] |= rawData
+            elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
+                rawData['throttle_data'] = []
+                self.esc.unitData['5'] |= rawData
+            print('C')
+
         return self.esc.unitData
 
 if __name__ == "__main__":

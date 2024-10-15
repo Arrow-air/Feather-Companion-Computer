@@ -174,5 +174,5 @@ if __name__ == "__main__":
 				rawData['throttle_data'] = []
 				cyphalcan.unitData['5'] |= rawData
 			
-			print(cyphalcan.unitData)
+		print(cyphalcan.unitData)
 
