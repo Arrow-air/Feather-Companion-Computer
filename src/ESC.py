@@ -104,7 +104,7 @@ class ESC:
             elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
                 rawData['throttle_data'] = []
                 self.esc.unitData['5'] |= rawData
-
+                
         return self.esc.unitData
 
 if __name__ == "__main__":
