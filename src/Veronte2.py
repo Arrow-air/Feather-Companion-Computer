@@ -87,16 +87,18 @@ class Veronte2:
 
                 if (len(telemetry_data) == 13):
 
-                    print(len(telemetry_data))
+                    #print(len(telemetry_data))
                     
                     for i, key in enumerate(self.datalist):
-                        print(str(i) + ' | ' + key)
+                        #print(str(i) + ' | ' + key)
                         self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
 
                     self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
                     self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
-                    print("p: " + str(self.packet['attitude_pitch']) + "| r: " + str(self.packet['attitude_roll']) + "|y: " + str(self.packet['heading']) )
+                    print("p: " + str(self.packet['attitude_pitch']))
+                    print("r: " + str(self.packet['attitude_roll']))
+                    print("y: " + str(self.packet['heading']))
                 
                     #print(self.packet)
                     # Return the packet and all other data elements that are not telemetry data
@@ -151,7 +153,7 @@ class Veronte2:
                     for i in range((data_length // 4)):  # Adjust as per actual format
                         variable_bytes = self.VeronteSerial.read(4)
                         variable = self.unpack_mixed_endian_float(variable_bytes)
-                        telemetry_data.append({f"Variable{i}": round(variable,3)})
+                        telemetry_data.append({f"Variable{i}": round(variable,2)})
 
                     packet['data'] = telemetry_data
 
