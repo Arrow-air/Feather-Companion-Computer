@@ -99,11 +99,11 @@ class Veronte2:
                     self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
                     self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
-                    print("p: " + str(math.degrees(self.packet['attitude_pitch'])))
-                    print("r: " + str(math.degrees(self.packet['attitude_roll'])))
-                    print("y: " + str(math.degrees(self.packet['heading'])))
+                    #print("p: " + str(math.degrees(self.packet['attitude_pitch'])))
+                    #print("r: " + str(math.degrees(self.packet['attitude_roll'])))
+                    #print("y: " + str(math.degrees(self.packet['heading'])))
                 
-                    #print(self.packet)
+                    print(self.packet)
                     # Return the packet and all other data elements that are not telemetry data
                     return [self.packet, self.data[0]]
             else:
@@ -154,7 +154,7 @@ class Veronte2:
 
                     # Read variables (XTYPE, assuming float32 for example)
                     for i in range((data_length // 4)):  # Adjust as per actual format
-                        variable_bytes = struct.unpack('4B',self.VeronteSerial.read(4))[0]
+                        variable_bytes = self.VeronteSerial.read(4)
                         variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable,2)})
 
