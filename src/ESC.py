@@ -56,7 +56,7 @@ class ESC:
                 self.dataDictionary[f'ESC{x}_Ve'] = self.data[f'{i}']['info_upload_6161']['bus_voltage']
                 self.dataDictionary[f'ESC{x}_temp_Ce'] = self.data[f'{i}']['info_upload_6161']['temperatures']['MOS']
                 self.dataDictionary[f'MOT{x}_temp_Ce'] = self.data[f'{i}']['info_upload_6161']['temperatures']['Motor']
-                print(self.dataDictionary[f'MOT{x}_rpm_PCTe'])
+                #print(self.dataDictionary[f'MOT{x}_rpm_PCTe'])
 
             self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
             
