@@ -148,7 +148,7 @@ if __name__ == "__main__":
 		
 		cyphalcan.unitData = {'0':{},'1':{},'2':{},'3':{},'4':{},'5':{}}
 		
-		while len(cyphalcan.unitData['5']) < 8:
+		while len(cyphalcan.unitData['5']) < 4:
 			
 			cyphalcan.esc_data = {}
 			
