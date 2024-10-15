@@ -70,7 +70,7 @@ class Veronte2:
                 for i, key in enumerate(self.datalist):
                     self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
                 
-                #print([self.packet, self.data[0]])
+                print(self.packet)
                 
                 # Return the packet and all other data elements that are not telemetry data
                 return [self.packet, self.data[0]]
@@ -163,4 +163,5 @@ if __name__ == '__main__':
 
     while True:
         #print(veronte.readData())
-        print(veronte.getTelemetryAsJSON())
+        veronte.getTelemetryAsJSON()
+        #print(veronte.getTelemetryAsJSON())
