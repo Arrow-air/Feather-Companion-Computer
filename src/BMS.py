@@ -27,22 +27,23 @@ class BMS:
         '''
         
         ''' RAW BMS Data Dictionary '''
-        self.previous_packet = {'0': {'unit_id': 0, 'NoOfCells': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
+        self.previous_packet = {
+        '1': {'unit_id': 11, 'NoOfCellsA': 0,'NoOfCellsB': 0,'NoOfCellsC': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
         'packCurrent1': 3892510720, 'packCurrent2': 3490119680, 'Ah_Counter': 4093706240, 'Wh_Counter': 3892510720, 'cellPoint': 24, 'cellVoltage10': 4.66, 'cellVoltage11': 22.136, 'cellVoltage12': 39.612, 
         'bal_state': 59109745109237, 'cellVoltageLow': 3.0, 'cellVoltageHigh': 4.2, 'SOC': 31.37254901960784, 'SOH': 35.298, 'tBattHi': 30, 'BitF': 0, 'CAN_PACKET_BMS_TEMP0': 501.85, 'CAN_PACKET_BMS_HUM_HUM': 348.35, 'CAN_PACKET_BMS_HUM_TEMP1': 102.5}, 
-        '1': {'unit_id': 1, 'NoOfCells': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
+        '2': {'unit_id': 12, 'NoOfCellsA': 0,'NoOfCellsB': 0,'NoOfCellsC': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
         'packCurrent1': 3892510720, 'packCurrent2': 3490119680, 'Ah_Counter': 4093706240, 'Wh_Counter': 3892510720, 'cellPoint': 24, 'cellVoltage10': 4.66, 'cellVoltage11': 22.136, 'cellVoltage12': 39.612, 
         'bal_state': 59109745109237, 'cellVoltageLow': 3.0, 'cellVoltageHigh': 4.2, 'SOC': 31.37254901960784, 'SOH': 35.298, 'tBattHi': 30, 'BitF': 0, 'CAN_PACKET_BMS_TEMP0': 501.85, 'CAN_PACKET_BMS_HUM_HUM': 348.35, 'CAN_PACKET_BMS_HUM_TEMP1': 102.5}, 
-        '2': {'unit_id': 2, 'NoOfCells': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
+        '3': {'unit_id': 13, 'NoOfCellsA': 0,'NoOfCellsB': 0,'NoOfCellsC': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
         'packCurrent1': 3892510720, 'packCurrent2': 3490119680, 'Ah_Counter': 4093706240, 'Wh_Counter': 3892510720, 'cellPoint': 24, 'cellVoltage10': 4.66, 'cellVoltage11': 22.136, 'cellVoltage12': 39.612, 
         'bal_state': 59109745109237, 'cellVoltageLow': 3.0, 'cellVoltageHigh': 4.2, 'SOC': 31.37254901960784, 'SOH': 35.298, 'tBattHi': 30, 'BitF': 0, 'CAN_PACKET_BMS_TEMP0': 501.85, 'CAN_PACKET_BMS_HUM_HUM': 348.35, 'CAN_PACKET_BMS_HUM_TEMP1': 102.5}, 
-        '3': {'unit_id': 3, 'NoOfCells': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
+        '4': {'unit_id': 14, 'NoOfCellsA': 0,'NoOfCellsB': 0,'NoOfCellsC': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
         'packCurrent1': 3892510720, 'packCurrent2': 3490119680, 'Ah_Counter': 4093706240, 'Wh_Counter': 3892510720, 'cellPoint': 24, 'cellVoltage10': 4.66, 'cellVoltage11': 22.136, 'cellVoltage12': 39.612, 
         'bal_state': 59109745109237, 'cellVoltageLow': 3.0, 'cellVoltageHigh': 4.2, 'SOC': 31.37254901960784, 'SOH': 35.298, 'tBattHi': 30, 'BitF': 0, 'CAN_PACKET_BMS_TEMP0': 501.85, 'CAN_PACKET_BMS_HUM_HUM': 348.35, 'CAN_PACKET_BMS_HUM_TEMP1': 102.5}, 
-        '4': {'unit_id': 4, 'NoOfCells': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
+        '5': {'unit_id': 15, 'NoOfCellsA': 0,'NoOfCellsB': 0,'NoOfCellsC': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
         'packCurrent1': 3892510720, 'packCurrent2': 3490119680, 'Ah_Counter': 4093706240, 'Wh_Counter': 3892510720, 'cellPoint': 24, 'cellVoltage10': 4.66, 'cellVoltage11': 22.136, 'cellVoltage12': 39.612, 
         'bal_state': 59109745109237, 'cellVoltageLow': 3.0, 'cellVoltageHigh': 4.2, 'SOC': 31.37254901960784, 'SOH': 35.298, 'tBattHi': 30, 'BitF': 0, 'CAN_PACKET_BMS_TEMP0': 501.85, 'CAN_PACKET_BMS_HUM_HUM': 348.35, 'CAN_PACKET_BMS_HUM_TEMP1': 102.5}, 
-        '5': {'unit_id': 5, 'NoOfCells': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
+        '6': {'unit_id': 16, 'NoOfCellsA': 0,'NoOfCellsB': 0,'NoOfCellsC': 0, 'auxVoltagesIndividual1': 46.6, 'auxVoltagesIndividual2': 221.36, 'auxVoltagesIndividual3': 396.12, 'packVoltage': 279183360, 'chargerVoltage': 1354956800, 
         'packCurrent1': 3892510720, 'packCurrent2': 3490119680, 'Ah_Counter': 4093706240, 'Wh_Counter': 3892510720, 'cellPoint': 24, 'cellVoltage10': 4.66, 'cellVoltage11': 22.136, 'cellVoltage12': 39.612, 
         'bal_state': 59109745109237, 'cellVoltageLow': 3.0, 'cellVoltageHigh': 4.2, 'SOC': 31.37254901960784, 'SOH': 35.298, 'tBattHi': 30, 'BitF': 0, 'CAN_PACKET_BMS_TEMP0': 501.85, 'CAN_PACKET_BMS_HUM_HUM': 348.35, 'CAN_PACKET_BMS_HUM_TEMP1': 102.5}}
         
@@ -72,6 +73,8 @@ class BMS:
         try:
                 for x in range(11,17):
                    
+                   print(x)
+                   
                    y = x - 10
 
                    if self.packet[f'{y}']['unit_id'] == x:
@@ -94,7 +97,7 @@ class BMS:
                                'MOT5_rpm_PCT':0,'MOT6_rpm_PCT':random.randint(0,100),'ESC1_V':0,'ESC2_V':0,'ESC3_V':0,'ESC4_V':0,'ESC5_V':0,'ESC6_V':random.randint(0,100),'ESC1_CUR_AMP':0,
                                'ESC2_CUR_AMP':0,'ESC3_CUR_AMP':0,'ESC4_CUR_AMP':0,'ESC5_CUR_AMP':random.randint(0,100),'ESC6_CUR_AMP':0}
             
-        #print("Broken")
+            print("Broken")
         return [self.packet,self.previous_packet]
     
     def bmsRead(self):
