@@ -81,10 +81,9 @@ class ESC:
             self.esc.esc_data = {}
         
             self.esc.receive_data()
-            print('A')
-            rawData = self.esc.get_data()
-            print('B')
             
+            rawData = self.esc.get_data()
+
             if (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
                 rawData['throttle_data2'] = []
                 self.esc.unitData['0'] |= rawData
@@ -103,7 +102,6 @@ class ESC:
             elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
                 rawData['throttle_data'] = []
                 self.esc.unitData['5'] |= rawData
-            print('C')
 
         return self.esc.unitData
 
