@@ -70,19 +70,21 @@ class Veronte2:
                 # Parse telemetry data into self.packet using the ordered list
                 telemetry_data = self.data[1]
 
-                print(len(telemetry_data))
-                
-                for i, key in enumerate(self.datalist):
-                    self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
-                
-                self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
-                self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
+                if (len(telemetry_data) == 13):
 
-                print("p: " + str(self.packet['attitude_pitch']) + "| r: " + str(self.packet['attitude_roll']) + "|y: " + str(self.packet['attitude_yaw']) )
-               
-                #print(self.packet)
-                # Return the packet and all other data elements that are not telemetry data
-                return [self.packet, self.data[0]]
+                    print(len(telemetry_data))
+                    
+                    for i, key in enumerate(self.datalist):
+                        self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
+                    
+                    self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
+                    self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
+
+                    print("p: " + str(self.packet['attitude_pitch']) + "| r: " + str(self.packet['attitude_roll']) + "|y: " + str(self.packet['attitude_yaw']) )
+                
+                    #print(self.packet)
+                    # Return the packet and all other data elements that are not telemetry data
+                    return [self.packet, self.data[0]]
             else:
                 return [self.dataDictionary, self.dataPacket]
 
