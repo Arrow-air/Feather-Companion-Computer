@@ -50,23 +50,24 @@ class ESC:
             for i in range(0,6):
 
                 x = i + 1
-                print(i)
+                
                 self.dataDictionary[f'MOT{x}_rpm_PCTe'] = self.data[f'{i}']['info_upload_6160']['electrical_speed'] * 3 # RPM = 3 x electrical speed
                 self.dataDictionary[f'ESC{x}_CUR_AMPe'] = self.data[f'{i}']['info_upload_6160']['bus_current']
                 self.dataDictionary[f'ESC{x}_Ve'] = self.data[f'{i}']['info_upload_6161']['bus_voltage']
                 self.dataDictionary[f'ESC{x}_temp_Ce'] = self.data[f'{i}']['info_upload_6161']['temperatures']['MOS']
                 self.dataDictionary[f'MOT{x}_temp_Ce'] = self.data[f'{i}']['info_upload_6161']['temperatures']['Motor']
                 #print(self.dataDictionary[f'MOT{x}_rpm_PCTe'])
+                #print('A')
 
             self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
-            print('A')
+            #print('B')
             
             #print(str(x) + str(self.packet))
             
         except:
             
             self.packet = self.dataDictionary
-            print('B')
+            #print('C')
         
             #print(self.packet) 
         return [self.packet,  self.data]
