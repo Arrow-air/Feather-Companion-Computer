@@ -44,11 +44,14 @@ class ESC:
         try:
             self.superDictionary = self.escRead()
             data = self.superDictionary
+            print('D')
 
             for i in range(0,6):
 
                 x = i + 1
                 
+                print(x)
+                print('E')
                 self.dataDictionary[f'MOT{x}_rpm_PCTe'] = data[f'{i}']['info_upload_6160']['electrical_speed'] * 3 # RPM = 3 x electrical speed
                 self.dataDictionary[f'ESC{x}_CUR_AMPe'] = data[f'{i}']['info_upload_6160']['bus_current']
                 self.dataDictionary[f'ESC{x}_Ve'] = data[f'{i}']['info_upload_6161']['bus_voltage']
@@ -56,14 +59,16 @@ class ESC:
                 self.dataDictionary[f'MOT{x}_temp_Ce'] = data[f'{i}']['info_upload_6161']['temperatures']['Motor']
 
             self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
+            print('F')
             
-            #print(str(x) + str(self.packet))
+            print(str(x) + str(self.packet))
             
         except:
             
             self.packet = self.dataDictionary
+            print('G')
         
-        #print(self.packet) 
+            print(self.packet) 
         return [self.packet, data]
 
     def escRead(self):
@@ -75,7 +80,9 @@ class ESC:
             self.esc.esc_data = {}
         
             self.esc.receive_data()
+            print('A')
             rawData = self.esc.get_data()
+            print('B')
             
         if (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
             rawData['throttle_data2'] = []
@@ -95,7 +102,7 @@ class ESC:
         elif (rawData['unit_id'] - 0xC780901 == 0 and rawData['throttle_data2'][0] == 0 and rawData['throttle_data2'][1] == 0 and rawData['throttle_data2'][3] == 0) or rawData['unit_id'] - 0x14781010 == 6 or rawData['unit_id'] - 0x14781110 == 6 or rawData['unit_id'] - 0x107D5510 == 6:
             rawData['throttle_data'] = []
             self.esc.unitData['5'] |= rawData
-        
+        print('C')
         return self.esc.unitData
 
 if __name__ == "__main__":
@@ -105,7 +112,8 @@ if __name__ == "__main__":
     while True:
         
         esc.packetStruct()
-        
+        print('G')
         print(esc.packet) 
+        print('H')
         
         print("\n")
