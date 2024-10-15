@@ -161,9 +161,9 @@ class Veronte2:
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
-                    print(hex(packet['end_crc']))
+                    #print(hex(packet['end_crc']))
 
-                    if hex(packet['end_crc']) == 0x94B0:
+                    if hex(packet['end_crc']) == 0xff10:
                         # Return the parsed telemetry data
                         packet2 = packet 
                         packet = {}
