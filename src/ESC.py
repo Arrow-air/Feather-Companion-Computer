@@ -41,12 +41,12 @@ class ESC:
         print("ESC Init")
 
     def packetStruct(self):
+
+        self.superDictionary = self.escRead()
+        self.data = self.superDictionary
+        #print(self.data)
         
         try:
-            self.superDictionary = self.escRead()
-            self.data = self.superDictionary
-            #print(self.data)
-
             for i in range(0,6):
 
                 x = i + 1
