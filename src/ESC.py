@@ -81,7 +81,7 @@ class ESC:
             self.esc.esc_data = {}
         
             self.esc.receive_data()
-            
+
             rawData = self.esc.get_data()
 
             if (rawData['unit_id'] - 0xC780801 == 0 and rawData['throttle_data1'][1] == 0 and rawData['throttle_data1'][2] == 0 and rawData['throttle_data1'][3] == 0) or rawData['unit_id'] - 0x14781010 == 0 or rawData['unit_id'] - 0x14781110 == 0 or rawData['unit_id'] - 0x107D5510 == 0:
@@ -103,7 +103,7 @@ class ESC:
                 rawData['throttle_data'] = []
                 self.esc.unitData['5'] |= rawData
 
-        return self.esc.unitData
+            return self.esc.unitData
 
 if __name__ == "__main__":
     
