@@ -63,21 +63,21 @@ class BMS:
 
         if self.current_time - self.last_update_time >= self.external_update_rate:
             self.packet = self.bmsRead()
-            print(str(self.packet))
+            #print(str(self.packet))
             self.previous_packet = self.packet
             self.last_update_time = self.current_time
 
         self.packet = self.previous_packet
 
         try:
-                for x in range(1,7):
+                for x in range(11,17):
                    
                    if self.packet[f'{x}']['unit_id'] == x:
-                       
-                       self.dataDictionary[f'BAT{x}_temp_C'] = self.packet[f'{x}']['CAN_PACKET_BMS_TEMP0']
-                       self.dataDictionary[f'BAT{x}_soc_PCT'] = self.packet[f'{x}']['SOC']
-                       self.dataDictionary[f'ESC{x}_V'] = self.packet[f'{x}']['packVoltage']
-                       self.dataDictionary[f'ESC{x}_CUR_AMP'] = self.packet[f'{x}']['packCurrent1']
+                       y = x - 10
+                       self.dataDictionary[f'BAT{y}_temp_C'] = self.packet[f'{y}']['CAN_PACKET_BMS_TEMP0']
+                       self.dataDictionary[f'BAT{y}_soc_PCT'] = self.packet[f'{y}']['SOC']
+                       self.dataDictionary[f'ESC{y}_V'] = self.packet[f'{y}']['packVoltage']
+                       self.dataDictionary[f'ESC{y}_CUR_AMP'] = self.packet[f'{y}']['packCurrent1']
                 
                 self.packet = {key : round(int(self.dataDictionary[key])) for key in self.dataDictionary}
                 
@@ -126,6 +126,6 @@ if __name__ == "__main__":
         
         bms.packetStruct()
         
-       #print(bms.packet)
+        print(bms.packet)
         print("\n")
 
