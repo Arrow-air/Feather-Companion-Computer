@@ -164,7 +164,7 @@ class Veronte2:
         Returns the parsed telemetry packet as a JSON string.
         """
         packet = self.packetStruct()
-        return json.dumps(packet[0], indent=4)
+        #return json.dumps(packet[0], indent=4)
     
     def decimal_to_dms(self, decimal_degree):
         """
