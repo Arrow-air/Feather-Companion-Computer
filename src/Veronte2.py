@@ -96,12 +96,18 @@ class Veronte2:
                         #print(str(i) + ' | ' + key)
                         self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
 
+                    self.packet['attitude_pitch'] = math.degrees(self.packet['attitude_pitch'])
+                    self.packet['attitude_roll'] = math.degrees(self.packet['attitude_roll'])
+                    self.packet['heading'] = math.degrees(self.packet['heading'])
+                    self.packet['compass'] = math.degrees(self.packet['compass'])
+
+
                     self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
                     self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
-                    #print("p: " + str(math.degrees(self.packet['attitude_pitch'])))
-                    #print("r: " + str(math.degrees(self.packet['attitude_roll'])))
-                    #print("y: " + str(math.degrees(self.packet['heading'])))
+                    #print("p: " + str(self.packet['attitude_pitch']))
+                    #print("r: " + str(self.packet['attitude_roll']))
+                    #print("y: " + str(self.packet['heading']))
                 
                     print(self.packet)
                     # Return the packet and all other data elements that are not telemetry data
