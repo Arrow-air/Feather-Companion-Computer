@@ -114,8 +114,8 @@ if __name__ == "__main__":
     while True:
         
         esc.packetStruct()
-        print('G')
-        print(esc.packet) 
         print('H')
+        print(esc.packet) 
+        print('I')
         
         print("\n")
