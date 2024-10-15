@@ -67,6 +67,7 @@ class Veronte2:
                 
                 # Parse telemetry data into self.packet using the ordered list
                 telemetry_data = self.data[1]
+                telemetry_data = self.data[1]
                 for i, key in enumerate(self.datalist):
                     self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
                 
@@ -114,11 +115,11 @@ class Veronte2:
                     # Read timestamp (FLOAT32, mixed-endian)
                     timestamp_bytes = self.VeronteSerial.read(4)
                     timestamp = self.unpack_mixed_endian_float(timestamp_bytes)
-                    telemetry_data.append({"Timestamp": timestamp})
+                    #telemetry_data.append({"Timestamp": timestamp})
 
                     # Read hash value (UINT32)
                     hash_value = struct.unpack('I', self.VeronteSerial.read(4))[0]
-                    telemetry_data.append({"Hash": hash_value})
+                    #telemetry_data.append({"Hash": hash_value})
 
                     # Read variables (XTYPE, assuming float32 for example)
                     for i in range((data_length // 4)):  # Adjust as per actual format
