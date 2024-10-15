@@ -21,7 +21,22 @@ class Veronte2:
         self.dataDictionary = {'altitude_AGL': 0, 'altitude_AGL_set': 0, 'altitude_ABS': 40, 'heading': 0, 
                                'compass': 0, 'attitude_pitch': 0, 'attitude_roll': 0, 'vertical_speed_KTS': 0,
                                'airspeed_KTS': 0, 'OAT': 0, 'latitude': '40d26a46q', 'longitude': '79d58a56q'}
-        
+        self.telemetrydata = [
+               #{'Timestamp': 162255.56},   # Timestamp (dummy value)
+                #{'Hash': 123456},           # Hash value (dummy value)
+                {'Variable0': 42.5},        # Variable 0, example variable
+                {'Variable1': 13.8},        # Variable 1, example variable
+                {'Variable2': 13.8},        # Variable 2, example variable
+                {'Variable3': 13.8},        # Variable 3, example variable
+                {'Variable4': 13.8},        # Variable 4, example variable
+                {'Variable5': 13.8},        # Variable 5, example variable
+                {'Variable6': 13.8},        # Variable 6, example variable
+                {'Variable7': 13.8},        # Variable 7, example variable
+                {'Variable8': 13.8},        # Variable 8, example variable
+                {'Variable9': 13.8},        # Variable 9, example variable
+                {'Variable10': 13.8},       # Variable 10, example variable
+                {'Variable11': 13.8},       # Variable 11, example variable
+            ]
         # Ordered list of keys for telemetry data
         self.datalist = ['altitude_AGL', 'altitude_AGL_set', 'altitude_ABS', 'heading', 'compass', 'attitude_pitch', 
                          'attitude_roll', 'vertical_speed_KTS', 'airspeed_KTS', 'OAT', 'latitude', 'longitude']
@@ -148,7 +163,7 @@ class Veronte2:
 
         except Exception as e:
             print(f"Error reading data: {e}")
-            return {}
+            return [self.dataPacket, self.telemetrydata]
 
     def unpack_mixed_endian_float(self, byte_data):
         """
