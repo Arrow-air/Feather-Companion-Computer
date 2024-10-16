@@ -134,7 +134,7 @@ class Veronte2:
         Assumes mixed-endian means swapping AABBCCDD to CCDDAABB.
         """
         mixed_endian_bytes = byte_data[2:4] + byte_data[0:2]
-        return struct.unpack('<f', mixed_endian_bytes)[0]
+        return struct.unpack('>f', mixed_endian_bytes)[0]
 
     def decimal_to_dms(self, decimal_degree):
         """
