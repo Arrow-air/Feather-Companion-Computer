@@ -45,10 +45,10 @@ class Veronte2:
                         self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
 
                     # Convert angles from radians to degrees
-                    self.packet['attitude_pitch'] = math.degrees(self.packet['attitude_pitch'])
-                    self.packet['attitude_roll'] = math.degrees(self.packet['attitude_roll'])
-                    self.packet['heading'] = math.degrees(self.packet['heading'])
-                    self.packet['compass'] = math.degrees(self.packet['compass'])
+                    #self.packet['attitude_pitch'] = math.degrees(self.packet['attitude_pitch'])
+                    #self.packet['attitude_roll'] = math.degrees(self.packet['attitude_roll'])
+                    #self.packet['heading'] = math.degrees(self.packet['heading'])
+                    #self.packet['compass'] = math.degrees(self.packet['compass'])
 
                     # Convert latitude and longitude to DMS format
                     #self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
