@@ -79,7 +79,7 @@ class Veronte2:
                 # Only process the packet if the start byte is 0xBA
                 if packet['start_byte'] == 0xBA:
                     packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
-                    packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
+                    packet['command_bytes'] = struct.unpack('<B', self.VeronteSerial.read(2))[0]
                     packet['fixed_byte_1'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
@@ -111,7 +111,7 @@ class Veronte2:
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
-                    print(hex(packet['end_crc']))
+                    #print(hex(packet['end_crc']))
 
                     # Check if the CRC is valid (expected value: 0x94B0)
                     #if packet['end_crc'] != 0x94B0:
