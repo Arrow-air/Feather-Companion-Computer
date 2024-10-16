@@ -94,6 +94,7 @@ class Veronte2:
 
                     # Read hash value (UINT32, mixed-endian)
                     hash_value = struct.unpack('I', self.VeronteSerial.read(4))[0]
+                    print(hash_value)
 
                     # Read variables (XTYPE, assuming float32 for example)
                     for i in range((data_length // 4)):
