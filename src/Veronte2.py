@@ -109,6 +109,8 @@ class Veronte2:
 
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
+                    
+                    self.VeronteSerial.flush()
 
                     #print(hex(packet['end_crc']))
 
