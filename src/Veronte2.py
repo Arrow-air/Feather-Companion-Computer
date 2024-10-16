@@ -102,7 +102,8 @@ class Veronte2:
 
                     for i in range((data_length // 4)):
                         variable_bytes = self.VeronteSerial.read(4)
-                        print(float(variable_bytes))
+                        print(variable_bytes)
+                        
                         variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable, 2)})
 
