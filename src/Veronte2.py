@@ -39,7 +39,7 @@ class Veronte2:
 
             if self.data:  # Only process valid data
                 telemetry_data = self.data[1]
-                print(len(telemetry_data))
+                
                 if len(telemetry_data) == 12:
                     for i, key in enumerate(self.datalist):
                         self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
@@ -84,7 +84,6 @@ class Veronte2:
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    #print(packet['command_bytes'])
 
                     # Now read the data segment (length - 8 bytes)
                     data_length = packet['length'] - 8
@@ -96,14 +95,11 @@ class Veronte2:
 
                     # Read hash value (UINT32, mixed-endian)
                     hash_value = struct.unpack('I', self.VeronteSerial.read(4))[0]
-                    #print(hash_value)
+
 
                     # Read variables (XTYPE, float32)
-
                     for i in range((data_length // 4)):
                         variable_bytes = self.VeronteSerial.read(4)
-                        #print(variable_bytes)
-                        
                         variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable, 2)})
 
@@ -114,14 +110,6 @@ class Veronte2:
 
                     self.VeronteSerial.flush()
 
-                    #print(hex(packet['end_crc']))
-
-                    # Check if the CRC is valid (expected value: 0x94B0)
-                    #if packet['end_crc'] != 0x94B0:
-                    #    print(f"Invalid CRC: {hex(packet['end_crc'])}, expected 0x94B0")
-                    #    return None  # Discard packet if CRC is invalid
-
-                    # If CRC is valid, return the parsed telemetry data
                     return [packet, telemetry_data]
 
         except Exception as e:
