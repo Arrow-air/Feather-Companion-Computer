@@ -25,7 +25,23 @@ class Veronte2:
         # Ordered list of keys for telemetry data
         self.datalist = ['altitude_AGL', 'altitude_AGL_set', 'altitude_ABS', 'heading', 'compass', 'attitude_pitch', 
                          'attitude_roll', 'vertical_speed_KTS', 'airspeed_KTS', 'OAT', 'latitude', 'longitude']
-
+        
+        self.telemetrydata = [
+               #{'Timestamp': 162255.56},   # Timestamp (dummy value)
+                #{'Hash': 123456},           # Hash value (dummy value)
+                {'Variable0': 42.5},        # Variable 0, example variable
+                {'Variable1': 13.8},        # Variable 1, example variable
+                {'Variable2': 0},        # Variable 2, example variable
+                {'Variable3': 0},        # Variable 3, example variable
+                {'Variable4': 0},        # Variable 4, example variable
+                {'Variable5': 0},        # Variable 5, example variable
+                {'Variable6': 0},        # Variable 6, example variable
+                {'Variable7': 0},        # Variable 7, example variable
+                {'Variable8': 0},        # Variable 8, example variable
+                {'Variable9': 0},        # Variable 9, example variable
+                {'Variable10': 0},       # Variable 10, example variable
+                {'Variable11': 0},       # Variable 11, example variable
+            ]
         print("Veronte Init")
 
     def packetStruct(self):
