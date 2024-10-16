@@ -49,7 +49,7 @@ class Veronte2:
         Reads and parses telemetry data from the serial stream.
         Populates self.packet according to the ordered keys in self.datalist.
         """
-        time.sleep(0.1)
+        time.sleep(0.01)
         try:
             self.data = self.readData()
 
