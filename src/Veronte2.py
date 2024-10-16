@@ -137,6 +137,7 @@ class Veronte2:
         Convert a decimal degree value to degrees, minutes, and seconds (DMS) format.
         """
         # Determine if the value is latitude or longitude and set the direction accordingly
+        decimal_degree = math.degrees(decimal_degree)
         if decimal_degree < 0:
             direction = 'S' if abs(decimal_degree) <= 90 else 'W'
         else:
