@@ -83,7 +83,7 @@ class Veronte2:
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    print(packet['crc'])
+                    print(hex(packet['crc']))
 
                     # Now read the data segment (length - 8 bytes)
                     data_length = packet['length'] - 8
@@ -108,7 +108,7 @@ class Veronte2:
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
-                    print(packet['end_crc'])
+                    print(hex(packet['end_crc']))
 
                     # Check if the CRC is valid (expected value: 0x94B0)
                     #if packet['end_crc'] != 0x94B0:
