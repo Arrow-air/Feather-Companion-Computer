@@ -39,6 +39,7 @@ class Veronte2:
 
             if self.data:  # Only process valid data
                 telemetry_data = self.data[1]
+                print(len(telemetry_data))
                 if len(telemetry_data) == 12:
                     for i, key in enumerate(self.datalist):
                         self.packet[key] = telemetry_data[i].get(f"Variable{i}", 0)
