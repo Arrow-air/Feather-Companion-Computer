@@ -51,8 +51,8 @@ class Veronte2:
                     self.packet['compass'] = math.degrees(self.packet['compass'])
 
                     # Convert latitude and longitude to DMS format
-                    self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
-                    self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
+                    #self.packet['latitude'] = self.decimal_to_dms(self.packet['latitude'])
+                    #self.packet['longitude'] = self.decimal_to_dms(self.packet['longitude'])
 
                     print(self.packet)
                     return [self.packet, self.data[0]]
