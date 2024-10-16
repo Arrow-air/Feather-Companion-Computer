@@ -84,7 +84,7 @@ class Veronte2:
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    print(hex(packet['crc']))
+                    print(hex(packet['command_bytes']))
 
                     # Now read the data segment (length - 8 bytes)
                     data_length = packet['length'] - 8
