@@ -79,12 +79,12 @@ class Veronte2:
                 # Only process the packet if the start byte is 0xBA
                 if packet['start_byte'] == 0xBA:
                     packet['uav_address'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
-                    packet['command_bytes'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
+                    packet['command_bytes'] = struct.unpack('2B', self.VeronteSerial.read(2))
                     packet['fixed_byte_1'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    print(hex(packet['command_bytes']))
+                    print(packet['command_bytes'])
 
                     # Now read the data segment (length - 8 bytes)
                     data_length = packet['length'] - 8
@@ -99,9 +99,8 @@ class Veronte2:
                     #print(hash_value)
 
                     # Read variables (XTYPE, assuming float32 for example)
-                    print(data_length // 4)
+
                     for i in range((data_length // 4)):
-                        print(i)
                         variable_bytes = self.VeronteSerial.read(4)
                         variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable, 2)})
