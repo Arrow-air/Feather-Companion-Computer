@@ -84,7 +84,7 @@ class Veronte2:
                     packet['fixed_byte_2'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['length'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
                     packet['crc'] = struct.unpack('B', self.VeronteSerial.read(1))[0]
-                    print(packet['command_bytes'])
+                    #print(packet['command_bytes'])
 
                     # Now read the data segment (length - 8 bytes)
                     data_length = packet['length'] - 8
@@ -96,9 +96,9 @@ class Veronte2:
 
                     # Read hash value (UINT32, mixed-endian)
                     hash_value = struct.unpack('I', self.VeronteSerial.read(4))[0]
-                    #print(hash_value)
+                    print(hash_value)
 
-                    # Read variables (XTYPE, assuming float32 for example)
+                    # Read variables (XTYPE, float32)
 
                     for i in range((data_length // 4)):
                         variable_bytes = self.VeronteSerial.read(4)
