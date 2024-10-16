@@ -98,7 +98,7 @@ class Veronte2:
                     #print(hash_value)
 
                     # Read variables (XTYPE, assuming float32 for example)
-                    for i in range((data_length // 4)):
+                    for i in range((data_length // 4)+1):
                         variable_bytes = self.VeronteSerial.read(4)
                         variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable, 2)})
@@ -107,6 +107,8 @@ class Veronte2:
 
                     # Read the final CRC (2 bytes)
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
+
+                    print(packet['end_crc'])
 
                     # Check if the CRC is valid (expected value: 0x94B0)
                     #if packet['end_crc'] != 0x94B0:
