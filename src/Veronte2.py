@@ -107,9 +107,9 @@ class Veronte2:
                     packet['end_crc'] = struct.unpack('<H', self.VeronteSerial.read(2))[0]
 
                     # Check if the CRC is valid (expected value: 0x94B0)
-                    if packet['end_crc'] != 0x94B0:
-                        print(f"Invalid CRC: {hex(packet['end_crc'])}, expected 0x94B0")
-                        return None  # Discard packet if CRC is invalid
+                    #if packet['end_crc'] != 0x94B0:
+                    #    print(f"Invalid CRC: {hex(packet['end_crc'])}, expected 0x94B0")
+                    #    return None  # Discard packet if CRC is invalid
 
                     # If CRC is valid, return the parsed telemetry data
                     return [packet, telemetry_data]
