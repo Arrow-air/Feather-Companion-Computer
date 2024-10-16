@@ -149,4 +149,4 @@ if __name__ == '__main__':
 
     veronte = Veronte2(VeronteComport, Serialbitrate, 1)
     while True:
-        veronte.getTelemetryAsJSON()
+        veronte.packetStruct()
