@@ -103,8 +103,8 @@ class Veronte2:
                     for i in range((data_length // 4)):
                         variable_bytes = self.VeronteSerial.read(4)
                         print(variable_bytes)
-
-                        variable = variable_bytes#self.unpack_mixed_endian_float(variable_bytes)
+                        
+                        variable = self.unpack_mixed_endian_float(variable_bytes)
                         telemetry_data.append({f"Variable{i}": round(variable, 2)})
 
                     packet['data'] = telemetry_data
@@ -133,7 +133,7 @@ class Veronte2:
         Unpacks a mixed-endian float32 value from 4 bytes.
         Assumes mixed-endian means swapping AABBCCDD to CCDDAABB.
         """
-        mixed_endian_bytes = byte_data[2:4] + byte_data[0:2]
+        mixed_endian_bytes = byte_data#byte_data[2:4] + byte_data[0:2]
         return struct.unpack('f', mixed_endian_bytes)[0]
 
     def decimal_to_dms(self, decimal_degree):
